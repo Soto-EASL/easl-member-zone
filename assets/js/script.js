@@ -7,6 +7,7 @@
         loaderHtml: EASLMZSETTINGS.loaderHtml,
         modulesLoadTrigger: false,
         methods: {
+            "resetPassword": 'reset_member_password',
             "memberCard": 'get_member_card',
             "featuredMember": 'get_featured_member',
             "membershipForm": 'get_membership_form',
@@ -36,6 +37,24 @@
         clearFieldErrors: function ($context) {
             $('.mzms-field-wrap', $context).removeClass('easl-mz-field-has-error');
             $(".mzms-field-error-msg", $context).html('');
+        },
+        resetPassword: function () {
+            var _this = this;
+            $(".mz-reset-pass-button").on("mz_loaded:" + this.methods.resetPassword, function (event, response, method) {
+                if (response.Status === 200) {
+                    alert("Password has been reset! Please check your email.");
+                    $(this).closest(".easl-mz-login-form").removeClass("mz-show-reset-form mz-reset-pass-processing").find(".mz-forgot-password").html("Forgot your password?");
+                }
+            });
+            $(".mz-reset-pass-button").on("click", function (event) {
+                event.preventDefault();
+                $el = $(this);
+                var email = $el.closest(".easl-mz-login-form").addClass("mz-reset-pass-processing").find(".mz-reset-pass-email").val();
+                if (email) {
+                    _this.request(_this.methods.resetPassword, $el, {"email": email});
+                }
+
+            });
         },
         getMemberCard: function () {
             var _this = this;
@@ -281,10 +300,10 @@
             $(".mz-forgot-password").on("click", function (event) {
                 event.preventDefault();
                 var $formWrap = $(this).closest(".easl-mz-login-form");
-                if($formWrap.hasClass("mz-show-reset-form")){
+                if ($formWrap.hasClass("mz-show-reset-form")) {
                     $formWrap.removeClass("mz-show-reset-form");
                     $(this).html("Forgot your password?");
-                }else{
+                } else {
                     $formWrap.addClass("mz-show-reset-form");
                     $(this).html("Login");
                 }
@@ -296,6 +315,7 @@
             this.showModuleLoading();
             this.getMemberCard();
             this.initNewMemberForm();
+            this.resetPassword();
         }
     };
 

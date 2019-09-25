@@ -77,6 +77,19 @@ class EASL_MZ_Ajax_Handler {
 		call_user_func( array( $this, $_POST['method'] ) );
 	}
 
+	public function reset_member_password() {
+		if ( empty( $_POST['request_data']['email'] ) ) {
+			$this->respond( 'No fields specified!', 405 );
+		}
+
+		// TODO - make some think similar to wp_admin_referer
+		$reset = $this->api->reset_password( $_POST['request_data']['email'] );
+		if ( ! $reset ) {
+			$this->respond( 'Error!', 400 );
+		}
+		$this->respond( 'Success!', 200 );
+	}
+
 	public function get_member_card() {
 		$current_member_id = $this->session->ge_current_member_id();
 		if ( ! $current_member_id ) {

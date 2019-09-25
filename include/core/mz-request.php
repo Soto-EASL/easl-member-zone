@@ -47,7 +47,7 @@ class EASL_MZ_Request {
 		return false;
 	}
 
-	public function post( $endpoint, $data = array(), $data_format = 'body', $cookies = array() ) {
+	public function post( $endpoint, $data = array(), $data_format = 'body', $cookies = array(), $parse_json = true ) {
 		$url  = $this->base_uri . $endpoint;
 		$args = array(
 			'method'      => 'POST',
@@ -66,11 +66,11 @@ class EASL_MZ_Request {
 
 		$body = wp_remote_retrieve_body( $response );
 		if ( $body ) {
-			$this->response_body = json_decode( $body );
+			$this->response_body = $parse_json ? json_decode( $body ) : $body;
 		}
 	}
 
-	public function put( $endpoint, $data = array(), $data_format = 'body', $cookies = array() ) {
+	public function put( $endpoint, $data = array(), $data_format = 'body', $cookies = array(), $parse_json = true ) {
 		$url  = $this->base_uri . $endpoint;
 		$args = array(
 			'method'      => 'PUT',
@@ -90,11 +90,11 @@ class EASL_MZ_Request {
 		$body = wp_remote_retrieve_body( $response );
 
 		if ( $body ) {
-			$this->response_body = json_decode( $body );
+			$this->response_body = $parse_json ? json_decode( $body ) : $body;
 		}
 	}
 
-	public function delete( $endpoint, $data = array(), $data_format = 'body', $cookies = array() ) {
+	public function delete( $endpoint, $data = array(), $data_format = 'body', $cookies = array(), $parse_json = true ) {
 		$url  = $this->base_uri . $endpoint;
 		$args = array(
 			'method'      => 'DELETE',
@@ -114,11 +114,11 @@ class EASL_MZ_Request {
 		$body = wp_remote_retrieve_body( $response );
 
 		if ( $body ) {
-			$this->response_body = json_decode( $body );
+			$this->response_body = $parse_json ? json_decode( $body ) : $body;
 		}
 	}
 
-	public function get( $endpoint, $data = array(), $cookies = array() ) {
+	public function get( $endpoint, $data = array(), $cookies = array(), $parse_json = true ) {
 		$url  = $this->base_uri . $endpoint;
 		$url  = add_query_arg( $data, $url );
 		$args = array(
@@ -138,7 +138,7 @@ class EASL_MZ_Request {
 		$body = wp_remote_retrieve_body( $response );
 
 		if ( $body ) {
-			$this->response_body = json_decode( $body );
+			$this->response_body = $parse_json ? json_decode( $body ) : $body;
 		}
 	}
 }

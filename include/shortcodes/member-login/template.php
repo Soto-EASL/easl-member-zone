@@ -66,8 +66,8 @@ if ( ! easl_mz_is_member_logged_in() ):
                 </div>
             </form>
             <div class="mz-forgot-pass-fields clr">
-                <input type="text" value="" placeholder="Your email address">
-                <button class="easl-generic-button easl-color-lightblue">Reset Password</button>
+                <input class="mz-reset-pass-email" type="text" value="" placeholder="Your email address">
+                <button class="easl-generic-button easl-color-lightblue mz-reset-pass-button">Reset Password</button>
             </div>
             <div class="mz-forgot-pass-row"><a class="mz-forgot-password" href="#">Forgot your password?</a></div>
         </div>

@@ -330,6 +330,22 @@ class EASL_MZ_API {
 
 	}
 
+	public function reset_password( $email ) {
+		$headers = array(
+			'Content-Type'  => 'application/json',
+			'Cache-Control' => 'no-cache'
+		);
+		$this->request->reset_headers();
+		$this->request->set_request_header( 'Content-Type', 'application/json' );
+		$this->request->set_request_header( 'Cache-Control', 'no-cache' );
+		$this->request->get( '/portal/password/request', array( 'email' => $email ), array(), false );
+		if ( $this->request->get_response_code() == 200 ) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public function get_member_id() {
 		$headers = array(
 			'Content-Type'  => 'application/json',
