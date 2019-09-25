@@ -12,7 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         <img src="https://easl.websitestage.co.uk/wp-content/uploads/2018/09/easl-pierre-emmanuel-rautou-1-254x254.jpg" alt="">
     </div>
     <div class="mzms-image-button-wrap">
-        <button class="mzms-button mzms-change-image">Change Picture</button>
+        <a class="mzms-button mzms-change-image" href="#">Change Picture</a>
+    </div>
+    <div class="mzms-passwor-button-wrap">
+        <a class="mzms-button mzms-change-password" href="#">Change Password</a>
     </div>
     <div class="mzms-form-button-wrap">
         <button class="mzms-button mzms-change-image">Save Changes</button>

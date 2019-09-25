@@ -8,6 +8,7 @@
         modulesLoadTrigger: false,
         methods: {
             "resetPassword": 'reset_member_password',
+            "changePassword": 'change_member_password',
             "memberCard": 'get_member_card',
             "featuredMember": 'get_featured_member',
             "membershipForm": 'get_membership_form',
@@ -33,6 +34,12 @@
             $fieldWrap.addClass("easl-mz-field-has-error");
             !$(".mzms-field-error-msg", $fieldWrap).length && $fieldWrap.append('<p class="mzms-field-error-msg"></p>');
             $(".mzms-field-error-msg", $fieldWrap).html(errorMsg)
+        },
+        clearSingleFieldError: function (fieldName, $context) {
+            var $field = $('#mzf_' + fieldName, $context),
+                $fieldWrap = $('#mzf_' + fieldName, $context).closest(".mzms-field-wrap");
+            $fieldWrap.removeClass('easl-mz-field-has-error');
+            $(".mzms-field-error-msg", $fieldWrap).html('');
         },
         clearFieldErrors: function ($context) {
             $('.mzms-field-wrap', $context).removeClass('easl-mz-field-has-error');
@@ -122,10 +129,86 @@
                 event.preventDefault();
                 _this.deleteMyAccount($("#easl-mz-membership-form", $el));
             });
+            $(".mzms-change-password", $el).on("click", function (event) {
+                event.preventDefault();
+                $el.addClass("mz-show-password-change-form");
+            });
+            $(".mzms-change-password-cancel", $el).on("click", function (event) {
+                event.preventDefault();
+                $el.removeClass("mz-show-password-change-form");
+            });
+            $(".mzms-change-password-submit", $el).on("click", function (event) {
+                event.preventDefault();
+                _this.changePassword($el);
+            });
             $("#easl-mz-membership-form").on("submit", function (event) {
                 event.preventDefault();
                 _this.submitMemberShipForm($(this));
             });
+        },
+        changePassword: function ($el) {
+            var _this = this;
+            var $wrap = $el.find(".easl-mz-password-change-wrap");
+            var error = false;
+            var data = {
+                "old_password": $("#mzf_old_password", $wrap).val(),
+                "new_password": $("#mzf_new_password", $wrap).val(),
+                "new_password2": $("#mzf_new_password2", $wrap).val()
+            };
+
+            _this.clearFieldErrors($wrap);
+
+            if (!data.old_password) {
+                _this.showFieldError('old_password', "Mandatory field", $wrap);
+                error = true;
+            } else {
+                _this.clearSingleFieldError('old_password', $wrap);
+            }
+            if (!data.new_password) {
+                _this.showFieldError('new_password', "Mandatory field", $wrap);
+                error = true;
+            } else {
+                _this.clearSingleFieldError('new_password', $wrap);
+            }
+            if (!data.new_password2) {
+                _this.showFieldError('new_password2', "Mandatory field", $wrap);
+                error = true;
+            } else {
+                _this.clearSingleFieldError('new_password2', $wrap);
+            }
+            if (!error) {
+                if (data.new_password2 !== data.new_password) {
+                    _this.showFieldError('new_password2', "Must be same as password.", $wrap);
+                    error = true;
+                } else {
+                    _this.clearSingleFieldError('new_password2', $wrap);
+                }
+            }
+            if (!error) {
+                $el.addClass("easl-mz-changing-password");
+                $el.one("mz_loaded:" + this.methods.changePassword, function (event, response, method) {
+                    $el.removeClass("easl-mz-changing-password");
+                    if (response.Status === 200) {
+                        // TODO - Replace with a modal
+                        alert("Your password has been changed successfully!");
+                    }
+                    if (response.Status === 400) {
+                        // TODO - Replace with a modal
+                        for (var fieldName in response.Errors) {
+                            _this.showFieldError(fieldName, response.Errors[fieldName], $wrap);
+                        }
+                    }
+                    if (response.Status === 405) {
+                        // TODO - Replace with a modal
+                        alert("Failed! Refresh the page and try again.");
+                    }
+                    if (response.Status === 401) {
+                        // TODO - Replace with a modal
+                        alert("Unauthorized! Refresh the page.");
+                    }
+                });
+                this.request(this.methods.changePassword, $el, data);
+            }
         },
         deleteMyAccount: function ($form) {
             var _this = this;

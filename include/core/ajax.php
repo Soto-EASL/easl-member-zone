@@ -176,9 +176,46 @@ class EASL_MZ_Ajax_Handler {
 		unset( $request_data['id'] );
 		$updated = $this->api->update_member_personal_info( $member_id, $request_data );
 		if ( ! $updated ) {
-			$this->respond( 'Error!', 400 );
+			$this->respond( 'Error!', 405 );
 		}
 		$this->respond( 'Your profile updated successfully!', 200 );
+	}
+
+	public function change_member_password() {
+		if ( empty( $_POST['request_data'] ) ) {
+			$this->respond( 'No fields specified!', 405 );
+		}
+
+		$errors       = array();
+		$request_data = $_POST['request_data'];
+
+		if ( empty( $request_data['old_password'] ) ) {
+			$errors['old_password'] = 'Mandatory field.';
+		}
+		if ( empty( $request_data['new_password'] ) ) {
+			$errors['new_password'] = 'Mandatory field.';
+		}
+		if ( empty( $request_data['new_password2'] ) ) {
+			$errors['new_password2'] = 'Mandatory field.';
+		}
+
+		if ( $request_data['new_password2'] !== $request_data['new_password'] ) {
+			$errors['new_password2'] = 'Must be same as password.';
+		}
+		if ( count( $errors ) > 0 ) {
+			$this->respond_field_errors( $errors );
+		}
+
+		$api_args = array(
+			'old_password' => $request_data['old_password'],
+			'new_password' => $request_data['new_password']
+		);
+
+		$updated = $this->api->change_password( $api_args );
+		if ( ! $updated ) {
+			$this->respond( 'Error!', 405 );
+		}
+		$this->respond( 'Password changed successfully!', 200 );
 	}
 
 	public function create_member_profile() {
@@ -221,7 +258,7 @@ class EASL_MZ_Ajax_Handler {
 		$created_member_id = $this->api->create_member( $request_data );
 
 		if ( ! $created_member_id ) {
-			$this->respond( 'Error!', 400 );
+			$this->respond( 'Error!', 405 );
 		}
 
 		$membership_page = get_field( 'membership_plan_url', 'option' );

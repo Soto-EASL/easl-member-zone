@@ -365,6 +365,24 @@ class EASL_MZ_API {
 
 	}
 
+	public function change_password( $data, $is_member = true ) {
+		$headers = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( $is_member ),
+		);
+		$result  = $this->put( '/me/password', $is_member, $headers, $data );
+
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->valid ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public function get_member_details( $member_id, $is_member = true ) {
 		$headers = array(
 			'Content-Type'  => 'application/json',
