@@ -49,6 +49,7 @@ $template_base = easl_mz_get_manager()->path( 'CRM_VIEWS', '/memeber-details' );
         </form>
 
 	    <?php include $template_base . '/change-password.php'; ?>
+	    <?php include $template_base . '/membership-category-form.php'; ?>
     </div>
 
 <?php include $template_base . '/sidebar.php'; ?>

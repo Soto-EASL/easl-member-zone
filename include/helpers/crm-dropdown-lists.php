@@ -378,6 +378,7 @@ function easl_mz_get_list_genders() {
 }
 
 function easl_mz_get_list_membership_categories() {
+	// Synchronise these keys with the @function easl_mz_get_membership_category_fees()
 	return array(
 		"regular"            => "Regular member",
 		"regular_jhep"       => "Regular member with JHEP subscription",

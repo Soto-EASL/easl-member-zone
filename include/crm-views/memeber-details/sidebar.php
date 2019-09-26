@@ -11,11 +11,23 @@ if ( ! defined( 'ABSPATH' ) ) {
     <div class="easl-mz-membership-sidebar-inner">
         <div class="mzms-sbitem mzms-sbitem-category">
             <strong>Membership Category:</strong>
-			<?php echo easl_mz_get_membership_category_name( $member['dotb_mb_category'] ); ?>
+			<?php
+			if ( $member['dotb_mb_category'] ) {
+				echo easl_mz_get_membership_category_name( $member['dotb_mb_category'] );
+			} else {
+				echo 'N/A';
+			}
+			?>
         </div>
         <div class="mzms-sbitem mzms-sbitem-number">
             <strong>membership Number:</strong>
-			<?php echo $member['dotb_mb_id'] ?>
+			<?php
+			if ( $member['dotb_mb_id'] ) {
+				echo $member['dotb_mb_id'];
+			}else{
+			    echo 'N/A';
+            }
+			?>
         </div>
         <div class="mzms-sbitem mzms-sbitem-delete">
             <a id="mzms-delete-account" href="#">Delete Account</a>
@@ -60,7 +72,12 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
 		<?php if ( $member['dotb_mb_current_status'] == 'expired' ): ?>
             <div class="mzms-sbitem">
-                <a class="mzms-button mzms-button-renew" href="">Renew Membership</a>
+                <a class="mzms-button mzms-button-renew" href="#">Renew Membership</a>
+            </div>
+		<?php endif; ?>
+		<?php if ( ! $member['dotb_mb_id'] ): ?>
+            <div class="mzms-sbitem">
+                <a class="mzms-button mzms-button-add-membership" href="#">Add Membership</a>
             </div>
 		<?php endif; ?>
     </div>

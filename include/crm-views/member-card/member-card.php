@@ -14,7 +14,7 @@ $member_profile_url       = get_field( 'member_profile_url', 'option' );
  * @todo Replace with actual picture
  */
 $member_image = $member['profile_picture'];
-if(!$member_image) {
+if ( ! $member_image ) {
 	$member_image = easl_mz_get_asset_url( 'images/default-avatar.jpg' );
 }
 
@@ -30,11 +30,9 @@ if ( $member['last_name'] ) {
 }
 ?>
 <div class="mz-member-card-inner">
-	<?php if ( $member['profile_picture'] ): ?>
-        <div class="mz-member-avatar">
-            <a href="<?php echo esc_url( $member_profile_url ); ?>"><img src="<?php echo $member_image; ?>" alt=""></a>
-        </div>
-	<?php endif; ?>
+    <div class="mz-member-avatar">
+        <a href="<?php echo esc_url( $member_profile_url ); ?>"><img src="<?php echo $member_image; ?>" alt=""></a>
+    </div>
     <div class="mz-member-welcome-block">
         <p class="mz-member-welcome-row">Welcome back</p>
         <p class="mz-member-welcome-row">

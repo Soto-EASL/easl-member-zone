@@ -30,6 +30,7 @@ if ( count( $members ) > 0 ):
 		<?php foreach ( $members as $member ): ?>
 			<?php
 			$member['picture'] = easl_mz_get_asset_url( 'images/mz-avatar.jpg' );
+
 			$member_name_parts = array();
 			if ( $member['salutation'] ) {
 				$member_name_parts[] = $member['salutation'];

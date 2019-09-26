@@ -8,7 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 $member_image = $member['profile_picture'];
+$has_picture = true;
+$change_picture_title = 'Change Picture';
 if(!$member_image) {
+	$has_picture = false;
+	$change_picture_title = 'Add Picture';
 	$member_image = easl_mz_get_asset_url( 'images/default-avatar.jpg' );
 }
 ?>
@@ -17,7 +21,7 @@ if(!$member_image) {
         <img src="<?php echo $member_image; ?>" alt="">
     </div>
     <div class="mzms-image-button-wrap">
-        <a class="mzms-button mzms-change-image" href="#">Change Picture</a>
+        <a class="mzms-button mzms-change-image" href="#"><?php echo $change_picture_title; ?></a>
     </div>
     <div class="mzms-passwor-button-wrap">
         <a class="mzms-button mzms-change-password" href="#">Change Password</a>

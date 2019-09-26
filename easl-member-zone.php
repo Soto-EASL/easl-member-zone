@@ -238,9 +238,7 @@ class EASL_MZ_Manager {
 			'homeURL'        => site_url(),
 			'ajaxURL'        => admin_url( 'admin-ajax.php', $ssl_scheme ),
 			'ajaxActionName' => $this->ajax->get_action_name(),
-			'methods'        => array(
-				'memberCard' => 'get_member_card',
-			),
+			'membershipFees'  => easl_mz_get_membership_category_fees_calculation(),
 			'loaderHtml'     => '<div class="easl-mz-loader"><img src="' . get_stylesheet_directory_uri() . '/images/easl-loader.gif" alt="loading..."></div>',
 		);
 		wp_localize_script( 'easl-mz-script', 'EASLMZSETTINGS', $script_settings );

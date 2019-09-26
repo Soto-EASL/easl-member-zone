@@ -1333,6 +1333,7 @@ body .ui-datepicker .ui-datepicker-title select {
 
 .mzms-fields-con .easl-custom-checkbox {
     padding-left: 0;
+    min-height: 52px;
 }
 
 .mzms-fields-con .easl-custom-checkbox::before {
@@ -1624,37 +1625,38 @@ body .ui-datepicker .ui-datepicker-title select {
     position: relative;
 }
 
-.easl-mz-password-change-wrap {
+.easl-mz-membership-modal-wrap {
     position: absolute;
     top: 71px;
     left: 0;
     right: 0;
+    bottom: 0;
     background: #fff;
     z-index: 12;
     padding: 20px 0 0;
-    height: 100%;
     display: none;
     visibility: hidden;
 }
 
-.mz-show-password-change-form .easl-mz-password-change-wrap {
+.mz-show-password-change-form .easl-mz-password-change-wrap,
+.mz-show-mb-category-form .easl-mz-membership-category-form-wrap {
     display: block;
     visibility: visible;
 }
 
-.mzms-change-password-cancel-wrap {
+.mzms-modal-cancel-wrap {
     text-align: right;
 }
 
-.mzms-change-password-submit-wrap {
+.mzms-modal-submit-wrap {
     text-align: left;
 }
 
-.easl-mz-password-change-inner {
+.easl-mz-membership-modal-inner {
     position: relative;
 }
 
-.easl-mz-password-change-inner::after {
+.easl-mz-membership-modal-inner::after {
     content: "";
     position: absolute;
     left: 0;
@@ -1668,19 +1670,24 @@ body .ui-datepicker .ui-datepicker-title select {
     transition: visibility .25s, opacity .25s;
 }
 
-.easl-mz-changing-password .easl-mz-password-change-inner::after {
+.easl-mz-modal-processing .easl-mz-membership-modal-inner::after {
     visibility: visible;
     opacity: 1;
     z-index: 1;
 }
 
-.easl-mz-password-change-inner .easl-mz-loader {
+.easl-mz-membership-modal-inner .easl-mz-loader {
     margin-top: -36px;
 }
 
-.easl-mz-changing-password .easl-mz-password-change-inner .easl-mz-loader {
+.easl-mz-modal-processing .easl-mz-membership-modal-inner .easl-mz-loader {
     display: block;
 }
+/*Membership Form*/
+.mzms-support-docs-row {
+    display: none;
+}
+
 
 /*Member Zone: Members Document*/
 .mzmd-expiry-notice {

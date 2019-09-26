@@ -145,7 +145,7 @@ function easl_mz_get_crm_dropdown_items( $dropdown_name, $current = '' ) {
 	}
 
 	if ( ! is_array( $current ) ) {
-		$current = array($current);
+		$current = array( $current );
 	}
 
 	$html = '';
@@ -160,6 +160,37 @@ function easl_mz_get_membership_category_name( $category_key ) {
 	$categories = easl_mz_get_list_membership_categories();
 
 	return isset( $categories[ $category_key ] ) ? $categories[ $category_key ] : '';
+}
+
+function easl_mz_get_membership_category_fees_calculation() {
+	// Synchronise these keys with the @function easl_mz_get_list_membership_categories()
+	return array(
+		"regular"            => 200,
+		"regular_jhep"       => 250,
+		"corresponding"      => 200,
+		"corresponding_jhep" => 250,
+		"trainee"            => 100,
+		"trainee_jhep"       => 150,
+		"nurse"              => 100,
+		"nurse_jhep"         => 150,
+		"patient"            => 100,
+		"patient_jhep"       => 150,
+		"emeritus"           => 25,
+		"emeritus_jhep"      => 75,
+		"allied_pro"         => 100,
+		"allied_pro_jhep"    => 150,
+	);
+}
+
+function easl_mz_get_membership_fee( $membership_category, $add_currency_symbol = false ) {
+	$fees = easl_mz_get_membership_category_fees_calculation();
+
+	$fee = isset( $fees[ $membership_category ] ) ? $fees[ $membership_category ] : '';
+	if ( $fee && $add_currency_symbol ) {
+		$fee += '€';
+	}
+
+	return $fee;
 }
 
 function easl_mz_get_membership_status_name( $current_status ) {

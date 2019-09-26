@@ -5,6 +5,7 @@
         url: EASLMZSETTINGS.ajaxURL,
         action: EASLMZSETTINGS.ajaxActionName,
         loaderHtml: EASLMZSETTINGS.loaderHtml,
+        Fees: EASLMZSETTINGS.membershipFees,
         modulesLoadTrigger: false,
         methods: {
             "resetPassword": 'reset_member_password',
@@ -129,6 +130,28 @@
                 event.preventDefault();
                 _this.deleteMyAccount($("#easl-mz-membership-form", $el));
             });
+
+            // Membership Category Form events
+            $(".mzms-button-add-membership", $el).on("click", function (event) {
+                event.preventDefault();
+                $el.addClass("mz-show-mb-category-form");
+            });
+            $(".mzms-add-membership-cancel", $el).on("click", function (event) {
+                event.preventDefault();
+                $el.removeClass("mz-show-mb-category-form");
+            });
+            $("#mzf_membership_category", $el).on("change", function (event) {
+                var fee = '',
+                    cat = $(this).val();
+                event.preventDefault();
+
+                if ("undefined" !== typeof _this.Fees[cat]) {
+                    fee = _this.Fees[cat]
+                }
+                $("#easl-mz-membership-fee").html(fee + "€");
+            });
+
+            // Change password form events
             $(".mzms-change-password", $el).on("click", function (event) {
                 event.preventDefault();
                 $el.addClass("mz-show-password-change-form");
@@ -185,9 +208,9 @@
                 }
             }
             if (!error) {
-                $el.addClass("easl-mz-changing-password");
+                $el.addClass("easl-mz-modal-processing");
                 $el.one("mz_loaded:" + this.methods.changePassword, function (event, response, method) {
-                    $el.removeClass("easl-mz-changing-password");
+                    $el.removeClass("easl-mz-modal-processing");
                     if (response.Status === 200) {
                         // TODO - Replace with a modal
                         alert("Your password has been changed successfully!");
@@ -246,6 +269,7 @@
                 if (response.Status === 200) {
                     // TODO - Replace with a modal
                     alert("Your profile updated successfully!");
+                    _this.getMembershipForm();
                 }
                 if (response.Status === 400) {
                     // TODO - Replace with a modal
@@ -266,6 +290,7 @@
             if ($el.length) {
                 $el.on("mz_loaded:" + this.methods.membershipForm, function (event, response, method) {
                     _this.loadHtml($(this), response);
+                    $("body").trigger("mz_reload_custom_fields");
                     $(".easl-mz-select2", $(this)).select2({
                         closeOnSelect: true
                     });
