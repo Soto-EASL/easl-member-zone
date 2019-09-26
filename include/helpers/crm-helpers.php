@@ -145,7 +145,7 @@ function easl_mz_get_crm_dropdown_items( $dropdown_name, $current = '' ) {
 	}
 
 	if ( ! is_array( $current ) ) {
-		$current = array();
+		$current = array($current);
 	}
 
 	$html = '';
