@@ -71,6 +71,12 @@ function easl_mz_parse_crm_contact_data( $response ) {
 		'description' => $response->description,
 	);
 
+	if ( $data['picture'] ) {
+		$data['profile_picture'] = add_query_arg( 'mz_get_picture', $data['id'], get_site_url() );
+	} else {
+		$data['profile_picture'] = '';
+	}
+
 	return $data;
 }
 

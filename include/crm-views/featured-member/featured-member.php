@@ -25,12 +25,15 @@ if ( count( $members ) > 0 ):
 		'mobile_portrait_items'  => 1
 	);
 	$carousel_data_options = 'data-wpex-carousel="' . vcex_get_carousel_settings( $carousel_options, 'easl_mz_member_featured' ) . '"';
+	$default_image = easl_mz_get_asset_url( 'images/default-avatar.jpg' );
 	?>
     <div class="wpex-carousel mz-featured-member-carousel owl-carousel clr"<?php echo $carousel_data_options; ?>>
 		<?php foreach ( $members as $member ): ?>
 			<?php
-			$member['picture'] = easl_mz_get_asset_url( 'images/mz-avatar.jpg' );
-
+			$member_image = $member['profile_picture'];
+			if ( ! $member_image ) {
+				$member_image = $default_image;
+			}
 			$member_name_parts = array();
 			if ( $member['salutation'] ) {
 				$member_name_parts[] = $member['salutation'];
@@ -44,7 +47,7 @@ if ( count( $members ) > 0 ):
 			?>
             <div class="wpex-carousel-slide mz-featured-member-carousel-item clr">
                 <div class="mz-featured-member-image">
-                    <img src="<?php echo $member['picture']; ?>" alt="">
+                    <img src="<?php echo $member_image; ?>" alt="">
                 </div>
                 <div class="mz-featured-member-details">
                     <h5><?php echo implode( ' ', $member_name_parts ); ?></h5>
