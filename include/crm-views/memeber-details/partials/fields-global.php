@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="mzms-fields-row easl-row easl-row-col-2">
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label for="mzf_dotb_job_function">Job function</label>
+            <label class="mzms-field-label" for="mzf_dotb_job_function">Job function</label>
             <div class="mzms-field-wrap">
                 <select class="easl-mz-select2" name="dotb_job_function" id="mzf_dotb_job_function" style="width: 100%;">
 					<?php echo easl_mz_get_crm_dropdown_items( 'job_functions', $member['dotb_job_function'] ); ?>
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con" id="mzms-fields-con-dotb_job_function_other">
-            <label for="mzf_dotb_job_function_other">Job function - Other</label>
+            <label class="mzms-field-label" for="mzf_dotb_job_function_other">Job function - Other</label>
             <div class="mzms-field-wrap">
                 <input type="text" placeholder="" name="dotb_job_function_other" id="mzf_mzms_first_name" value="<?php echo esc_attr( $member['dotb_job_function_other'] ); ?>">
             </div>
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="mzms-fields-row easl-row easl-row-col-2">
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label for="mzf_dotb_area_of_interest">Area of interest</label>
+            <label class="mzms-field-label" for="mzf_dotb_area_of_interest">Area of interest</label>
             <div class="mzms-field-wrap">
                 <select class="easl-mz-select2" name="dotb_area_of_interest[]" id="mzf_dotb_area_of_interest" multiple="multiple" data-placeholder="Select one/more options" style="width: 100%;">
 					<?php echo easl_mz_get_crm_dropdown_items( 'area_of_interests', $member['dotb_area_of_interest'] ); ?>
@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label for="mzf_title">Profession / Job Title</label>
+            <label class="mzms-field-label" for="mzf_title">Profession / Job Title</label>
             <div class="mzms-field-wrap">
                 <input type="text" placeholder="" name="title" id="mzf_title" value="<?php echo esc_attr( $member['title'] ); ?>">
             </div>
@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="mzms-fields-row easl-row easl-row-col-2">
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label for="mzf_dotb_easl_specialty">Specialty</label>
+            <label class="mzms-field-label" for="mzf_dotb_easl_specialty">Specialty</label>
             <div class="mzms-field-wrap">
                 <select class="easl-mz-select2" name="dotb_easl_specialty[]" id="mzf_dotb_easl_specialty" multiple="multiple" data-placeholder="Select one/more options" style="width: 100%;">
 					<?php echo easl_mz_get_crm_dropdown_items( 'specialities', $member['dotb_easl_specialty'] ); ?>
@@ -60,7 +60,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con" id="mzms-fields-con-dotb_easl_specialty_other">
-            <label for="mzf_dotb_easl_specialty_other">Specialty - Other</label>
+            <label class="mzms-field-label" for="mzf_dotb_easl_specialty_other">Specialty - Other</label>
             <div class="mzms-field-wrap">
                 <input type="text" placeholder="" name="dotb_easl_specialty_other" id="mzf_dotb_easl_specialty_other" value="<?php echo esc_attr( $member['dotb_easl_specialty_other'] ); ?>">
             </div>
@@ -70,7 +70,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="mzms-fields-row easl-row easl-row-col-2">
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label for="mzf_department">Department</label>
+            <label class="mzms-field-label" for="mzf_department">Department</label>
             <div class="mzms-field-wrap">
                 <input type="text" placeholder="" name="department" id="mzf_department" value="<?php echo esc_attr( $member['department'] ); ?>">
             </div>
@@ -78,7 +78,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label for="mzf_dotb_interaction_with_patient">Interaction with patients</label>
+            <label class="mzms-field-label" for="mzf_dotb_interaction_with_patient">Interaction with patients</label>
             <div class="mzms-field-wrap">
                 <select class="easl-mz-select2" name="dotb_interaction_with_patient" id="mzf_dotb_interaction_with_patient" style="width: 100%;">
 					<?php echo easl_mz_get_crm_dropdown_items( 'interactions_patient', $member['dotb_interaction_with_patient'] ); ?>
@@ -90,7 +90,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="mzms-fields-row easl-row easl-row-col-2">
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label for="mzf_dotb_gender">Gender</label>
+            <label class="mzms-field-label" for="mzf_dotb_gender">Gender</label>
             <div class="mzms-field-wrap">
                 <select class="easl-mz-select2" name="dotb_gender" id="mzf_dotb_gender" style="width: 100%;">
 					<?php echo easl_mz_get_crm_dropdown_items( 'genders', $member['dotb_gender'] ); ?>
@@ -100,7 +100,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label for="mzf_birthdate_fz">Date of birth</label>
+            <label class="mzms-field-label" for="mzf_birthdate_fz">Date of birth</label>
             <div class="mzms-field-wrap">
 				<?php
 				$date_of_birth           = $member['birthdate'];

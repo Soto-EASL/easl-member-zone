@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <div class="easl-mz-membership-modal-inner easl-mz-membership-category-form-inner">
         <div class="mzms-fields-row">
             <div class="mzms-fields-con">
-                <label for="mzf_membership_category">Membership Category</label>
+                <label class="mzms-field-label" for="mzf_membership_category">Membership Category</label>
                 <div class="mzms-field-wrap">
                     <select class="easl-mz-select2" name="membership_category" id="mzf_membership_category" data-placeholder="Select an category" style="width: 100%;">
                         <option value=""></option>
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="mzms-fields-row easl-row easl-row-col-2">
             <div class="easl-col">
                 <div class="easl-col-inner mzms-fields-con">
-                    <label for="mzf_membership_category">Membership Years</label>
+                    <label class="mzms-field-label" for="mzf_membership_category">Membership Years</label>
                     <div class="mzms-field-wrap">
                         <select class="easl-mz-select2" name="membership_years" id="mzf_membership_years" data-placeholder="Select number of years" style="width: 100%;">
                             <option value=""></option>
@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             </div>
             <div class="easl-col">
                 <div class="easl-col-inner mzms-fields-con">
-                    <label for="mzf_membership_payment_type">Fee</label>
+                    <label class="mzms-field-label" for="mzf_membership_payment_type">Fee</label>
                     <div class="mzms-field-wrap">
                         <span id="easl-mz-membership-fee"><?php echo easl_mz_get_membership_fee( $member['dotb_mb_category'], true ); ?></span>
                     </div>
@@ -48,7 +48,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="mzms-fields-row easl-row easl-row-col-2">
             <div class="easl-col">
                 <div class="easl-col-inner mzms-fields-con">
-                    <label for="mzf_membership_payment_type">Payment Type</label>
+                    <label class="mzms-field-label" for="mzf_membership_payment_type">Payment Type</label>
                     <div class="mzms-field-wrap">
                         <select class="easl-mz-select2" name="membership_payment_type" id="mzf_membership_payment_type" data-placeholder="Select payment type" style="width: 75%;">
                             <option value=""></option>

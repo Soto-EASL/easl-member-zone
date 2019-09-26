@@ -420,6 +420,19 @@ class EASL_MZ_API {
 
 	}
 
+	public function update_member_picture( $member_id, $img_file, $is_member = true ) {
+		$headers = array(
+			'Content-Type' => 'multipart/form-data',
+			'OAuth-Token'  => $this->get_access_token( $is_member ),
+		);
+		$result  = $this->put( '/Contacts/' . $member_id . '/file/picture', $is_member, $headers, $img_file, 'body', array(), array( 200 ), false );
+		if ( ! $result ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public function get_featured_members() {
 		$headers = array(
 			'Content-Type'  => 'application/json',
@@ -542,7 +555,7 @@ class EASL_MZ_API {
 		return true;
 	}
 
-	public function put( $endpoint, $is_member = true, $headers = array(), $data = array(), $data_format = 'body', $cookies = array(), $codes = array( 200 ) ) {
+	public function put( $endpoint, $is_member = true, $headers = array(), $data = array(), $data_format = 'body', $cookies = array(), $codes = array( 200 ), $body_json_encode = true ) {
 		if ( $this->is_session_expired( $is_member ) ) {
 			return false;
 		}
@@ -553,11 +566,11 @@ class EASL_MZ_API {
 				$this->request->set_request_header( $key, $value );
 			}
 		}
-		$this->request->put( $endpoint, $data, $data_format, $cookies );
+		$this->request->put( $endpoint, $data, $data_format, $cookies, true, $body_json_encode );
 
 		if ( $this->request->is_valid_response_code( 401 ) && ! $this->is_auth_refresh_called() ) {
 			if ( $this->refresh_auth_token( $is_member ) ) {
-				return $this->put( $endpoint, $is_member, $headers, $data, $data_format, $cookies, $codes );
+				return $this->put( $endpoint, $is_member, $headers, $data, $data_format, $cookies, $codes, $body_json_encode );
 			}
 
 			return false;

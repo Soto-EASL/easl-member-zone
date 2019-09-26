@@ -19,24 +19,24 @@ $template_base = easl_mz_get_manager()->path( 'CRM_VIEWS', '/memeber-details' );
 				<?php endif; ?>
                 <div class="mzms-field-wrap mzms-field-wrap-public">
                     <label for="mzms_dotb_public_profile" class="easl-custom-checkbox">
-                        <input type="checkbox" name="dotb_public_profile" id="mzms_dotb_public_profile" value="Yes" <?php checked('Yes', $member['dotb_public_profile'], true); ?>>
+                        <input type="checkbox" name="dotb_public_profile" id="mzms_dotb_public_profile" value="Yes" <?php checked( 'Yes', $member['dotb_public_profile'], true ); ?>>
                         <span>Make my profile public</span>
                     </label>
                 </div>
             </div>
             <div class="mzms-fields-separator"></div>
-			<?php include $template_base . '/fields-basic.php'; ?>
-			<?php include $template_base . '/fields-global.php'; ?>
+			<?php include $template_base . '/partials/fields-basic.php'; ?>
+			<?php include $template_base . '/partials/fields-global.php'; ?>
 
             <div class="mzms-fields-separator"></div>
-			<?php include $template_base . '/fields-communications.php'; ?>
+			<?php include $template_base . '/partials/fields-communications.php'; ?>
 
             <div class="mzms-fields-separator"></div>
-			<?php include $template_base . '/fields-address.php'; ?>
+			<?php include $template_base . '/partials/fields-address.php'; ?>
             <div class="mzms-fields-separator"></div>
             <div class="mzms-fields-row">
                 <div class="mzms-fields-con">
-                    <label for="mzms_personal_profile">Personal Profile</label>
+                    <label class="mzms-field-label" for="mzms_personal_profile">Personal Profile</label>
                     <div class="mzms-field-wrap">
                         <textarea name="description" id="mzms_personal_profile" placeholder=""><?php echo esc_textarea( $member['description'] ); ?></textarea>
                     </div>
@@ -48,8 +48,9 @@ $template_base = easl_mz_get_manager()->path( 'CRM_VIEWS', '/memeber-details' );
             </div>
         </form>
 
-	    <?php include $template_base . '/change-password.php'; ?>
-	    <?php include $template_base . '/membership-category-form.php'; ?>
+		<?php include $template_base . '/partials/change-picture-form.php'; ?>
+		<?php include $template_base . '/partials/change-password.php'; ?>
+		<?php include $template_base . '/partials/membership-category-form.php'; ?>
     </div>
 
-<?php include $template_base . '/sidebar.php'; ?>
+<?php include $template_base . '/partials/sidebar.php'; ?>

@@ -1321,7 +1321,7 @@ body .ui-datepicker .ui-datepicker-title select {
     transition: opacity .25s;
 }
 
-.mzms-fields-con label,
+.mzms-fields-con .mzms-field-label,
 .mzms-fields-con .easl-custom-checkbox span {
     color: #004b87;
     font-family: "KnockoutHTF51Middleweight", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -1638,6 +1638,7 @@ body .ui-datepicker .ui-datepicker-title select {
     visibility: hidden;
 }
 
+.mz-show-picture-change-form .easl-mz-picture-change-wrap,
 .mz-show-password-change-form .easl-mz-password-change-wrap,
 .mz-show-mb-category-form .easl-mz-membership-category-form-wrap {
     display: block;
@@ -1646,6 +1647,10 @@ body .ui-datepicker .ui-datepicker-title select {
 
 .mzms-modal-cancel-wrap {
     text-align: right;
+}
+.easl-mz-membership-modal-inner .mzms-button {
+    min-width: 110px;
+    text-align: center;
 }
 
 .mzms-modal-submit-wrap {
@@ -1683,11 +1688,52 @@ body .ui-datepicker .ui-datepicker-title select {
 .easl-mz-modal-processing .easl-mz-membership-modal-inner .easl-mz-loader {
     display: block;
 }
+
 /*Membership Form*/
 .mzms-support-docs-row {
     display: none;
 }
 
+.mzms-field-file-wrap {
+    display: block;
+    position: relative;
+    height: 40px;
+    border: 1px solid #d1d0d0;
+}
+
+.mzms-field-file-wrap input[type="file"] {
+    width: .1px;
+}
+
+span.mzms-field-file-label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    line-height: 40px;
+    padding: 0 10px;
+    right: 80px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #666;
+    font-size: 14px;
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+span.mzms-field-file-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #004b87;
+    line-height: 40px;
+    padding: 0 20px;
+    color: #fff;
+    cursor: pointer;
+    width: 110px;
+    text-align: center;
+}
 
 /*Member Zone: Members Document*/
 .mzmd-expiry-notice {

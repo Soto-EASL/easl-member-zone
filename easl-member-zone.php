@@ -137,6 +137,19 @@ class EASL_MZ_Manager {
 		$this->add_options_page();
 		$this->handle_member_login();
 		$this->handle_member_logout();
+		$this->handle_mz_actions();
+	}
+
+	public function handle_mz_actions() {
+		if ( empty( $_REQUEST['mz_action'] ) ) {
+			return false;
+		}
+		$action = trim( $_REQUEST['mz_action'] );
+		switch ( $action ) {
+			case 'change_member_picture':
+				$this->change_member_picture();
+				break;
+		}
 	}
 
 	public function handle_member_login() {
@@ -191,6 +204,36 @@ class EASL_MZ_Manager {
 		exit();
 	}
 
+	public function change_member_picture() {
+		if ( empty( $_POST['mz_member_id'] || empty( $_FILES['mz_picture_file'] ) ) || ( $_FILES['mz_picture_file']['error'] !== UPLOAD_ERR_OK ) ) {
+			return false;
+		}
+		$member_id = $_POST['mz_member_id'];
+		if ( ! easl_mz_is_member_logged_in() ) {
+			$this->set_message( 'member_profile_picture', 'You are not allowed to change your profile picture.' );
+			return;
+		}
+		$current_member_id = $this->session->ge_current_member_id();
+		if ( ! $current_member_id ) {
+			$current_member_id = $this->api->get_member_id();
+
+			if ( $current_member_id ) {
+				$this->session->add_data( 'member_profile_picture', $current_member_id );
+				$this->session->save_session_data();
+			}
+		}
+		if ( ! $current_member_id || ( $current_member_id != $member_id ) ) {
+			$this->set_message( 'member_profile_picture', 'You are not allowed to change your profile picture.' );
+			return;
+		}
+		$file_data = file_get_contents($_FILES['mz_picture_file']['tmp_name']);
+		if(!$this->api->update_member_picture($member_id, $file_data)){
+			$this->set_message( 'member_profile_picture', 'Could not update profile picture.' );
+			return;
+		}
+		$this->set_message( 'member_profile', 'Profile picture updated.' );
+	}
+
 	public function get_vc_shortcodes() {
 		$shortcodes = array(
 			'easl_mz_member_directory',
@@ -238,7 +281,7 @@ class EASL_MZ_Manager {
 			'homeURL'        => site_url(),
 			'ajaxURL'        => admin_url( 'admin-ajax.php', $ssl_scheme ),
 			'ajaxActionName' => $this->ajax->get_action_name(),
-			'membershipFees'  => easl_mz_get_membership_category_fees_calculation(),
+			'membershipFees' => easl_mz_get_membership_category_fees_calculation(),
 			'loaderHtml'     => '<div class="easl-mz-loader"><img src="' . get_stylesheet_directory_uri() . '/images/easl-loader.gif" alt="loading..."></div>',
 		);
 		wp_localize_script( 'easl-mz-script', 'EASLMZSETTINGS', $script_settings );

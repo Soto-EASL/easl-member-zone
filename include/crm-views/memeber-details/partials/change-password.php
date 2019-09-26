@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <div class="easl-mz-membership-modal-inner easl-mz-password-change-inner">
         <div class="mzms-fields-row">
             <div class="mzms-fields-con">
-                <label for="mzf_old_password">Old password</label>
+                <label class="mzms-field-label" for="mzf_old_password">Old password</label>
                 <div class="mzms-field-wrap">
                     <input type="password" placeholder="" name="old_password" id="mzf_old_password" value="">
                 </div>
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
         <div class="mzms-fields-row">
             <div class="mzms-fields-con">
-                <label for="mzf_new_password">New password</label>
+                <label class="mzms-field-label" for="mzf_new_password">New password</label>
                 <div class="mzms-field-wrap">
                     <input type="password" placeholder="" name="new_password" id="mzf_new_password" value="">
                 </div>
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
         <div class="mzms-fields-row">
             <div class="mzms-fields-con">
-                <label for="mzf_new_password2">Confirm new password</label>
+                <label class="mzms-field-label" for="mzf_new_password2">Confirm new password</label>
                 <div class="mzms-field-wrap">
                     <input type="password" placeholder="" name="new_password2" id="mzf_new_password2" value="">
                 </div>

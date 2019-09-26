@@ -86,7 +86,7 @@ class EASL_MZ_Request {
 		}
 	}
 
-	public function put( $endpoint, $data = array(), $data_format = 'body', $cookies = array(), $parse_json = true ) {
+	public function put( $endpoint, $data = array(), $data_format = 'body', $cookies = array(), $parse_json = true, $body_json_encode = true ) {
 		$url  = $this->base_uri . $endpoint;
 		$args = array(
 			'method'      => 'PUT',
@@ -94,7 +94,7 @@ class EASL_MZ_Request {
 			'redirection' => 5,
 			'httpversion' => '1.1',
 			'blocking'    => true,
-			'body'        => json_encode( $data ),
+			'body'        => $body_json_encode ? json_encode( $data ) : $data,
 			'data_format' => $data_format,
 			'headers'     => $this->request_headers,
 			'cookies'     => $cookies
@@ -159,5 +159,10 @@ class EASL_MZ_Request {
 		if ( $body ) {
 			$this->response_body = $parse_json ? json_decode( $body ) : $body;
 		}
+	}
+
+	public function raw_request($endpoint, $args){
+		$url  = $this->base_uri . $endpoint;
+		return wp_remote_request($url, $args);
 	}
 }

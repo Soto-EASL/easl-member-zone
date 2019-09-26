@@ -131,6 +131,43 @@
                 _this.deleteMyAccount($("#easl-mz-membership-form", $el));
             });
 
+            // Change Picture form events
+
+            $('.mzms-field-file-wrap input', $el).each(function () {
+                var $input = $(this);
+                var $label = $(this).closest(".mzms-field-file-wrap");
+                var fileName = '';
+
+                $input.on('change', function (e) {
+                    if (this.files && this.files.length > 1) {
+                        fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+                    } else if (e.target.value) {
+                        fileName = e.target.value.split('\\').pop();
+                    }
+                    if (fileName) {
+                        $label.addClass('mzfs-file-selected').find('.mzms-field-file-label').html(fileName);
+                    } else {
+                        $label.removeClass('mzfs-file-selected').find('.mzms-field-file-label').html('');
+                    }
+                });
+
+                // Firefox bug fix
+                $input
+                    .on('focus', function () {
+                        $input.addClass('has-focus');
+                    })
+                    .on('blur', function () {
+                        $input.removeClass('has-focus');
+                    });
+            });
+            $(".mzms-change-image", $el).on("click", function (event) {
+                event.preventDefault();
+                $el.addClass("mz-show-picture-change-form");
+            });
+            $(".mzms-change-picture-cancel", $el).on("click", function (event) {
+                event.preventDefault();
+                $el.removeClass("mz-show-picture-change-form");
+            });
             // Membership Category Form events
             $(".mzms-button-add-membership", $el).on("click", function (event) {
                 event.preventDefault();
