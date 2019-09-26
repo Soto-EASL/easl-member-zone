@@ -7,10 +7,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $member array
  */
 ?>
+<div class="mzms-fields-row">
+    <div class="mzms-fields-con">
+        <label for="dotb_tmp_account">Organisation / Institution / Company</label>
+        <div class="mzms-field-wrap">
+            <input type="text" placeholder="" name="dotb_tmp_account" id="mzf_dotb_tmp_account" value="<?php echo esc_attr( $member['dotb_tmp_account'] ); ?>">
+        </div>
+    </div>
+</div>
 <div class="mzms-fields-row easl-row easl-row-col-2">
     <div class="easl-col">
         <div class="easl-col-inner">
-            <h3>Primary address</h3>
+            <h3>Institution address</h3>
             <div class="mzms-fields-row">
                 <div class="mzms-fields-con">
                     <label for="mzf_primary_address_street">Street</label>
@@ -57,7 +65,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner">
-            <h3>Secondary address</h3>
+            <h3>Home address</h3>
             <div class="mzms-fields-row">
                 <div class="mzms-fields-con">
                     <label for="mzf_alt_address_street">Street</label>

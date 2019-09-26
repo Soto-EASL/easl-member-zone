@@ -28,6 +28,8 @@ function easl_mz_parse_crm_contact_data( $response ) {
 		'birthdate'                     => $response->birthdate,
 		'email1'                        => $response->email1,
 
+		'dotb_tmp_account' => $response->dotb_tmp_account,
+
 		'primary_address_street'      => $response->primary_address_street,
 		'primary_address_city'        => $response->primary_address_city,
 		'primary_address_state'       => $response->primary_address_state,
