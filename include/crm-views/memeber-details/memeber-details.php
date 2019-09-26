@@ -18,8 +18,8 @@ $template_base = easl_mz_get_manager()->path( 'CRM_VIEWS', '/memeber-details' );
                     <h2 class="mz-page-heading"><?php echo $title; ?></h2>
 				<?php endif; ?>
                 <div class="mzms-field-wrap mzms-field-wrap-public">
-                    <label for="mzms_profile_public" class="easl-custom-checkbox">
-                        <input type="checkbox" name="mzms_profile_public" id="mzms_profile_public">
+                    <label for="mzms_dotb_public_profile" class="easl-custom-checkbox">
+                        <input type="checkbox" name="dotb_public_profile" id="mzms_dotb_public_profile" value="Yes" <?php checked('Yes', $member['dotb_public_profile'], true); ?>>
                         <span>Make my profile public</span>
                     </label>
                 </div>

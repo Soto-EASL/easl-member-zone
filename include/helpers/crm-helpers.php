@@ -16,6 +16,7 @@ function easl_mz_parse_crm_contact_data( $response ) {
 		'last_name'  => $response->last_name,
 		'picture'    => $response->picture,
 
+		'dotb_public_profile'           => $response->dotb_public_profile,
 		'dotb_job_function'             => $response->dotb_job_function,
 		'dotb_job_function_other'       => $response->dotb_job_function_other,
 		'dotb_area_of_interest'         => $response->dotb_area_of_interest,
