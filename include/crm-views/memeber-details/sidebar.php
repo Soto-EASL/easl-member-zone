@@ -24,9 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php
 			if ( $member['dotb_mb_id'] ) {
 				echo $member['dotb_mb_id'];
-			}else{
-			    echo 'N/A';
-            }
+			} else {
+				echo 'N/A';
+			}
 			?>
         </div>
         <div class="mzms-sbitem mzms-sbitem-delete">
@@ -70,7 +70,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </div>
             </div>
         </div>
-		<?php if ( $member['dotb_mb_current_status'] == 'expired' ): ?>
+		<?php if ( in_array( $member['dotb_mb_current_status'], array( 'expired', 'active' ) ) ): ?>
             <div class="mzms-sbitem">
                 <a class="mzms-button mzms-button-renew" href="#">Renew Membership</a>
             </div>
