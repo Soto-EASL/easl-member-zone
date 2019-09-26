@@ -403,6 +403,23 @@ class EASL_MZ_API {
 		return $data;
 	}
 
+	public function get_member_profile_picture( $member_id, $is_member = true ) {
+		$this->request->reset_headers();
+		$this->request->set_request_header( 'OAuth-Token', $this->get_access_token( $is_member ) );
+		$this->request->set_request_header( 'Cache-Control', 'no-cache' );
+		$this->request->get( '/Contacts/' . $member_id . '/file/picture', array(), array(), false );
+
+		if ( $this->request->get_response_code() != 200 ) {
+			return false;
+		}
+
+		$img_base_64 = base64_encode( $this->request->get_response_body() );
+		$img_src     = 'data: ' . $this->request->get_request_header( 'content-type' ) . ';base64,' . $img_base_64;
+
+		return $img_src;
+
+	}
+
 	public function get_featured_members() {
 		$headers = array(
 			'Content-Type'  => 'application/json',

@@ -6,10 +6,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @var $member array
  */
+
+$member_image = $member['profile_picture'];
+if(!$member_image) {
+	$member_image = easl_mz_get_asset_url( 'images/default-avatar.jpg' );
+}
 ?>
 <div class="mzms-fields-row easl-mz-membership-top">
     <div class="mzms-image-wrap">
-        <img src="https://easl.websitestage.co.uk/wp-content/uploads/2018/09/easl-pierre-emmanuel-rautou-1-254x254.jpg" alt="">
+        <img src="<?php echo $member_image; ?>" alt="">
     </div>
     <div class="mzms-image-button-wrap">
         <a class="mzms-button mzms-change-image" href="#">Change Picture</a>

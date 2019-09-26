@@ -10,26 +10,41 @@ class EASL_MZ_Request {
 	protected $response_body;
 
 	protected $request_headers;
+	protected $response_headers;
 
 	public function __construct( $base_uri ) {
 		$this->base_uri = $base_uri;
 	}
 
 	public function reset_headers() {
-		$this->request_headers = array();
+		$this->request_headers  = array();
+		$this->response_headers = array();
 	}
 
 	public function set_request_header( $key, $value ) {
 		$this->request_headers[ $key ] = $value;
 	}
 
+	public function response_headers( $key, $value ) {
+		$this->request_headers[ $key ] = $value;
+	}
+
 	public function reset_response() {
-		$this->response_code = false;
-		$this->response_body = array();
+		$this->response_code    = false;
+		$this->response_headers = array();
+		$this->response_body    = array();
 	}
 
 	public function get_response_code() {
 		return $this->response_code;
+	}
+
+	public function get_response_headers() {
+		return $this->response_headers;
+	}
+
+	public function get_request_header( $key ) {
+		isset( $this->response_headers[ $key ] ) ? $this->response_headers[ $key ] : '';
 	}
 
 	public function get_response_body() {
@@ -61,8 +76,9 @@ class EASL_MZ_Request {
 			'cookies'     => $cookies
 		);
 		$this->reset_response();
-		$response            = wp_remote_post( $url, $args );
-		$this->response_code = wp_remote_retrieve_response_code( $response );
+		$response               = wp_remote_post( $url, $args );
+		$this->response_code    = wp_remote_retrieve_response_code( $response );
+		$this->response_headers = wp_remote_retrieve_headers( $response );
 
 		$body = wp_remote_retrieve_body( $response );
 		if ( $body ) {
@@ -86,6 +102,7 @@ class EASL_MZ_Request {
 		$this->reset_response();
 		$response            = wp_remote_request( $url, $args );
 		$this->response_code = wp_remote_retrieve_response_code( $response );
+		$this->response_headers = wp_remote_retrieve_headers( $response );
 
 		$body = wp_remote_retrieve_body( $response );
 
@@ -110,6 +127,7 @@ class EASL_MZ_Request {
 		$this->reset_response();
 		$response            = wp_remote_request( $url, $args );
 		$this->response_code = wp_remote_retrieve_response_code( $response );
+		$this->response_headers = wp_remote_retrieve_headers( $response );
 
 		$body = wp_remote_retrieve_body( $response );
 
@@ -134,6 +152,7 @@ class EASL_MZ_Request {
 		$response = wp_remote_get( $url, $args );
 
 		$this->response_code = wp_remote_retrieve_response_code( $response );
+		$this->response_headers = wp_remote_retrieve_headers( $response );
 
 		$body = wp_remote_retrieve_body( $response );
 
