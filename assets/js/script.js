@@ -294,8 +294,10 @@
                     $(".easl-mz-select2", $(this)).select2({
                         closeOnSelect: true
                     });
-                    $(".easl-mz-date", $(this)).datepicker({
-                        dateFormat: "yy-mm-dd",
+                    $("#mzf_birthdate_fz", $(this)).datepicker({
+                        dateFormat: "dd.mm.yy",
+                        altFormat: "yy-mm-dd",
+                        altField: "#mzf_birthdate",
                         changeMonth: true,
                         changeYear: true,
                         yearRange: "1900:-00",

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label for="mzf_dotb_job_function">Job function</label>
             <div class="mzms-field-wrap">
-                <select  class="easl-mz-select2" name="dotb_job_function" id="mzf_dotb_job_function" style="width: 100%;">
+                <select class="easl-mz-select2" name="dotb_job_function" id="mzf_dotb_job_function" style="width: 100%;">
 					<?php echo easl_mz_get_crm_dropdown_items( 'job_functions', $member['dotb_job_function'] ); ?>
                 </select>
             </div>
@@ -100,9 +100,20 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label for="mzf_birthdate">Date of birth</label>
+            <label for="mzf_birthdate_fz">Date of birth</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="birthdate" id="mzf_birthdate" value="<?php echo esc_attr( $member['birthdate'] ); ?>" class="easl-mz-date">
+				<?php
+				$date_of_birth           = $member['birthdate'];
+				$date_of_birth_formatted = '';
+				if ( $date_of_birth ) {
+					$date_of_birth = explode( '-', $date_of_birth );
+					if ( count( $date_of_birth ) == 3 ) {
+						$date_of_birth_formatted = trim( $date_of_birth[2] ) . '.' . trim( $date_of_birth[1] ) . '.' . trim( $date_of_birth[0] );
+					}
+				}
+				?>
+                <input type="hidden" placeholder="" name="birthdate" id="mzf_birthdate" value="<?php echo esc_attr( $member['birthdate'] ); ?>" class="easl-mz-date">
+                <input type="text" placeholder="" name="" id="mzf_birthdate_fz" value="<?php echo esc_attr( $date_of_birth_formatted ); ?>" class="easl-mz-date">
             </div>
         </div>
     </div>
