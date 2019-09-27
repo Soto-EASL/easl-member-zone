@@ -286,7 +286,7 @@ class EASL_MZ_Ajax_Handler {
 		$request_data['portal_password'] = $password;
 
 
-		$this->api->maybe_get_user_auth_token();
+		$this->api->get_user_auth_token();
 
 		$created_member_id = $this->api->create_member( $request_data );
 
