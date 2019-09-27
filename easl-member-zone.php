@@ -371,6 +371,7 @@ class EASL_MZ_Manager {
 			'easl_mz_member_featured',
 			'easl_mz_membership',
 			'easl_mz_new_membership_form',
+			'easl_mz_checkout_form',
 			'easl_mz_member_statistics',
 			'easl_mz_member_login',
 			'easl_mz_new_member_form',
@@ -488,14 +489,14 @@ class EASL_MZ_Manager {
 	}
 
 	/**
-	 * @return mixed
+	 * @return EASL_MZ_Session_Handler
 	 */
 	public function getSession() {
 		return $this->session;
 	}
 
 	/**
-	 * @return mixed
+	 * @return EASL_MZ_API
 	 */
 	public function getApi() {
 		return $this->api;
