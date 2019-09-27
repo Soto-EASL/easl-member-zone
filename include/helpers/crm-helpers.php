@@ -214,6 +214,112 @@ function easl_mz_get_membership_fee( $membership_category, $add_currency_symbol 
 	return $fee;
 }
 
+function easl_mz_get_members_allowed_categories( $member ) {
+	$categories = easl_mz_get_list_membership_categories();
+	$member_age = (int) easl_mz_calculate_age( $member['birthdate'] );
+	$geo_reg    = easl_mz_get_geo_reg( $member['primary_address_country'] );
+
+	if ( $member_age < 35 ) {
+		unset( $categories['regular'] );
+		unset( $categories['regular_jhep'] );
+		unset( $categories['corresponding'] );
+		unset( $categories['corresponding_jhep'] );
+	}
+	if ( $member_age >= 35 ) {
+		unset( $categories['trainee'] );
+		unset( $categories['trainee_jhep'] );
+	}
+
+	if ( $member_age < 65 ) {
+		unset( $categories['emeritus'] );
+		unset( $categories['emeritus_jhep'] );
+	}
+
+	if ( ( $geo_reg != 'europe' ) && ( $member[ 'primary_address_country' != 'ISR' ] ) ) {
+		unset( $categories['regular'] );
+		unset( $categories['regular_jhep'] );
+	}
+	if ( $geo_reg == 'europe' ) {
+		unset( $categories['corresponding'] );
+		unset( $categories['corresponding_jhep'] );
+	}
+
+	return $categories;
+}
+
+function easl_mz_calculate_age( $dob ) {
+	if ( empty( $dob ) ) {
+		return false;
+	}
+	$date     = DateTime::createFromFormat( 'Y-m-d', $dob );
+	$now      = new DateTime();
+	$interval = $now->diff( $date );
+
+	return $interval->y;
+}
+
+function easl_mz_get_geo_reg( $country_code ) {
+	$map = array(
+		"ALB" => "europe",
+		"AND" => "europe",
+		"ARM" => "europe",
+		"AUT" => "europe",
+		"AZE" => "europe",
+		"BLR" => "europe",
+		"BEL" => "europe",
+		"BIH" => "europe",
+		"BGR" => "europe",
+		"HRV" => "europe",
+		"CYP" => "europe",
+		"CZE" => "europe",
+		"DNK" => "europe",
+		"EST" => "europe",
+		"FIN" => "europe",
+		"FRA" => "europe",
+		"GEO" => "europe",
+		"DEU" => "europe",
+		"GRC" => "europe",
+		"HUN" => "europe",
+		"ISL" => "europe",
+		"IRL" => "europe",
+		"ISR" => "europe",
+		"ITA" => "europe",
+		"KAZ" => "europe",
+		"KGZ" => "europe",
+		"LVA" => "europe",
+		"LTU" => "europe",
+		"LUX" => "europe",
+		"MKD" => "europe",
+		"MLT" => "europe",
+		"MDA" => "europe",
+		"MCO" => "europe",
+		"MNE" => "europe",
+		"NLD" => "europe",
+		"NOR" => "europe",
+		"POL" => "europe",
+		"PRT" => "europe",
+		"ROU" => "europe",
+		"RUS" => "europe",
+		"SMR" => "europe",
+		"SRB" => "europe",
+		"SVK" => "europe",
+		"SVN" => "europe",
+		"ESP" => "europe",
+		"SWE" => "europe",
+		"CHE" => "europe",
+		"TUR" => "europe",
+		"TKM" => "europe",
+		"UKR" => "europe",
+		"GBR" => "europe",
+		"UZB" => "europe",
+	);
+	if ( isset( $map[ $country_code ] ) ) {
+		return $map[ $country_code ];
+	}
+
+	return 'other';
+}
+
 function easl_mz_get_membership_status_name( $current_status ) {
 
 	$membership_statuses = easl_mz_get_list_membership_statuses();

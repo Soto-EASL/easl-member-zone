@@ -18,6 +18,7 @@ if ( $member['first_name'] ) {
 if ( $member['last_name'] ) {
 	$member_name_parts[] = $member['last_name'];
 }
+
 ?>
 <form action="" method="post" enctype="multipart/form-data">
     <input type="hidden" name="mz_action" value="create_membership">
@@ -32,9 +33,17 @@ if ( $member['last_name'] ) {
             <div class="easl-col-inner mzms-fields-con">
                 <label class="mzms-field-label" for="mzf_membership_category">Membership Category</label>
                 <div class="mzms-field-wrap">
+                    <?php
+
+                    $allowed_cats = easl_mz_get_members_allowed_categories( $member );
+                    ?>
                     <select class="easl-mz-select2" name="membership_category" id="mzf_membership_category" data-placeholder="Select an category" style="width: 100%;">
                         <option value=""></option>
-			            <?php echo easl_mz_get_crm_dropdown_items( 'membership_categories', $member['dotb_mb_category'] ); ?>
+						<?php
+						foreach ( $allowed_cats as $cat_key => $cat_name ):
+							?>
+                            <option value="<?php echo $cat_key ?>"<?php selected( $cat_key, $member['dotb_mb_category'], true ); ?>><?php echo $cat_name; ?></option>
+						<?php endforeach; ?>
                     </select>
                 </div>
             </div>
