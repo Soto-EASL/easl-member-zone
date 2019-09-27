@@ -152,10 +152,10 @@ class EASL_MZ_API {
 	public function save_user_credentials() {
 		$credentials = array(
 			'access_token'       => $this->user_access_token,
-			'expires_in'         => $this->user_refresh_token,
-			'refresh_token'      => $this->user_download_token,
-			'refresh_expires_in' => $this->user_expires_in,
-			'download_token'     => $this->user_refresh_expires_in,
+			'refresh_token'      => $this->user_refresh_token,
+			'download_token'     => $this->user_download_token,
+			'expires_in'         => $this->user_expires_in,
+			'refresh_expires_in' => $this->user_refresh_expires_in,
 			'token_set_time'     => $this->user_token_set_time,
 		);
 		set_transient( 'easl_mz_crm_user_credentials', $credentials, $this->user_refresh_expires_in );
@@ -235,6 +235,10 @@ class EASL_MZ_API {
 		$this->set_credentials( $return_data, $is_member );
 
 		return true;
+	}
+
+	public function get_user_auth_token() {
+		$this->get_auth_token( $this->crm_user_name, $this->crm_password, false );
 	}
 
 	public function maybe_get_user_auth_token() {
@@ -503,6 +507,38 @@ class EASL_MZ_API {
 
 
 		return $response->id;
+	}
+
+	public function create_membership( $data = array() ) {
+		$headers = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+
+		$result = $this->post( '/easl1_memberships', false, $headers, $data );
+
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->id ) ) {
+			return false;
+		}
+
+		return $response->id;
+	}
+
+	public function add_membeship_to_member( $member_id, $membership_id ) {
+		$headers = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$result = $this->post( "/Contacts/{$member_id}/link/contacts_easl1_memberships_1/{$membership_id}", false, $headers );
+		if ( ! $result ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function delete_member_account( $member_id ) {

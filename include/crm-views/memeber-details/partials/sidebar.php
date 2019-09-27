@@ -72,12 +72,12 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
 		<?php if ( in_array( $member['dotb_mb_current_status'], array( 'expired', 'active' ) ) ): ?>
             <div class="mzms-sbitem">
-                <a class="mzms-button mzms-button-renew" href="#">Renew Membership</a>
+                <a class="mzms-button" href="<?php echo easl_member_new_membership_form_url(true) ?>">Renew Membership</a>
             </div>
 		<?php endif; ?>
 		<?php if ( ! $member['dotb_mb_id'] ): ?>
             <div class="mzms-sbitem">
-                <a class="mzms-button mzms-button-add-membership" href="#">Add Membership</a>
+                <a class="mzms-button" href="<?php echo easl_member_new_membership_form_url(false); ?>">Add Membership</a>
             </div>
 		<?php endif; ?>
     </div>

@@ -13,6 +13,7 @@
             "memberCard": 'get_member_card',
             "featuredMember": 'get_featured_member',
             "membershipForm": 'get_membership_form',
+            "newMembershipForm": 'get_new_membership_form',
             "submitMemberShipForm": "update_member_profile",
             "submitNewMemberForm": "create_member_profile",
             "deleteMyAccount": "delete_current_member"
@@ -167,25 +168,6 @@
             $(".mzms-change-picture-cancel", $el).on("click", function (event) {
                 event.preventDefault();
                 $el.removeClass("mz-show-picture-change-form");
-            });
-            // Membership Category Form events
-            $(".mzms-button-add-membership", $el).on("click", function (event) {
-                event.preventDefault();
-                $el.addClass("mz-show-mb-category-form");
-            });
-            $(".mzms-add-membership-cancel", $el).on("click", function (event) {
-                event.preventDefault();
-                $el.removeClass("mz-show-mb-category-form");
-            });
-            $("#mzf_membership_category", $el).on("change", function (event) {
-                var fee = '',
-                    cat = $(this).val();
-                event.preventDefault();
-
-                if ("undefined" !== typeof _this.Fees[cat]) {
-                    fee = _this.Fees[cat]
-                }
-                $("#easl-mz-membership-fee").html(fee + "€");
             });
 
             // Change password form events
@@ -422,6 +404,36 @@
             });
             _this.request(this.methods.submitNewMemberForm, $form, $form.serialize());
         },
+        newMembershipFormEvents: function ($el) {
+            var _this = this;
+            // Membership Category Form events
+            var $mzf_membership_category = $("#mzf_membership_category", $el);
+            $("#mzf_membership_category", $el).on("change", function (event) {
+                var fee = '',
+                    cat = $mzf_membership_category.val();
+                event.preventDefault();
+
+                if ("undefined" !== typeof _this.Fees[cat]) {
+                    fee = _this.Fees[cat];
+                }
+                $("#easl-mz-membership-fee").html(fee + "€");
+            });
+        },
+        getNewMembershipForm: function () {
+            var _this = this;
+            var $el = $(".easl-mz-new-membership-form");
+            if ($el.length) {
+                $el.on("mz_loaded:" + this.methods.newMembershipForm, function (event, response, method) {
+                    _this.loadHtml($(this), response);
+                    $("body").trigger("mz_reload_custom_fields");
+                    $(".easl-mz-select2", $(this)).select2({
+                        closeOnSelect: true
+                    });
+                    _this.newMembershipFormEvents($el);
+                });
+                this.request(this.methods.newMembershipForm, $el, {'renew': $el.data('paymenttype')});
+            }
+        },
         request: function (method, $el, reqData) {
             reqData = reqData || {};
             $.ajax({
@@ -442,6 +454,7 @@
             this.modulesLoadTrigger = true;
             this.getFeaturedMembers();
             this.getMembershipForm();
+            this.getNewMembershipForm();
         },
         events: function () {
             $(".mz-forgot-password").on("click", function (event) {

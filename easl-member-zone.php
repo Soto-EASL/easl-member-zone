@@ -149,6 +149,9 @@ class EASL_MZ_Manager {
 			case 'change_member_picture':
 				$this->change_member_picture();
 				break;
+			case 'create_membership':
+				$this->create_membership();
+				break;
 		}
 	}
 
@@ -211,6 +214,7 @@ class EASL_MZ_Manager {
 		$member_id = $_POST['mz_member_id'];
 		if ( ! easl_mz_is_member_logged_in() ) {
 			$this->set_message( 'member_profile_picture', 'You are not allowed to change your profile picture.' );
+
 			return;
 		}
 		$current_member_id = $this->session->ge_current_member_id();
@@ -218,20 +222,147 @@ class EASL_MZ_Manager {
 			$current_member_id = $this->api->get_member_id();
 
 			if ( $current_member_id ) {
-				$this->session->add_data( 'member_profile_picture', $current_member_id );
+				$this->session->add_data( 'member_id', $current_member_id );
 				$this->session->save_session_data();
 			}
 		}
 		if ( ! $current_member_id || ( $current_member_id != $member_id ) ) {
 			$this->set_message( 'member_profile_picture', 'You are not allowed to change your profile picture.' );
+
 			return;
 		}
-		$file_data = file_get_contents($_FILES['mz_picture_file']['tmp_name']);
-		if(!$this->api->update_member_picture($member_id, $file_data)){
+		$file_data = file_get_contents( $_FILES['mz_picture_file']['tmp_name'] );
+		if ( ! $this->api->update_member_picture( $member_id, $file_data ) ) {
 			$this->set_message( 'member_profile_picture', 'Could not update profile picture.' );
+
 			return;
 		}
 		$this->set_message( 'member_profile', 'Profile picture updated.' );
+	}
+
+	public function create_membership() {
+		if ( empty( $_POST['mz_member_id'] ) || empty( $_POST['membership_category'] ) ) {
+			return false;
+		}
+		$member_id        = $_POST['mz_member_id'];
+		$member_cat       = $_POST['membership_category'];
+		$member_name      = $_POST['mz_member_name'];
+		$renew            = $_POST['mz_renew'];
+		$current_end_date = $_POST['mz_current_end_date'];
+		$current_cat      = $_POST['mz_current_cat'];
+		//$years            = max( 1, absint( $_POST['membership_years'] ) );
+		$years = 1;
+		/**
+		 * @todo ask Zoey/Emily to confirm if active member needs to upate their current membership
+		 */
+//		if($current_cat != $member_cat) {
+//			$renew = 'no';
+//		}
+
+		$membership_cate_name = easl_mz_get_membership_category_name( $member_cat );
+		if ( ! $membership_cate_name ) {
+			$this->set_message( 'membership_error', 'Membership catgory not found.' );
+
+			return;
+		}
+
+		if ( ! easl_mz_is_member_logged_in() ) {
+			$this->set_message( 'membership_error', 'You are not allowed to change your profile picture.' );
+
+			return;
+		}
+		$current_member_id = $this->session->ge_current_member_id();
+		if ( ! $current_member_id ) {
+			$current_member_id = $this->api->get_member_id();
+
+			if ( $current_member_id ) {
+				$this->session->add_data( 'member_id', $current_member_id );
+				$this->session->save_session_data();
+			}
+		}
+		if ( ! $current_member_id || ( $current_member_id != $member_id ) ) {
+			$this->set_message( 'membership_error', 'You are not allowed to change your profile picture.' );
+
+			return;
+		}
+
+		$membership_name    = $member_name . ' - ' . $membership_cate_name;
+		$date_year_modifier = '';
+		if ( $years > 1 ) {
+			$membership_name    .= ' - ' . $years . ' years';
+			$date_year_modifier = '+' . $years . ' years';
+		} else {
+			$date_year_modifier = '+1 year';
+		}
+		$membership_cat_fee = $years * easl_mz_get_membership_fee( $member_cat );
+
+		$initial_date = false;
+		if ( $current_end_date ) {
+			if ( strtotime( $current_end_date ) < time() ) {
+				$current_end_date = 'now';
+			}
+		} else {
+			$current_end_date = 'now';
+		}
+		if ( $renew == 'yes' ) {
+			$initial_date = new DateTime( $current_end_date );
+			$initial_date->modify( '+1 day' );
+		} else {
+			$initial_date = new DateTime( 'now' );
+		}
+
+		$membership_start_day = $initial_date->format( 'Y-m-d' );
+		$initial_date->modify( $date_year_modifier );
+		$membership_end_date = $initial_date->format( 'Y-m-d' );
+
+		$billing_type = '';
+		if ( ! empty( $_POST['membership_payment_type'] ) ) {
+			$billing_type = $_POST['membership_payment_type'];
+		}
+		if ( ! in_array( $billing_type, array( 'offline_payment', 'ingenico_epayments' ) ) ) {
+			$billing_type = 'ingenico_epayments';
+		}
+
+		$membership_api_data = array(
+			'name'           => $membership_name,
+			'category'       => $member_cat,
+			'status'         => 'in_progress',
+			'fee'            => $membership_cat_fee,
+			'start_date'     => $membership_start_day,
+			'end_date'       => $membership_end_date,
+			'billing_status' => 'waiting',
+			'billing_type'   => $billing_type,
+			'billing_amount' => $membership_cat_fee,
+		);
+		$this->api->get_user_auth_token();
+		$membership_id       = $this->api->create_membership( $membership_api_data );
+		if ( ! $membership_id ) {
+			$this->set_message( 'membership_error', 'Membership could not be created.' );
+
+			return;
+		}
+		$result = $this->api->add_membeship_to_member( $member_id, $membership_id );
+		if ( ! $result ) {
+			$this->set_message( 'membership_error', 'Membership created but it could not be linked to contact.' );
+
+			return;
+		}
+		$membership_cart_data = array(
+			'memberhsip_created_id' => $membership_id
+		);
+		$redirect_url         = easl_membership_thanks_page_url();
+		if ( $billing_type == 'offline_payment' ) {
+			$redirect_url = add_query_arg( 'membership_created', true, $redirect_url );
+		} elseif ( $billing_type == 'ingenico_epayments' ) {
+			$redirect_url = easl_membership_checkout_url();
+			$this->session->add_data( 'cart_data', $membership_cart_data );
+			$this->session->save_session_data();
+		}
+		if ( $redirect_url ) {
+			wp_redirect( $redirect_url );
+			exit();
+		}
+
 	}
 
 	public function get_vc_shortcodes() {
@@ -239,6 +370,7 @@ class EASL_MZ_Manager {
 			'easl_mz_member_directory',
 			'easl_mz_member_featured',
 			'easl_mz_membership',
+			'easl_mz_new_membership_form',
 			'easl_mz_member_statistics',
 			'easl_mz_member_login',
 			'easl_mz_new_member_form',

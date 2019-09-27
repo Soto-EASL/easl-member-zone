@@ -143,6 +143,40 @@ body .ui-datepicker .ui-datepicker-title select {
     margin: 0 2px;
 }
 
+
+
+body .mzms-button {
+    background-color: #62cff5;
+    border-radius: 0;
+    color: #fff;
+    font-family: "KnockoutHTF51Middleweight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.2em;
+    padding: 10px 24px 10px 12px;
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+}
+
+body .mzms-button:hover,
+body .mzms-button:active {
+    background-color: #004b87;
+    text-decoration: none;
+}
+
+body .mzms-button::after {
+    content: "\f105";
+    color: #fff;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: 20px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: opacity .25s;
+}
+
 /* Login Form */
 .easl-mz-header-member-card a {
     transition: background-color .3s, color .3s;
@@ -1289,38 +1323,6 @@ body .ui-datepicker .ui-datepicker-title select {
     text-align: right;
 }
 
-.easl-mz-membership-inner .mzms-button {
-    background-color: #62cff5;
-    border-radius: 0;
-    color: #fff;
-    font-family: "KnockoutHTF51Middleweight", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.2em;
-    padding: 10px 24px 10px 12px;
-    position: relative;
-    display: inline-block;
-    text-decoration: none;
-}
-
-.easl-mz-membership-inner .mzms-button:hover,
-.easl-mz-membership-inner .mzms-button:active {
-    background-color: #004b87;
-    text-decoration: none;
-}
-
-.easl-mz-membership-inner .mzms-button::after {
-    content: "\f105";
-    color: #fff;
-    display: inline-block;
-    font-family: FontAwesome;
-    font-size: 20px;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: opacity .25s;
-}
-
 .mzms-fields-con .mzms-field-label,
 .mzms-fields-con .easl-custom-checkbox span {
     color: #004b87;
@@ -2064,4 +2066,8 @@ span.mzms-field-file-button {
 
 #easl-mz-stat-map {
     height: 360px;
+}
+/* New Membership Form */
+.easl-mz-new-membership-form {
+    min-height: 420px;
 }

@@ -150,6 +150,33 @@ class EASL_MZ_Ajax_Handler {
 		$this->respond_file( '/memeber-details/memeber-details.php', array( 'member' => $member_details ), 200 );
 	}
 
+	public function get_new_membership_form() {
+		$current_member_id = $this->session->ge_current_member_id();
+		if ( ! $current_member_id ) {
+			$current_member_id = $this->api->get_member_id();
+
+			if ( $current_member_id ) {
+				$this->session->add_data( 'member_id', $current_member_id );
+				$this->session->save_session_data();
+			}
+		}
+		if ( ! $current_member_id ) {
+			$this->respond( 'Member not found!', 404 );
+		}
+		$member_details = $this->api->get_member_details( $current_member_id );
+		if ( ! $member_details ) {
+			$this->respond( 'Member ' . $current_member_id . ' not found!', 404 );
+		}
+		$renew = 'no';
+		if ( isset( $_POST['request_data']['renew'] ) ) {
+			$renew = $_POST['request_data']['renew'];
+		}
+		$this->respond_file( '/new-membership-form/new-membership-form.php', array(
+			'member' => $member_details,
+			'renew'  => $renew
+		), 200 );
+	}
+
 	public function update_member_profile() {
 		if ( empty( $_POST['request_data'] ) ) {
 			$this->respond( 'No fields specified!', 405 );

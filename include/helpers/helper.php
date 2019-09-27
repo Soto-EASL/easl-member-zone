@@ -20,6 +20,30 @@ function easl_member_logout_url() {
 	return add_query_arg( 'mz_logout', 1, get_site_url() );
 }
 
+function easl_member_new_membership_form_url( $renew = false ) {
+	$url = get_field( 'membership_plan_url', 'option' );
+	if ( $renew ) {
+		$url = add_query_arg( 'mz_renew', 1, $url );
+	}
+
+	return $url;
+}
+
+function easl_membership_page_url() {
+	return get_field( 'member_profile_url', 'option' );
+}
+
+function easl_membership_thanks_page_url() {
+	return get_field( 'membership_confirm_page_url', 'option' );
+}
+
+function easl_membership_checkout_url() {
+	$checkout_page = get_field( 'membership_checkout_url', 'option' );
+
+	return $checkout_page;
+}
+
+
 function easl_mz_get_current_session_data() {
 	return EASL_MZ_Manager::get_instance()->getSession()->get_current_session_data();
 }
