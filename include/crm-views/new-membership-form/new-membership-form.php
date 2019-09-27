@@ -43,7 +43,7 @@ if ( $member['last_name'] ) {
             <div class="easl-col-inner mzms-fields-con">
                 <label class="mzms-field-label" for="mzf_membership_payment_type">Fee</label>
                 <div class="mzms-field-wrap">
-                    <span id="easl-mz-membership-fee"><?php echo easl_mz_get_membership_fee( $member['dotb_mb_category'], true ); ?>€</span>
+                    <span id="easl-mz-membership-fee"><?php echo easl_mz_get_membership_fee( $member['dotb_mb_category'], true ); ?></span>
                 </div>
             </div>
         </div>

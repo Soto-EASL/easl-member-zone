@@ -5,12 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 return array(
-	'name'           => __( 'EASL MZ New Membership Form', 'easl-member-zone' ),
-	'base'           => 'easl_mz_new_membership_form',
+	'name'           => __( 'EASL MZ Membership Checkout Form', 'easl-member-zone' ),
+	'base'           => 'easl_mz_checkout_form',
 	'category'       => __( 'EASL MZ', 'easl-member-zone' ),
-	'description'    => __( 'Display membership creation form', 'easl-member-zone' ),
+	'description'    => __( 'Display membership checkout form', 'easl-member-zone' ),
 	'icon'           => 'vcex-icon ticon ticon-book',
-	'php_class_name' => 'EASL_VC_MZ_New_Membership_Form',
+	'php_class_name' => 'EASL_VC_MZ_Membership_Checkout_Form',
 	'params'         => array(
 		array(
 			'type' => 'textfield',

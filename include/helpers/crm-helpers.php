@@ -81,6 +81,18 @@ function easl_mz_parse_crm_contact_data( $response ) {
 	return $data;
 }
 
+function easl_mz_parse_crm_membership_data( $response ) {
+	$data = array(
+		'id'             => $response->id,
+		'name'           => $response->name,
+		'description'    => $response->description,
+		'billing_amount' => $response->billing_amount,
+		'fee'            => $response->fee,
+	);
+
+	return $data;
+}
+
 
 function easl_mz_validate_member_data( $data = array() ) {
 	$errors = array();

@@ -407,6 +407,26 @@ class EASL_MZ_API {
 		return $data;
 	}
 
+	public function get_membership_details( $member_id) {
+		$headers = array(
+			'Content-Type'  => 'application/json',
+			'Cache-Control' => 'no-cache',
+			'OAuth-Token'   => $this->get_access_token( false ),
+		);
+		$result  = $this->get( '/easl1_memberships/' . $member_id, false, $headers );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->id ) ) {
+			return false;
+		}
+
+		$data = easl_mz_parse_crm_membership_data( $response );
+
+		return $data;
+	}
+
 	public function get_member_profile_picture( $member_id, $is_member = true ) {
 		$this->request->reset_headers();
 		$this->request->set_request_header( 'OAuth-Token', $this->get_access_token( $is_member ) );
