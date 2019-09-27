@@ -100,8 +100,8 @@ class EASL_MZ_Request {
 			'cookies'     => $cookies
 		);
 		$this->reset_response();
-		$response            = wp_remote_request( $url, $args );
-		$this->response_code = wp_remote_retrieve_response_code( $response );
+		$response               = wp_remote_request( $url, $args );
+		$this->response_code    = wp_remote_retrieve_response_code( $response );
 		$this->response_headers = wp_remote_retrieve_headers( $response );
 
 		$body = wp_remote_retrieve_body( $response );
@@ -125,8 +125,8 @@ class EASL_MZ_Request {
 			'cookies'     => $cookies
 		);
 		$this->reset_response();
-		$response            = wp_remote_request( $url, $args );
-		$this->response_code = wp_remote_retrieve_response_code( $response );
+		$response               = wp_remote_request( $url, $args );
+		$this->response_code    = wp_remote_retrieve_response_code( $response );
 		$this->response_headers = wp_remote_retrieve_headers( $response );
 
 		$body = wp_remote_retrieve_body( $response );
@@ -151,7 +151,7 @@ class EASL_MZ_Request {
 
 		$response = wp_remote_get( $url, $args );
 
-		$this->response_code = wp_remote_retrieve_response_code( $response );
+		$this->response_code    = wp_remote_retrieve_response_code( $response );
 		$this->response_headers = wp_remote_retrieve_headers( $response );
 
 		$body = wp_remote_retrieve_body( $response );
@@ -161,8 +161,9 @@ class EASL_MZ_Request {
 		}
 	}
 
-	public function raw_request($endpoint, $args){
-		$url  = $this->base_uri . $endpoint;
-		return wp_remote_request($url, $args);
+	public function raw_request( $endpoint, $args ) {
+		$url = $this->base_uri . $endpoint;
+
+		return wp_remote_request( $url, $args );
 	}
 }
