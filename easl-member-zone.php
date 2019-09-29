@@ -461,10 +461,12 @@ class EASL_MZ_Manager {
 			'mz_action',
 			'mz_status',
 			'membership_id',
+			'mz_sid',
 			'SHASIGN',
 		);
 
 		$membership_id   = ! empty( $_GET['membership_id'] ) ? $_GET['membership_id'] : false;
+		$session_db_id   = ! empty( $_GET['mz_sid'] ) ? $_GET['mz_sid'] : false;
 		$response_digest = ! empty( $_GET['SHASIGN'] ) ? strtoupper( $_GET['SHASIGN'] ) : false;
 		$status          = ! empty( $_GET['mz_status'] ) ? $_GET['mz_status'] : false;
 		$invoice_number  = ! empty( $_GET['PAYID'] ) ? $_GET['PAYID'] : '';
@@ -510,6 +512,8 @@ class EASL_MZ_Manager {
 		} else {
 			$redirect_url = add_query_arg( array( 'membership_status' => 'failed_online' ), $redirect_url );
 		}
+
+		$this->session->clear_session_cart( $session_db_id );
 		wp_redirect( $redirect_url );
 		exit();
 	}

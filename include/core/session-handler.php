@@ -247,6 +247,10 @@ class EASL_MZ_Session_Handler {
 		return false;
 	}
 
+	public function get_current_session_db_id() {
+		return $this->session_db_id;
+	}
+
 	protected function verify_token( $token ) {
 		return (bool) $this->get_session_by_token( $token );
 	}
@@ -260,6 +264,14 @@ class EASL_MZ_Session_Handler {
 
 		$verifier = $this->hash_token( $token );
 		$sql      = $wpdb->prepare( "SELECT * FROM {$this->_table} WHERE session_token=%s", $verifier );
+
+		return $wpdb->get_row( $sql );
+	}
+
+	public function get_session_by_db_id( $id ) {
+		global $wpdb;
+
+		$sql = $wpdb->prepare( "SELECT * FROM {$this->_table} WHERE session_id=%d", $id );
 
 		return $wpdb->get_row( $sql );
 	}
@@ -299,6 +311,38 @@ class EASL_MZ_Session_Handler {
 			array( '%d' )
 		);
 		$this->_dirty = false;
+	}
+
+	public function clear_session_cart( $id ) {
+		global $wpdb;
+		if ( ! $id ) {
+			return false;
+		}
+		$session = $this->get_session_by_db_id( $id );
+
+		if ( ! $session ) {
+			return true;
+		}
+		// Member login cookie verified
+		$session_data = maybe_unserialize( $session->session_value );
+		if ( empty( $session_data['cart_data'] ) ) {
+			return true;
+		}
+		unset( $session_data['cart_data'] );
+
+		$wpdb->update(
+			$this->_table,
+			array(
+				'session_value' => maybe_serialize( $session_data )
+			),
+			array(
+				'session_id' => $id
+			),
+			array( '%s' ),
+			array( '%d' )
+		);
+
+		return true;
 	}
 
 	public function create_session( $member_login, $session_token, $session_value, $session_expiry ) {

@@ -40,12 +40,12 @@ $session_data = easl_mz_get_current_session_data();
 
 $cart_data = isset( $session_data['cart_data'] ) ? $session_data['cart_data'] : array();
 
-//$membership_checkout_id = $cart_data['membership_created_id'];
-$membership_checkout_id = '98233cf4-e092-11e9-aa27-005056a6d89a';
+$membership_checkout_id = isset( $cart_data['membership_created_id'] ) ? $cart_data['membership_created_id'] : '';
 
 if ( easl_mz_is_member_logged_in() ):
 	$api = easl_mz_get_manager()->getApi();
 	$session            = easl_mz_get_manager()->getSession();
+	$user_session_db_id = $session->get_current_session_db_id();
 	$member_id          = $session->ge_current_member_id();
 	$member             = false;
 	$membership         = false;
@@ -54,7 +54,7 @@ if ( easl_mz_is_member_logged_in() ):
 		$member     = $api->get_member_details( $member_id, false );
 		$membership = $api->get_membership_details( $membership_checkout_id, false );
 	}
-	if ( $member && $membership ) {
+	if ( $member && $membership ):
 		$billing_amount = intval( $membership['billing_amount'] * 100 );
 
 		$member_name_parts = array();
@@ -105,11 +105,6 @@ if ( easl_mz_is_member_logged_in() ):
                 <h2 class="mz-page-heading"><?php echo $title; ?></h2>
 			<?php endif; ?>
             <div class="easl-mz-membership-checkout-form">
-                <div class="easl-mz-nottice">
-					<?php if ( ! $membership_checkout_id ): ?>
-                        <p>you haven’t selected a membership type.</p>
-					<?php endif; ?>
-                </div>
                 <form method="post" action="https://ogone.test.v-psp.com/ncol/test/orderstandard_utf8.asp" id="form1" name="form1">
                     <!-- general parameters: see Form parameters -->
 					<?php
@@ -120,23 +115,26 @@ if ( easl_mz_is_member_logged_in() ):
 					$accept_url    = add_query_arg( array(
 						'mz_action'     => 'payment_feedback',
 						'mz_status'     => 'accepted',
+						'mz_sid'        => $user_session_db_id,
 						'membership_id' => $membership['id'],
 					), get_site_url() );
 					$decline_url   = add_query_arg( array(
 						'mz_action'     => 'payment_feedback',
 						'mz_status'     => 'declined',
+						'mz_sid'        => $user_session_db_id,
 						'membership_id' => $membership['id'],
 					), get_site_url() );
 					$exception_url = add_query_arg( array(
 						'mz_action'     => 'payment_feedback',
 						'mz_status'     => 'failed',
+						'mz_sid'        => $user_session_db_id,
 						'membership_id' => $membership['id'],
 					), get_site_url() );;
 					$cancel_url = add_query_arg( array(
 						'mz_action'     => 'payment_feedback',
 						'mz_status'     => 'cancelled',
+						'mz_sid'        => $user_session_db_id,
 						'membership_id' => $membership['id'],
-						'order_id'      => $order_id,
 					), get_site_url() );
 
 					$sha_string .= "ACCEPTURL={$accept_url}{$saw_in_pass_phrase}";
@@ -223,7 +221,11 @@ if ( easl_mz_is_member_logged_in() ):
                 </form>
             </div>
         </div>
-	<?php } ?>
+	<?php else: ?>
+        <div class="easl-mz-nottice">
+                <p>you haven’t selected a membership type.</p>
+        </div>
+	<?php endif; ?>
 <?php endif; ?>
 
 
