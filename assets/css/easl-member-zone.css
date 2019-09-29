@@ -1638,6 +1638,13 @@ body .mzms-button::after {
     color: #fff;
 }
 
+.mzms-delete-account-request {
+
+}
+.mzms-delete-account-request p {
+
+}
+
 .mzms-birthday-box {
     background-color: #004b87;
     background-image: url("../images/icon-bd-cake-white.png");

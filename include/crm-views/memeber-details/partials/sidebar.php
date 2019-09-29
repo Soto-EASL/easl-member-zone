@@ -29,9 +29,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			}
 			?>
         </div>
-        <div class="mzms-sbitem mzms-sbitem-delete">
-            <a id="mzms-delete-account" href="#">Delete Account</a>
-        </div>
 		<?php if ( easl_mz_is_birthday( $member['birthdate'] ) ): ?>
             <div class="mzms-sbitem">
                 <div class="mzms-birthday-box">
@@ -80,5 +77,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <a class="mzms-button" href="<?php echo easl_member_new_membership_form_url(false); ?>">Add Membership</a>
             </div>
 		<?php endif; ?>
+        <dib class="mzms-sbitem mzms-delete-account-request">
+            <p>If you would like to delete your account, please contact <a href="mailto:membership@easloffice.eu">membership@easloffice.eu</a></p>
+        </dib>
     </div>
 </div>
