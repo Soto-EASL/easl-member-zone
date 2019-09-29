@@ -1,0 +1,188 @@
+@media only screen and (max-width: 1250px) {
+
+	#site-navigation .dropdown-menu > li > a{
+		padding:0 9px !important;
+	}
+
+	#site-navigation .dropdown-menu .link-inner{
+		font-size:14px !important;
+	}
+}
+
+@media only screen and (max-width: 1199px) {
+	.easl-mz-page-menu{
+		padding:15px 10px;
+	}
+
+	body .mzms-button{
+		padding:10px 15px 10px 8px;
+	}
+
+	body .mzms-button::after{
+		right:5px;
+	}
+}
+
+@media only screen and (max-width: 958px) {
+	.page-template-member-zone #wrap {
+	    padding-top: 97px !important;
+	}
+
+	.easl-mz-page-menu{
+		padding:15px;
+	}
+
+	.menu-member-zone{
+		padding-bottom:0;
+	}
+
+	body .mzms-button{
+		padding:10px 24px 10px 12px;
+	}
+
+	body .mzms-button::after{
+		right:10px;
+	}
+
+	.mzms-image-button-wrap, .mzms-passwor-button-wrap, .mzms-form-button-wrap{
+		margin-left:5px;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 958px)  {
+	.easl-mz-header-buttons{
+		min-width:130px !important;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 825px)  {
+	body .header-two-aside{
+		max-width:450px;
+	}
+
+	.mz-login-row{
+		width:calc(33.3% - 10px);
+		margin:0 5px;
+	}
+
+	.mz-login-row .easl-generic-button{
+		width:100%;
+	}
+
+	.mz-forgot-password{
+		padding-left:5px;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+
+	.page-template-member-zone #wrap {
+	    padding-top: 0px !important;
+	}
+
+	.easl-mz-header-member-card{
+		display:block !important;
+		height:auto !important;
+	}
+
+	.easl-mz-header-buttons {
+	    display: block;
+	    max-width: 100%;
+	    width: 100%;
+	}
+
+	.easl-mz-header-member-card .easl-mz-header-buttons a{
+		width:calc(50% - 5px);
+		display:inline-block;
+		margin:5px 2.5px;
+		background:#fff;
+	}
+
+	.easl-mz-membercard{
+		margin:0 2.5px;
+	}
+
+	.easl-mz-membership-inner{
+		display:block;
+	}
+
+	.easl-mz-membership-fields, .easl-mz-membership-sidebar{
+		width:100%;
+	}
+
+	.easl-mz-membership-header{
+		padding-right:0;
+	}
+
+	.easl-mz-page-menu ul{
+		padding-bottom:0;
+	}
+
+	.easl-mz-membership-header .mzms-field-wrap-public {
+	    position: relative;
+	    right: 0;
+	    top: 10px;
+	    padding-bottom: 15px;
+	    padding-left: 67px;
+	}
+
+	.easl-mz-membership-top{
+		display:block;
+		width:100%;
+		float:left;
+	}
+
+	.mzms-image-wrap, .mzms-image-button-wrap, .mzms-passwor-button-wrap, .mzms-form-button-wrap{
+		float:left;
+	}
+
+	.mzms-image-button-wrap, .mzms-passwor-button-wrap, .mzms-form-button-wrap{
+		width:calc(100% - 125px);
+		margin-bottom:5px;
+	}
+
+	.mzms-image-button-wrap a, .mzms-passwor-button-wrap a, .mzms-form-button-wrap button{
+		width:100%;
+		text-align:left;
+	}
+
+	#easl-mz-membership-form .easl-row{
+		display:block;
+		width:100%;
+		margin:0;
+
+	}
+
+	#easl-mz-membership-form .easl-row .easl-col{
+		padding:0;
+	}
+
+	.mzms-field-label{
+		margin-top:15px !important;
+	}
+
+	.wpb_easl_events.wpb_content_element.mz-easl-events{
+		padding:15px 15px 35px;
+	}
+
+	.easl-member-zone-container .wpb_easl_events .easl-events-all-link{
+		padding:0;
+	}
+
+	.page-template-member-zone .social_buttons_widget, .page-id-9454 .social_buttons_widget{
+		top:350px;
+	}
+
+	.mz-login-row{
+		width:calc(33.3% - 10px);
+		margin:0 5px;
+	}
+
+	.mz-login-row .easl-generic-button, .mz-login-row input{
+		width:100%;
+	}
+
+	.mz-forgot-password{
+		padding-left:5px;
+	}
+}

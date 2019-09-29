@@ -72,9 +72,9 @@ if ( $member['last_name'] ) {
                 <label class="mzms-field-label" for="mzf_membership_payment_type">Billing Address</label>
                 <div class="mzms-field-wrap">
                     <select class="easl-mz-select2" name="billing_mode" id="mzf_billing_mode" style="width: 100%;">
-                        <option value="c1" selected="selected">Institution address</option>
-                        <option value="c2">Home address</option>
-                        <option value="other">Custom Address</option>
+                        <option value="c2">Home</option>
+                        <option value="c1" selected="selected">Institution</option>
+                        <option value="other">or other?</option>
                     </select>
                 </div>
             </div>
@@ -85,9 +85,9 @@ if ( $member['last_name'] ) {
                     <label class="mzms-field-label" for="mzf_jhephardcopy_recipient">JHEP - Where?</label>
                     <div class="mzms-field-wrap">
                         <select class="easl-mz-select2" name="jhephardcopy_recipient" id="mzf_jhephardcopy_recipient" style="width: 100%;">
-                            <option value="c1" selected="selected">Institution address</option>
-                            <option value="c2">Home address</option>
-                            <option value="other">Custom Address</option>
+                            <option value="c2">Home</option>
+                            <option value="c1" selected="selected">Institution</option>
+                            <option value="other">or other?</option>
                         </select>
                     </div>
                 </div>

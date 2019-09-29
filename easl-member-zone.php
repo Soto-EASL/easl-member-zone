@@ -560,6 +560,7 @@ class EASL_MZ_Manager {
 		$googleapi_key = 'AIzaSyCe-SgprAvAbprjsFR96WjAdKb2EVC-kR0';
 
 		wp_enqueue_style( 'easl-mz-styles', $this->asset_url( 'css/easl-member-zone.css' ), array(), $version );
+		wp_enqueue_style( 'easl-mz-styles-responsive', $this->asset_url( 'css/responsive.css' ), array(), $version );
 
 		wp_enqueue_script( 'easl-mz-script', $this->asset_url( 'js/script.js' ), array( 'jquery' ), $version, true );
 		$ssl_scheme      = is_ssl() ? 'https' : 'http';
