@@ -556,7 +556,7 @@ class EASL_MZ_Manager {
 	}
 
 	public function assets() {
-		$version       = time();
+		$version       = EASL_MZ_VERSION;
 		$googleapi_key = 'AIzaSyCe-SgprAvAbprjsFR96WjAdKb2EVC-kR0';
 
 		wp_enqueue_style( 'easl-mz-styles', $this->asset_url( 'css/easl-member-zone.css' ), array(), $version );
