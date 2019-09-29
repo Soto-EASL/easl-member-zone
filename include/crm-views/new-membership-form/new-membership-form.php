@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @var $member
  * @var $renew
+ * @var $messages
  */
 
 $member_name_parts = array();
@@ -21,8 +22,13 @@ if ( $member['last_name'] ) {
 
 ?>
 <form action="" method="post" enctype="multipart/form-data">
+
+	<?php if ( isset( $messages['membership_error'] ) && count($messages['membership_error']) > 0 ): ?>
+        <div class="easl-mz-error"><?php echo implode ('<br/>', $messages['membership_error']); ?></div>
+	<?php endif; ?>
     <input type="hidden" name="mz_action" value="create_membership">
     <input type="hidden" name="mz_member_id" value="<?php echo $member['id']; ?>">
+    <input type="hidden" name="mz_member_email" value="<?php echo $member['email1']; ?>">
     <input type="hidden" name="mz_renew" value="<?php echo $renew; ?>">
     <input type="hidden" name="mz_current_cat" value="<?php echo $member['dotb_mb_category']; ?>">
     <input type="hidden" name="mz_current_end_date" value="<?php echo $member['dotb_mb_current_end_date']; ?>">
@@ -33,31 +39,21 @@ if ( $member['last_name'] ) {
             <div class="easl-col-inner mzms-fields-con">
                 <label class="mzms-field-label" for="mzf_membership_category">Membership Category</label>
                 <div class="mzms-field-wrap">
-                    <?php
+					<?php
 
-                    $allowed_cats = easl_mz_get_members_allowed_categories( $member );
-                    ?>
+					$allowed_cats = easl_mz_get_members_allowed_categories( $member );
+					?>
                     <select class="easl-mz-select2" name="membership_category" id="mzf_membership_category" data-placeholder="Select an category" style="width: 100%;">
                         <option value=""></option>
 						<?php
 						foreach ( $allowed_cats as $cat_key => $cat_name ):
 							?>
-                            <option value="<?php echo $cat_key ?>"<?php selected( $cat_key, $member['dotb_mb_category'], true ); ?>><?php echo $cat_name; ?></option>
+                            <option value="<?php echo $cat_key ?>"<?php selected( $cat_key, $member['dotb_mb_category'], true ); ?>><?php echo $cat_name; ?> ( <?php echo easl_mz_get_membership_fee( $cat_key, true ); ?> )</option>
 						<?php endforeach; ?>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="easl-col">
-            <div class="easl-col-inner mzms-fields-con">
-                <label class="mzms-field-label" for="mzf_membership_payment_type">Fee</label>
-                <div class="mzms-field-wrap">
-                    <span id="easl-mz-membership-fee"><?php echo easl_mz_get_membership_fee( $member['dotb_mb_category'], true ); ?></span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mzms-fields-row easl-row easl-row-col-2">
         <div class="easl-col">
             <div class="easl-col-inner mzms-fields-con">
                 <label class="mzms-field-label" for="mzf_membership_payment_type">Payment Type</label>
@@ -69,30 +65,161 @@ if ( $member['last_name'] ) {
                 </div>
             </div>
         </div>
+    </div>
+    <div class="mzms-fields-row easl-row easl-row-col-2">
         <div class="easl-col">
             <div class="easl-col-inner mzms-fields-con">
-
+                <label class="mzms-field-label" for="mzf_membership_payment_type">Billing Address</label>
+                <div class="mzms-field-wrap">
+                    <select class="easl-mz-select2" name="billing_mode" id="mzf_billing_mode" style="width: 100%;">
+                        <option value="c1" selected="selected">Institution address</option>
+                        <option value="c2">Home address</option>
+                        <option value="other">Custom Address</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="easl-col">
+            <div class="easl-col-inner mzms-fields-con">
+                <div id="mzf_jhephardcopy_recipient_wrapper">
+                    <label class="mzms-field-label" for="mzf_jhephardcopy_recipient">JHEP - Where?</label>
+                    <div class="mzms-field-wrap">
+                        <select class="easl-mz-select2" name="jhephardcopy_recipient" id="mzf_jhephardcopy_recipient" style="width: 100%;">
+                            <option value="c1" selected="selected">Institution address</option>
+                            <option value="c2">Home address</option>
+                            <option value="other">Custom Address</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="mzms-fields-row mzms-support-docs-row">
-        <div class="mzms-fields-con">
-            <div class="mzms-fiel-label">Supporting documents</div>
-            <div class="mzms-field-wrap">
-                <label>
-                    <span class="mzms-field-file-label"></span>
-                    <input type="file" name="supporting_docs[]" id="mzf_supporting_docs">
-                    <span class="mzms-field-file-button">Browse</span>
-                </label>
-                <a href="#" class="mzms-field-file-add"><span class="ticon ticon-plus-square"></span></a>
+    <div id="mz-membership-other-address-wrap">
+        <div class="mzms-fields-separator"></div>
+        <h3>Billing - Other address</h3>
+        <div class="mzms-fields-row">
+            <div class="mzms-fields-con">
+                <label class="mzms-field-label" for="mzf_billing_address_street">Street</label>
+                <div class="mzms-field-wrap">
+                    <textarea name="billing_address_street" id="mzf_billing_address_street" placeholder=""><?php echo esc_textarea( $member['billing_address_street'] ); ?></textarea>
+                </div>
             </div>
         </div>
-        <div class="mzms-fields-con">
-            <div class="mzms-field-wrap">
-                <label for="mzf_agree_docs_terms" class="easl-custom-checkbox">
-                    <input type="checkbox" name="agree_docs_terms" id="mzf_agree_docs_terms" value="1">
-                    <span>I agree to terms and conditionsl</span>
-                </label>
+        <div class="mzms-fields-row easl-row easl-row-col-2">
+            <div class="easl-col">
+                <div class="easl-col-inner mzms-fields-con">
+                    <label class="mzms-field-label" for="mzf_billing_address_city">City</label>
+                    <div class="mzms-field-wrap">
+                        <input type="text" placeholder="" name="billing_address_city" id="mzf_billing_address_city" value="<?php echo esc_attr( $member['billing_address_city'] ); ?>">
+                    </div>
+                </div>
+            </div>
+            <div class="easl-col">
+                <div class="easl-col-inner mzms-fields-con">
+                    <label class="mzms-field-label" for="mzf_billing_address_state">State</label>
+                    <div class="mzms-field-wrap">
+                        <input type="text" placeholder="" name="billing_address_state" id="mzf_billing_address_state" value="<?php echo esc_attr( $member['billing_address_state'] ); ?>">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mzms-fields-row easl-row easl-row-col-2">
+            <div class="easl-col">
+                <div class="easl-col-inner mzms-fields-con">
+                    <label class="mzms-field-label" for="mzf_billing_address_postalcode">Postal code</label>
+                    <div class="mzms-field-wrap">
+                        <input type="text" placeholder="" name="billing_address_postalcode" id="mzf_billing_address_postalcode" value="<?php echo esc_attr( $member['billing_address_postalcode'] ); ?>">
+                    </div>
+                </div>
+            </div>
+            <div class="easl-col">
+                <div class="easl-col-inner mzms-fields-con">
+                    <label class="mzms-field-label" for="mzf_billing_address_country">Country</label>
+                    <div class="mzms-field-wrap">
+                        <select class="easl-mz-select2" name="billing_address_country" id="mzf_billing_address_country" style="width: 100%;" data-placeholder="Select country">
+                            <option value=""></option>
+							<?php echo easl_mz_get_crm_dropdown_items( 'countries', $member['billing_address_country'] ); ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mz-membership-jhe-pother-address-wrap">
+        <div class="mzms-fields-separator"></div>
+        <h3>JHEP - Other address</h3>
+        <div class="mzms-fields-row">
+            <div class="mzms-fields-con">
+                <label class="mzms-field-label" for="mzf_jhephardcopyotheraddress_street">Street</label>
+                <div class="mzms-field-wrap">
+                    <textarea name="jhephardcopyotheraddress_street" id="mzf_jhephardcopyotheraddress_street" placeholder=""><?php echo esc_textarea( $member['jhephardcopyotheraddress_street'] ); ?></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="mzms-fields-row easl-row easl-row-col-2">
+            <div class="easl-col">
+                <div class="easl-col-inner mzms-fields-con">
+                    <label class="mzms-field-label" for="mzf_jhephardcopyotheraddress_city">City</label>
+                    <div class="mzms-field-wrap">
+                        <input type="text" placeholder="" name="jhephardcopyotheraddress_city" id="mzf_jhephardcopyotheraddress_city" value="<?php echo esc_attr( $member['jhephardcopyotheraddress_city'] ); ?>">
+                    </div>
+                </div>
+            </div>
+            <div class="easl-col">
+                <div class="easl-col-inner mzms-fields-con">
+                    <label class="mzms-field-label" for="mzf_jhephardcopyotheraddress_state">State</label>
+                    <div class="mzms-field-wrap">
+                        <input type="text" placeholder="" name="jhephardcopyotheraddress_state" id="mzf_jhephardcopyotheraddress_state" value="<?php echo esc_attr( $member['jhephardcopyotheraddress_state'] ); ?>">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mzms-fields-row easl-row easl-row-col-2">
+            <div class="easl-col">
+                <div class="easl-col-inner mzms-fields-con">
+                    <label class="mzms-field-label" for="mzf_jhephardcopyotheraddress_postalcode">Postal code</label>
+                    <div class="mzms-field-wrap">
+                        <input type="text" placeholder="" name="jhephardcopyotheraddress_postalcode" id="mzf_jhephardcopyotheraddress_postalcode" value="<?php echo esc_attr( $member['jhephardcopyotheraddress_postalcode'] ); ?>">
+                    </div>
+                </div>
+            </div>
+            <div class="easl-col">
+                <div class="easl-col-inner mzms-fields-con">
+                    <label class="mzms-field-label" for="mzf_jhephardcopyotheraddress_country">Country</label>
+                    <div class="mzms-field-wrap">
+                        <select class="easl-mz-select2" name="jhephardcopyotheraddress_country" id="mzf_jhephardcopyotheraddress_country" style="width: 100%;" data-placeholder="Select country">
+                            <option value=""></option>
+							<?php echo easl_mz_get_crm_dropdown_items( 'countries', $member['jhephardcopyotheraddress_country'] ); ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mzms-support-docs-wrap">
+        <div class="mzms-fields-separator"></div>
+        <div class="mzms-fields-row">
+            <div class="mzms-fields-con">
+                <div class="mzms-field-label">Supporting documents</div>
+                <div class="mzms-field-wrap">
+                    <label class="mzms-field-file-wrap">
+                        <span class="mzms-field-file-label"></span>
+                        <input type="file" name="supporting_docs" accept="image/*,.pdf,application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                        <span class="mzms-field-file-button"><span class="ticon ticon-folder-open"></span> Browse</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="mzms-fields-row">
+            <div class="mzms-fields-con">
+                <div class="mzms-field-wrap mzms-inline-checkbox">
+                    <label for="mzf_agree_docs_terms" class="easl-custom-checkbox">
+                        <input type="checkbox" name="agree_docs_terms" id="mzf_agree_docs_terms" value="1">
+                        <span>I agree to terms and conditionsl</span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>

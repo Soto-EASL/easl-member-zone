@@ -66,3 +66,9 @@ function easl_mz_enqueue_datepicker_assets() {
 	wp_enqueue_style( 'jquery-ui', easl_mz_get_asset_url( 'lib/jquery-ui-1.11.4/jquery-ui.min.css' ), array(), '1.11.4' );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 }
+
+function easl_mz_mail_form_name( $from_name ) {
+	$from_name = 'EASL Memberzone';
+
+	return $from_name;
+}

@@ -28,7 +28,9 @@ class EASL_MZ_API {
 	protected $user_session_expired = false;
 
 	private static $_instance;
-
+	/**
+	 * @var EASL_MZ_Request
+	 */
 	protected $request;
 
 	protected $server_response_delay;
@@ -407,7 +409,7 @@ class EASL_MZ_API {
 		return $data;
 	}
 
-	public function get_membership_details( $member_id) {
+	public function get_membership_details( $member_id ) {
 		$headers = array(
 			'Content-Type'  => 'application/json',
 			'Cache-Control' => 'no-cache',
@@ -548,12 +550,29 @@ class EASL_MZ_API {
 		return $response->id;
 	}
 
+	public function update_membership( $membership_id, $data = array() ) {
+		$headers = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$result  = $this->put( '/easl1_memberships/' . $membership_id, false, $headers, $data );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->id ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public function add_membeship_to_member( $member_id, $membership_id ) {
 		$headers = array(
 			'Content-Type' => 'application/json',
 			'OAuth-Token'  => $this->get_access_token( false ),
 		);
-		$result = $this->post( "/Contacts/{$member_id}/link/contacts_easl1_memberships_1/{$membership_id}", false, $headers );
+		$result  = $this->post( "/Contacts/{$member_id}/link/contacts_easl1_memberships_1/{$membership_id}", false, $headers );
 		if ( ! $result ) {
 			return false;
 		}

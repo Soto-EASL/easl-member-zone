@@ -5,6 +5,7 @@
         url: EASLMZSETTINGS.ajaxURL,
         action: EASLMZSETTINGS.ajaxActionName,
         loaderHtml: EASLMZSETTINGS.loaderHtml,
+        messages: EASLMZSETTINGS.messages,
         Fees: EASLMZSETTINGS.membershipFees,
         modulesLoadTrigger: false,
         methods: {
@@ -46,6 +47,35 @@
         clearFieldErrors: function ($context) {
             $('.mzms-field-wrap', $context).removeClass('easl-mz-field-has-error');
             $(".mzms-field-error-msg", $context).html('');
+        },
+        customFileInput: function ($el) {
+            $('.mzms-field-file-wrap input', $el).each(function () {
+                var $input = $(this);
+                var $label = $(this).closest(".mzms-field-file-wrap");
+                var fileName = '';
+
+                $input.on('change', function (e) {
+                    if (this.files && this.files.length > 1) {
+                        fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+                    } else if (e.target.value) {
+                        fileName = e.target.value.split('\\').pop();
+                    }
+                    if (fileName) {
+                        $label.addClass('mzfs-file-selected').find('.mzms-field-file-label').html(fileName);
+                    } else {
+                        $label.removeClass('mzfs-file-selected').find('.mzms-field-file-label').html('');
+                    }
+                });
+
+                // Firefox bug fix
+                $input
+                    .on('focus', function () {
+                        $input.addClass('has-focus');
+                    })
+                    .on('blur', function () {
+                        $input.removeClass('has-focus');
+                    });
+            });
         },
         resetPassword: function () {
             var _this = this;
@@ -134,33 +164,8 @@
 
             // Change Picture form events
 
-            $('.mzms-field-file-wrap input', $el).each(function () {
-                var $input = $(this);
-                var $label = $(this).closest(".mzms-field-file-wrap");
-                var fileName = '';
+            _this.customFileInput($el);
 
-                $input.on('change', function (e) {
-                    if (this.files && this.files.length > 1) {
-                        fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
-                    } else if (e.target.value) {
-                        fileName = e.target.value.split('\\').pop();
-                    }
-                    if (fileName) {
-                        $label.addClass('mzfs-file-selected').find('.mzms-field-file-label').html(fileName);
-                    } else {
-                        $label.removeClass('mzfs-file-selected').find('.mzms-field-file-label').html('');
-                    }
-                });
-
-                // Firefox bug fix
-                $input
-                    .on('focus', function () {
-                        $input.addClass('has-focus');
-                    })
-                    .on('blur', function () {
-                        $input.removeClass('has-focus');
-                    });
-            });
             $(".mzms-change-image", $el).on("click", function (event) {
                 event.preventDefault();
                 $el.addClass("mz-show-picture-change-form");
@@ -407,16 +412,52 @@
         newMembershipFormEvents: function ($el) {
             var _this = this;
             // Membership Category Form events
+            var requireProof = ["trainee_jhep", "trainee", "nurse_jhep", "nurse", "allied_pro_jhep", "allied_pro"];
+            var jhef = ["regular_jhep", "corresponding_jhep", "trainee_jhep", "nurse_jhep", "patient_jhep", "emeritus_jhep", "allied_pro_jhep"];
             var $mzf_membership_category = $("#mzf_membership_category", $el);
-            $("#mzf_membership_category", $el).on("change", function (event) {
-                var fee = '',
-                    cat = $mzf_membership_category.val();
-                event.preventDefault();
+            var $mzf_billing_mode = $("#mzf_billing_mode", $el);
+            var $mzf_jhephardcopy_recipient = $("#mzf_jhephardcopy_recipient", $el);
 
-                if ("undefined" !== typeof _this.Fees[cat]) {
-                    fee = _this.Fees[cat];
+            if (-1 !== requireProof.indexOf($mzf_membership_category.val())) {
+                $("#mzms-support-docs-wrap").addClass("easl-active");
+            } else {
+                $("#mzms-support-docs-wrap").removeClass("easl-active")
+            }
+            if (-1 !== jhef.indexOf($mzf_membership_category.val())) {
+                $("#mzf_jhephardcopy_recipient_wrapper").addClass("easl-active");
+            } else {
+                $("#mzf_jhephardcopy_recipient_wrapper").removeClass("easl-active").val("c1");
+                $("#mz-membership-jhe-pother-address-wrap").removeClass("easl-active");
+            }
+
+            $mzf_membership_category.on("change", function (event) {
+                var cat = $mzf_membership_category.val();
+                if (-1 !== requireProof.indexOf(cat)) {
+                    $("#mzms-support-docs-wrap").addClass("easl-active");
+                } else {
+                    $("#mzms-support-docs-wrap").removeClass("easl-active")
                 }
-                $("#easl-mz-membership-fee").html(fee + "€");
+                if (-1 !== jhef.indexOf(cat)) {
+                    $("#mzf_jhephardcopy_recipient_wrapper").addClass("easl-active");
+                } else {
+                    $("#mzf_jhephardcopy_recipient_wrapper").removeClass("easl-active").val("c1");
+                    $("#mz-membership-jhe-pother-address-wrap").removeClass("easl-active");
+                }
+
+            });
+            $mzf_billing_mode.on("change", function (event) {
+                if ('other' === $mzf_billing_mode.val()) {
+                    $("#mz-membership-other-address-wrap").addClass("easl-active");
+                } else {
+                    $("#mz-membership-other-address-wrap").removeClass("easl-active")
+                }
+            });
+            $mzf_jhephardcopy_recipient.on("change", function (event) {
+                if ('other' === $mzf_jhephardcopy_recipient.val()) {
+                    $("#mz-membership-jhe-pother-address-wrap").addClass("easl-active");
+                } else {
+                    $("#mz-membership-jhe-pother-address-wrap").removeClass("easl-active");
+                }
             });
         },
         getNewMembershipForm: function () {
@@ -429,9 +470,13 @@
                     $(".easl-mz-select2", $(this)).select2({
                         closeOnSelect: true
                     });
+                    _this.customFileInput($el);
                     _this.newMembershipFormEvents($el);
                 });
-                this.request(this.methods.newMembershipForm, $el, {'renew': $el.data('paymenttype')});
+                this.request(this.methods.newMembershipForm, $el, {
+                    'renew': $el.data('paymenttype'),
+                    'messages': _this.messages
+                });
             }
         },
         request: function (method, $el, reqData) {

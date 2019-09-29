@@ -40,17 +40,20 @@ $session_data = easl_mz_get_current_session_data();
 
 $cart_data = isset( $session_data['cart_data'] ) ? $session_data['cart_data'] : array();
 
-$pspid = 'EASLEvent2';
-
+//$membership_checkout_id = $cart_data['membership_created_id'];
+$membership_checkout_id = '98233cf4-e092-11e9-aa27-005056a6d89a';
 
 if ( easl_mz_is_member_logged_in() ):
-	easl_mz_enqueue_select_assets();
-	$api       = easl_mz_get_manager()->getApi();
-	$session   = easl_mz_get_manager()->getSession();
-	$member_id = $session->ge_current_member_id();
-	$api->get_user_auth_token();
-	$member     = $api->get_member_details( $member_id, false );
-	$membership = $api->get_membership_details( $cart_data['memberhsip_created_id'], false );
+	$api = easl_mz_get_manager()->getApi();
+	$session            = easl_mz_get_manager()->getSession();
+	$member_id          = $session->ge_current_member_id();
+	$member             = false;
+	$membership         = false;
+	if ( $membership_checkout_id ) {
+		$api->get_user_auth_token();
+		$member     = $api->get_member_details( $member_id, false );
+		$membership = $api->get_membership_details( $membership_checkout_id, false );
+	}
 	if ( $member && $membership ) {
 		$billing_amount = intval( $membership['billing_amount'] * 100 );
 
@@ -64,6 +67,37 @@ if ( easl_mz_is_member_logged_in() ):
 		if ( $member['last_name'] ) {
 			$member_name_parts[] = $member['last_name'];
 		}
+		$member_name_parts = implode( ' ', $member_name_parts );
+		$billing_address   = array();
+
+		if ( $membership['billing_mode'] == 'c1' ) {
+			$billing_address_title         = 'Your contacts institution address';
+			$billing_address['street']     = $member['primary_address_street'];
+			$billing_address['postalcode'] = $member['primary_address_postalcode'];
+			$billing_address['city']       = $member['primary_address_city'];
+			$billing_address['state']      = $member['primary_address_state'];
+			$billing_address['country']    = $member['primary_address_country'];
+		} elseif ( $membership['billing_mode'] == 'c2' ) {
+			$billing_address_title         = 'Your contacts home address';
+			$billing_address['street']     = $member['alt_address_street'];
+			$billing_address['postalcode'] = $member['alt_address_postalcode'];
+			$billing_address['city']       = $member['alt_address_city'];
+			$billing_address['state']      = $member['alt_address_state'];
+			$billing_address['country']    = $member['alt_address_country'];
+		} else {
+			$billing_address['street']     = $membership['billing_address_street'];
+			$billing_address['postalcode'] = $membership['billing_address_postalcode'];
+			$billing_address['city']       = $membership['billing_address_city'];
+			$billing_address['state']      = $membership['billing_address_state'];
+			$billing_address['country']    = $membership['billing_address_country'];
+
+			$billing_address_title = easl_mz_get_formatted_address( $billing_address );
+		}
+
+		$pspid              = 'EASLevent2TEST';
+		$saw_in_pass_phrase = '123456789ABCDEfghijk';
+		$sha_string         = '';
+
 		?>
 
         <div <?php echo implode( ' ', $wrapper_attributes ); ?>>
@@ -72,46 +106,102 @@ if ( easl_mz_is_member_logged_in() ):
 			<?php endif; ?>
             <div class="easl-mz-membership-checkout-form">
                 <div class="easl-mz-nottice">
-					<?php if ( empty( $cart_data ) || empty( $cart_data['memberhsip_created_id'] ) ): ?>
-                        <p>You don't have added any membership.</p>
+					<?php if ( ! $membership_checkout_id ): ?>
+                        <p>you haven’t selected a membership type.</p>
 					<?php endif; ?>
                 </div>
                 <form method="post" action="https://ogone.test.v-psp.com/ncol/test/orderstandard_utf8.asp" id="form1" name="form1">
-                    <input type="hidden" name="member_id" value="<?php echo $member['id']; ?>">
-                    <input type="hidden" name="membership_id" value="<?php echo $membership['id']; ?>">
-                    <input type="hidden" name="amount" value="<?php echo $membership['billing_amount']; ?>">
-
-
                     <!-- general parameters: see Form parameters -->
+					<?php
+					$billing_country = easl_mz_get_country_name( $billing_address['country'] );
 
+					//$order_id = $membership['id'] . time();
+					$order_id      = time();
+					$accept_url    = add_query_arg( array(
+						'mz_action'     => 'payment_feedback',
+						'mz_status'     => 'accepted',
+						'membership_id' => $membership['id'],
+					), get_site_url() );
+					$decline_url   = add_query_arg( array(
+						'mz_action'     => 'payment_feedback',
+						'mz_status'     => 'declined',
+						'membership_id' => $membership['id'],
+					), get_site_url() );
+					$exception_url = add_query_arg( array(
+						'mz_action'     => 'payment_feedback',
+						'mz_status'     => 'failed',
+						'membership_id' => $membership['id'],
+					), get_site_url() );;
+					$cancel_url = add_query_arg( array(
+						'mz_action'     => 'payment_feedback',
+						'mz_status'     => 'cancelled',
+						'membership_id' => $membership['id'],
+						'order_id'      => $order_id,
+					), get_site_url() );
+
+					$sha_string .= "ACCEPTURL={$accept_url}{$saw_in_pass_phrase}";
+					$sha_string .= "AMOUNT={$billing_amount}{$saw_in_pass_phrase}";
+					$sha_string .= "CANCELURL={$cancel_url}{$saw_in_pass_phrase}";
+					if ( $member_name_parts ) {
+						$sha_string .= "CN={$member_name_parts}{$saw_in_pass_phrase}";
+					}
+					$sha_string .= "CURRENCY=EUR{$saw_in_pass_phrase}";
+					$sha_string .= "DECLINEURL={$decline_url}{$saw_in_pass_phrase}";
+					if ( $member['email1'] ) {
+						$sha_string .= "EMAIL={$member['email1']}{$saw_in_pass_phrase}";
+					}
+					$sha_string .= "EXCEPTIONURL={$exception_url}{$saw_in_pass_phrase}";
+					$sha_string .= "ORDERID={$order_id}{$saw_in_pass_phrase}";
+					if ( $billing_address['street'] ) {
+						$sha_string .= "OWNERADDRESS={$billing_address['street']}{$saw_in_pass_phrase}";
+					}
+					if ( $billing_country ) {
+						$sha_string .= "OWNERCTY={$billing_country}{$saw_in_pass_phrase}";
+					}
+					if ( $member['phone_work'] ) {
+						$sha_string .= "OWNERTELNO={$member['phone_work']}{$saw_in_pass_phrase}";
+					}
+					if ( $billing_address['state'] ) {
+						$sha_string .= "OWNERTOWN={$billing_address['state']}{$saw_in_pass_phrase}";
+					}
+					if ( $billing_address['postalcode'] ) {
+						$sha_string .= "OWNERZIP={$billing_address['postalcode']}{$saw_in_pass_phrase}";
+					}
+
+					$sha_string .= "PSPID={$pspid}{$saw_in_pass_phrase}";
+
+					$digest = sha1( $sha_string );
+					?>
                     <input type="hidden" name="PSPID" value="<?php echo $pspid; ?>">
-
-                    <input type="hidden" name="ORDERID" value="<?php echo $membership['id']; ?>">
-
+                    <input type="hidden" name="ORDERID" value="<?php echo $order_id; ?>">
                     <input type="hidden" name="AMOUNT" value="<?php echo $billing_amount; ?>">
-
                     <input type="hidden" name="CURRENCY" value="EUR">
-
-
+                    <input type="hidden" name="CN" id="billing_name" value="<?php echo esc_attr( $member_name_parts ); ?>">
+                    <input type="hidden" name="EMAIL" id="billing_email" value="<?php echo $member['email1']; ?>">
+                    <input type="hidden" name="OWNERADDRESS" id="billing_street" value="<?php echo $billing_address['street']; ?>">
+                    <input type="hidden" name="OWNERTOWN" id="billing_state" value="<?php echo $billing_address['state']; ?>">
+                    <input type="hidden" name="OWNERZIP" id="billing_zip" value="<?php echo $billing_address['postalcode']; ?>">
+                    <input type="hidden" name="OWNERCTY" id="billing_zip" value="<?php echo $billing_country; ?>">
+                    <input type="hidden" name="OWNERTELNO" id="billing_telephone" value="<?php echo $member['phone_work']; ?>">
                     <!-- check before the payment: see Security: Check before the payment -->
 
-                    <input type="hidden" name="SHASIGN" value="">
+                    <input type="hidden" name="SHASIGN" value="<?php echo $digest; ?>">
 
 
                     <!-- post payment redirection: see Transaction feedback to the customer -->
 
-                    <input type="hidden" name="ACCEPTURL" value="">
+                    <input type="hidden" name="ACCEPTURL" value="<?php echo $accept_url; ?>">
 
-                    <input type="hidden" name="DECLINEURL" value="">
+                    <input type="hidden" name="DECLINEURL" value="<?php echo $decline_url; ?>">
 
-                    <input type="hidden" name="EXCEPTIONURL" value="">
+                    <input type="hidden" name="EXCEPTIONURL" value="<?php echo $exception_url; ?>">
 
-                    <input type="hidden" name="CANCELURL" value="">
+                    <input type="hidden" name="CANCELURL" value="<?php echo $cancel_url; ?>">
 
                     <div class="mzcheckout-summery">
                         <div class="mzcheckout-summery-row">
                             <span class="mzcheckout-summery-label">Order ID:</span>
-                            <span class="mzcheckout-summery-value"><?php echo $membership['id']; ?></span>
+                            <span class="mzcheckout-summery-value"><?php echo $order_id; ?></span>
                         </div>
                         <div class="mzcheckout-summery-row">
                             <span class="mzcheckout-summery-label">Order Title:</span>
@@ -121,66 +211,14 @@ if ( easl_mz_is_member_logged_in() ):
                             <span class="mzcheckout-summery-label">Amount:</span>
                             <span class="mzcheckout-summery-value"><?php echo $membership['billing_amount']; ?>€</span>
                         </div>
-                    </div>
-
-                    <div class="mzms-fields-row">
-                        <div class="mzms-fields-con">
-                            <label class="mzms-field-label" for="billing_name">Billing Name</label>
-                            <div class="mzms-field-wrap">
-                                <input type="text" name="CN" id="billing_name" value="<?php echo esc_attr( implode( ' ', $member_name_parts ) ); ?>">
-                            </div>
+                        <div class="mzcheckout-summery-row">
+                            <span class="mzcheckout-summery-label">Billing address:</span>
+                            <span class="mzcheckout-summery-value"><?php echo $billing_address_title; ?></span>
                         </div>
                     </div>
-                    <div class="mzms-fields-row">
-                        <div class="mzms-fields-con">
-                            <label class="mzms-field-label" for="billing_email">Billing email</label>
-                            <div class="mzms-field-wrap">
-                                <input type="email" name="EMAIL" id="billing_email" value="<?php echo $member['email1']; ?>">
-                            </div>
-                        </div>
+                    <div class="mz-checkout-submit-row">
+                        <span class="mz-input-submit-wrap mzms-button"><input type="submit" value="Submit" id="submit2" name="submit2"></span>
                     </div>
-                    <div class="mzms-fields-row">
-                        <div class="mzms-fields-con">
-                            <label class="mzms-field-label" for="billing_street">Billing street address</label>
-                            <div class="mzms-field-wrap">
-                                <input type="text" name="OWNERADDRESS" id="billing_street" value="<?php echo $member['primary_address_street']; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mzms-fields-row">
-                        <div class="mzms-fields-con">
-                            <label class="mzms-field-label" for="billing_city">Billing city</label>
-                            <div class="mzms-field-wrap">
-                                <input type="text" name="OWNERCTY" id="billing_city" value="<?php echo $member['primary_address_city']; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mzms-fields-row">
-                        <div class="mzms-fields-con">
-                            <label class="mzms-field-label" for="billing_state">Billing state</label>
-                            <div class="mzms-field-wrap">
-                                <input type="text" name="OWNERTOWN" id="billing_state" value="<?php echo $member['primary_address_state']; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mzms-fields-row">
-                        <div class="mzms-fields-con">
-                            <label class="mzms-field-label" for="billing_zip">Billing zipcode</label>
-                            <div class="mzms-field-wrap">
-                                <input type="text" name="OWNERZIP" id="billing_zip" value="<?php echo $member['primary_address_postalcode']; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mzms-fields-row">
-                        <div class="mzms-fields-con">
-                            <label class="mzms-field-label" for="billing_telephone">Billing telephone</label>
-                            <div class="mzms-field-wrap">
-                                <input type="text" name="OWNERTELNO" id="billing_telephone" value="<?php echo $member['phone_work']; ?>">
-                            </div>
-                        </div>
-                    </div>
-
-                    <span class="mz-input-submit-wrap mzms-button"><input type="submit" value="Submit" id="submit2" name="submit2"></span>
 
                 </form>
             </div>

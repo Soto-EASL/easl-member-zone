@@ -167,13 +167,18 @@ class EASL_MZ_Ajax_Handler {
 		if ( ! $member_details ) {
 			$this->respond( 'Member ' . $current_member_id . ' not found!', 404 );
 		}
-		$renew = 'no';
+		$renew    = 'no';
+		$messages = false;
 		if ( isset( $_POST['request_data']['renew'] ) ) {
 			$renew = $_POST['request_data']['renew'];
 		}
+		if ( isset( $_POST['request_data']['messages'] ) ) {
+			$messages = $_POST['request_data']['messages'];
+		}
 		$this->respond_file( '/new-membership-form/new-membership-form.php', array(
-			'member' => $member_details,
-			'renew'  => $renew
+			'member'   => $member_details,
+			'renew'    => $renew,
+			'messages' => $messages
 		), 200 );
 	}
 

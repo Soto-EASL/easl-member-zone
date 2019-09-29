@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <div class="mzms-field-wrap">
+            <div class="mzms-field-wrap mzms-inline-checkbox">
                 <label class="mzms-field-label" for="mzf_do_not_call" class="easl-custom-checkbox">
                     <input type="checkbox" name="do_not_call" id="mzf_do_not_call" value="1" <?php checked( 1, $member['do_not_call'], true ); ?>>
                     <span>Do not call</span>

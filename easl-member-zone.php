@@ -152,6 +152,9 @@ class EASL_MZ_Manager {
 			case 'create_membership':
 				$this->create_membership();
 				break;
+			case 'payment_feedback':
+				$this->handle_payment_feedback();
+				break;
 		}
 	}
 
@@ -244,27 +247,47 @@ class EASL_MZ_Manager {
 		if ( empty( $_POST['mz_member_id'] ) || empty( $_POST['membership_category'] ) ) {
 			return false;
 		}
-		$member_id        = $_POST['mz_member_id'];
-		$member_cat       = $_POST['membership_category'];
-		$member_name      = $_POST['mz_member_name'];
-		$renew            = $_POST['mz_renew'];
-		$current_end_date = $_POST['mz_current_end_date'];
-		$current_cat      = $_POST['mz_current_cat'];
-		//$years            = max( 1, absint( $_POST['membership_years'] ) );
-		$years = 1;
-		/**
-		 * @todo ask Zoey/Emily to confirm if active member needs to upate their current membership
-		 */
-//		if($current_cat != $member_cat) {
-//			$renew = 'no';
-//		}
+		$member_id              = $_POST['mz_member_id'];
+		$member_email           = $_POST['mz_member_email'];
+		$member_cat             = $_POST['membership_category'];
+		$member_name            = $_POST['mz_member_name'];
+		$renew                  = $_POST['mz_renew'];
+		$current_end_date       = $_POST['mz_current_end_date'];
+		$current_cat            = $_POST['mz_current_cat'];
+		$billing_mode           = $_POST['billing_mode'];
+		$jhephardcopy_recipient = $_POST['jhephardcopy_recipient'];
 
-		$membership_cate_name = easl_mz_get_membership_category_name( $member_cat );
-		if ( ! $membership_cate_name ) {
-			$this->set_message( 'membership_error', 'Membership catgory not found.' );
+		$require_proof = false;
+		if ( in_array( $member_cat, array(
+			'trainee_jhep',
+			'trainee',
+			'nurse_jhep',
+			'nurse',
+			'allied_pro_jhep',
+			'allied_pro'
+		) ) ) {
+			$require_proof = true;
+		}
+		$jhep_hard_copy = false;
+		if ( in_array( $member_cat, array(
+			'regular_jhep',
+			'corresponding_jhep',
+			'trainee_jhep',
+			'nurse_jhep',
+			'patient_jhep',
+			'emeritus_jhep',
+			'allied_pro_jhep'
+		) ) ) {
+			$jhep_hard_copy = true;
+		}
+
+		$membership_cat_name = easl_mz_get_membership_category_name( $member_cat );
+		if ( ! $membership_cat_name ) {
+			$this->set_message( 'membership_error', 'Membership category not found.' );
 
 			return;
 		}
+
 
 		if ( ! easl_mz_is_member_logged_in() ) {
 			$this->set_message( 'membership_error', 'You are not allowed to change your profile picture.' );
@@ -286,15 +309,9 @@ class EASL_MZ_Manager {
 			return;
 		}
 
-		$membership_name    = $member_name . ' - ' . $membership_cate_name;
-		$date_year_modifier = '';
-		if ( $years > 1 ) {
-			$membership_name    .= ' - ' . $years . ' years';
-			$date_year_modifier = '+' . $years . ' years';
-		} else {
-			$date_year_modifier = '+1 year';
-		}
-		$membership_cat_fee = $years * easl_mz_get_membership_fee( $member_cat );
+		$membership_name = $member_name . ' - ' . $membership_cat_name;
+
+		$membership_cat_fee = easl_mz_get_membership_fee( $member_cat );
 
 		$initial_date = false;
 		if ( $current_end_date ) {
@@ -312,7 +329,7 @@ class EASL_MZ_Manager {
 		}
 
 		$membership_start_day = $initial_date->format( 'Y-m-d' );
-		$initial_date->modify( $date_year_modifier );
+		$initial_date->modify( '+1 year' );
 		$membership_end_date = $initial_date->format( 'Y-m-d' );
 
 		$billing_type = '';
@@ -323,19 +340,75 @@ class EASL_MZ_Manager {
 			$billing_type = 'ingenico_epayments';
 		}
 
+		switch ( $_POST['membership_payment_type'] ) {
+			case 'ingenico_epayments':
+				$billing_type = 'online_cc_indiv';
+				break;
+			case 'offline_payment':
+				$billing_type = 'offline_payment';
+				break;
+		}
+
+		$status = 'in_progress';
+		if ( $renew ) {
+			$status = 'active';
+		}
+
+		if ( ! in_array( $billing_mode, array( 'c1', 'c2', 'other' ) ) ) {
+			$billing_mode = 'c1';
+		}
+		$billing_address = array();
+		if ( $billing_mode == 'other' ) {
+			$billing_address['street']    = ! empty( $_POST['billing_address_street'] ) ? $_POST['billing_address_street'] : '';
+			$billing_address['city']      = ! empty( $_POST['billing_address_city'] ) ? $_POST['billing_address_city'] : '';
+			$billing_address['state']     = ! empty( $_POST['billing_address_state'] ) ? $_POST['billing_address_state'] : '';
+			$billing_address['postalcod'] = ! empty( $_POST['billing_address_postalcode'] ) ? $_POST['billing_address_postalcode'] : '';
+			$billing_address['country']   = ! empty( $_POST['billing_address_street'] ) ? $_POST['billing_address_country'] : '';
+			$billing_address['georeg']    = easl_mz_get_geo_reg( $billing_address['country'] );
+		}
+
+		if ( ! in_array( $jhephardcopy_recipient, array( 'c1', 'c2', 'other' ) ) ) {
+			$jhephardcopy_recipient = 'c1';
+		}
+
 		$membership_api_data = array(
 			'name'           => $membership_name,
 			'category'       => $member_cat,
-			'status'         => 'in_progress',
+			'status'         => $status,
 			'fee'            => $membership_cat_fee,
 			'start_date'     => $membership_start_day,
 			'end_date'       => $membership_end_date,
 			'billing_status' => 'waiting',
 			'billing_type'   => $billing_type,
+			'billing_mode'   => $billing_mode,
 			'billing_amount' => $membership_cat_fee,
 		);
+
+		if ( $billing_mode == 'other' ) {
+			$membership_api_data['billing_address_street']     = ! empty( $_POST['billing_address_street'] ) ? $_POST['billing_address_street'] : '';
+			$membership_api_data['billing_address_city']       = ! empty( $_POST['billing_address_city'] ) ? $_POST['billing_address_city'] : '';
+			$membership_api_data['billing_address_state']      = ! empty( $_POST['billing_address_state'] ) ? $_POST['billing_address_state'] : '';
+			$membership_api_data['billing_address_postalcode'] = ! empty( $_POST['billing_address_postalcode'] ) ? $_POST['billing_address_postalcode'] : '';
+			$membership_api_data['billing_address_country']    = ! empty( $_POST['billing_address_country'] ) ? $_POST['billing_address_country'] : '';
+			$membership_api_data['billing_address_georeg']     = easl_mz_get_geo_reg( $membership_api_data['billing_address_country'] );
+		}
+
+		if ( $jhep_hard_copy ) {
+			$membership_api_data['jhep_hardcopy']          = 1;
+			$membership_api_data['jhephardcopy_recipient'] = $jhephardcopy_recipient;
+			if ( $jhephardcopy_recipient == 'other' ) {
+				$membership_api_data['jhephardcopyotheraddress_street']     = ! empty( $_POST['jhephardcopyotheraddress_street'] ) ? $_POST['jhephardcopyotheraddress_street'] : '';
+				$membership_api_data['jhephardcopyotheraddress_postalcode'] = ! empty( $_POST['jhephardcopyotheraddress_postalcode'] ) ? $_POST['jhephardcopyotheraddress_postalcode'] : '';
+				$membership_api_data['jhephardcopyotheraddress_city']       = ! empty( $_POST['jhephardcopyotheraddress_city'] ) ? $_POST['jhephardcopyotheraddress_city'] : '';
+				$membership_api_data['jhephardcopyotheraddress_state']      = ! empty( $_POST['jhephardcopyotheraddress_state'] ) ? $_POST['jhephardcopyotheraddress_state'] : '';
+				$membership_api_data['jhephardcopyotheraddress_country']    = ! empty( $_POST['jhephardcopyotheraddress_country'] ) ? $_POST['jhephardcopyotheraddress_country'] : '';
+				$membership_api_data['jhephardcopyotheraddress_georeg']     = easl_mz_get_geo_reg( $membership_api_data['jhephardcopyotheraddress_country'] );
+			}
+		}
+
 		$this->api->get_user_auth_token();
-		$membership_id       = $this->api->create_membership( $membership_api_data );
+		$membership_id = $this->api->create_membership( $membership_api_data );
+
 		if ( ! $membership_id ) {
 			$this->set_message( 'membership_error', 'Membership could not be created.' );
 
@@ -348,11 +421,27 @@ class EASL_MZ_Manager {
 			return;
 		}
 		$membership_cart_data = array(
-			'memberhsip_created_id' => $membership_id
+			'membership_created_id' => $membership_id
 		);
-		$redirect_url         = easl_membership_thanks_page_url();
+
+		if ( $require_proof && ! empty( $_FILES['supporting_docs'] ) && ( $_FILES['supporting_docs']['error'] === UPLOAD_ERR_OK ) ) {
+			$subject = 'Membership proof from EASL Memberzone';
+			$to      = 'mmhasaneee@gmail.com';
+			$message = "Membership ID: {$membership_id}\n";
+			$message .= "Member ID: {$member_id}\n";
+			foreach ( $membership_api_data as $data_key => $data_value ) {
+				$message .= "{$data_key}: {$data_value}\n";
+			}
+
+			$attachments = array( $_FILES['supporting_docs']['tmp_name'] );
+			add_filter( 'wp_mail_from_name', 'easl_mz_mail_form_name', 20 );
+			wp_mail( $to, $subject, $message, '', $attachments );
+			remove_filter( 'wp_mail_from_name', 'easl_mz_mail_form_name', 20 );
+		}
+
+		$redirect_url = easl_membership_thanks_page_url();
 		if ( $billing_type == 'offline_payment' ) {
-			$redirect_url = add_query_arg( 'membership_created', true, $redirect_url );
+			$redirect_url = add_query_arg( 'membership_status', 'created_offline', $redirect_url );
 		} elseif ( $billing_type == 'ingenico_epayments' ) {
 			$redirect_url = easl_membership_checkout_url();
 			$this->session->add_data( 'cart_data', $membership_cart_data );
@@ -363,6 +452,66 @@ class EASL_MZ_Manager {
 			exit();
 		}
 
+	}
+
+	public function handle_payment_feedback() {
+		$shaw_string = '';
+		$passphrase  = '123456789ABCDEfghijk';
+		$ingore_keys = array(
+			'mz_action',
+			'mz_status',
+			'membership_id',
+			'SHASIGN',
+		);
+
+		$membership_id   = ! empty( $_GET['membership_id'] ) ? $_GET['membership_id'] : false;
+		$response_digest = ! empty( $_GET['SHASIGN'] ) ? strtoupper( $_GET['SHASIGN'] ) : false;
+		$status          = ! empty( $_GET['mz_status'] ) ? $_GET['mz_status'] : false;
+		$invoice_number  = ! empty( $_GET['PAYID'] ) ? $_GET['PAYID'] : '';
+		if ( ! $response_digest || ! $membership_id ) {
+			die( "Are you sure you want to do this?" );
+		}
+		$feedback = array();
+		foreach ( $_GET as $item_key => $item_value ) {
+			if ( in_array( $item_key, $ingore_keys ) ) {
+				continue;
+			}
+			$feedback[ strtoupper( $item_key ) ] = $item_value;
+		}
+		reset( $feedback );
+		ksort( $feedback, SORT_NATURAL );
+		foreach ( $feedback as $item_key => $item_value ) {
+			$shaw_string .= $item_key . '=' . $item_value . $passphrase;
+		}
+		$digest = strtoupper( sha1( $shaw_string ) );
+		if ( $response_digest != $digest ) {
+			die( "Are you sure you want to do this?" );
+		}
+		$current_date = date( 'Y-m-d' );
+		$redirect_url = easl_membership_thanks_page_url();
+		if ( $status == 'accepted' ) {
+			$membership_api_data = array(
+				'billing_status'                      => 'paid',
+				'billing_invoice_id'                  => $invoice_number,
+				'billing_invoice_date'                => $current_date,
+				'billing_invoice_last_generated_date' => $current_date,
+				'billing_initiated_on'                => $current_date,
+			);
+			// Update Membership in CRM
+			$this->api->get_user_auth_token();
+			$updated = $this->api->update_membership( $membership_id, $membership_api_data );
+			if ( $updated ) {
+				$redirect_url = add_query_arg( array( 'membership_status' => 'paid_online' ), $redirect_url );
+			}
+		} elseif ( $status == 'declined' ) {
+			$redirect_url = add_query_arg( array( 'membership_status' => 'declined_online' ), $redirect_url );
+		} elseif ( $status == 'cancelled' ) {
+			$redirect_url = add_query_arg( array( 'membership_status' => 'cancelled_online' ), $redirect_url );
+		} else {
+			$redirect_url = add_query_arg( array( 'membership_status' => 'failed_online' ), $redirect_url );
+		}
+		wp_redirect( $redirect_url );
+		exit();
 	}
 
 	public function get_vc_shortcodes() {
@@ -414,9 +563,13 @@ class EASL_MZ_Manager {
 			'homeURL'        => site_url(),
 			'ajaxURL'        => admin_url( 'admin-ajax.php', $ssl_scheme ),
 			'ajaxActionName' => $this->ajax->get_action_name(),
+			'messages'       => $this->get_messages(),
 			'membershipFees' => easl_mz_get_membership_category_fees_calculation(),
 			'loaderHtml'     => '<div class="easl-mz-loader"><img src="' . get_stylesheet_directory_uri() . '/images/easl-loader.gif" alt="loading..."></div>',
 		);
+
+		$this->get_messages();
+
 		wp_localize_script( 'easl-mz-script', 'EASLMZSETTINGS', $script_settings );
 	}
 
@@ -436,6 +589,10 @@ class EASL_MZ_Manager {
 			$this->messages[ $key ] = array();
 		}
 		$this->messages[ $key ][] = $message;
+	}
+
+	public function get_messages() {
+		return $this->messages;
 	}
 
 	public function get_message( $key ) {

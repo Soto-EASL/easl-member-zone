@@ -83,11 +83,40 @@ function easl_mz_parse_crm_contact_data( $response ) {
 
 function easl_mz_parse_crm_membership_data( $response ) {
 	$data = array(
-		'id'             => $response->id,
-		'name'           => $response->name,
-		'description'    => $response->description,
-		'billing_amount' => $response->billing_amount,
-		'fee'            => $response->fee,
+		'id'                                  => $response->id,
+		'name'                                => $response->name,
+		'status'                              => $response->status,
+		'start_date'                          => $response->start_date,
+		'end_date'                            => $response->end_date,
+		'billing_status'                      => $response->billing_status,
+		'billing_type'                        => $response->billing_type,
+		'billing_amount'                      => $response->billing_amount,
+		'billing_invoice_id'                  => $response->billing_invoice_id,
+		'billing_invoice_date'                => $response->billing_invoice_date,
+		'billing_invoice_last_generated_date' => $response->billing_invoice_last_generated_date,
+		'billing_receipt_id'                  => $response->billing_receipt_id,
+		'billing_receipt_last_generated_date' => $response->billing_receipt_last_generated_date,
+		'billing_initiated_on'                => $response->billing_initiated_on,
+		'billing_confirmed_on'                => $response->billing_confirmed_on,
+		'billing_mode'                        => $response->billing_mode,
+		'billing_address_street'              => $response->billing_address_street,
+		'billing_address_postalcode'          => $response->billing_address_postalcode,
+		'billing_address_city'                => $response->billing_address_city,
+		'billing_address_state'               => $response->billing_address_state,
+		'billing_address_country'             => $response->billing_address_country,
+		'billing_address_georeg'              => $response->billing_address_georeg,
+		'approval_status'                     => $response->approval_status,
+		'approval_date'                       => $response->approval_date,
+		'billing_comment'                     => $response->billing_comment,
+		'jhep_online'                         => $response->jhep_online,
+		'jhep_hardcopy'                       => $response->jhep_hardcopy,
+		'jhephardcopy_recipient'              => $response->jhephardcopy_recipient,
+		'jhephardcopyotheraddress_street'     => $response->jhephardcopyotheraddress_street,
+		'jhephardcopyotheraddress_postalcode' => $response->jhephardcopyotheraddress_postalcode,
+		'jhephardcopyotheraddress_city'       => $response->jhephardcopyotheraddress_city,
+		'jhephardcopyotheraddress_state'      => $response->jhephardcopyotheraddress_state,
+		'jhephardcopyotheraddress_country'    => $response->jhephardcopyotheraddress_country,
+		'jhephardcopyotheraddress_georeg'     => $response->jhephardcopyotheraddress_georeg,
 	);
 
 	return $data;
@@ -208,7 +237,7 @@ function easl_mz_get_membership_fee( $membership_category, $add_currency_symbol 
 
 	$fee = isset( $fees[ $membership_category ] ) ? $fees[ $membership_category ] : '';
 	if ( $fee && $add_currency_symbol ) {
-		$fee += '€';
+		$fee .= '€';
 	}
 
 	return $fee;
@@ -327,6 +356,13 @@ function easl_mz_get_membership_status_name( $current_status ) {
 	return isset( $membership_statuses[ $current_status ] ) ? $membership_statuses[ $current_status ] : '';
 }
 
+function easl_mz_get_country_name( $country_code ) {
+
+	$countries = easl_mz_get_list_countries();
+
+	return isset( $countries[ $country_code ] ) ? $countries[ $country_code ] : '';
+}
+
 function easl_mz_is_birthday( $birth_date ) {
 	if ( ! $birth_date ) {
 		return false;
@@ -338,4 +374,22 @@ function easl_mz_is_birthday( $birth_date ) {
 	}
 
 	return true;
+}
+
+function easl_mz_get_formatted_address( $address, $line_separator = '<br/>' ) {
+	$components = array();
+	if ( ! empty( $address['street'] ) ) {
+		$components[] = $address['street'];
+	}
+	if ( ! empty( $address['city'] ) ) {
+		$components[] = $address['city'];
+	}
+	if ( ! empty( $address['state'] ) ) {
+		$components[] = $address['state'];
+	}
+	if ( ! empty( $address['postalcode'] ) ) {
+		$components[] = $address['postalcode'];
+	}
+
+	return implode( $line_separator, $components );
 }

@@ -168,6 +168,8 @@ body .mzms-button.mz-input-submit-wrap input[type="submit"] {
     border-radius: 0;
     display: block;
     min-width: 140px;
+    text-align: left;
+    font-size: inherit;
 }
 
 body .mzms-button:hover,
@@ -387,6 +389,7 @@ body .mzms-button::after {
     width: 83px;
     height: 83px;
     margin-right: 17px;
+    overflow: hidden;
 }
 
 .mz-member-avatar a {
@@ -1354,22 +1357,38 @@ body .mzms-button::after {
     padding-left: 0;
     min-height: 52px;
 }
+.mzms-inline-checkbox .easl-custom-checkbox {
+    padding-left: 30px;
+}
 
 .mzms-fields-con .easl-custom-checkbox::before {
     top: 22px;
     height: 40px;
     width: 40px;
 }
+.mzms-inline-checkbox .easl-custom-checkbox::before {
+    top: 0;
+    height: 20px;
+    width: 20px;
+}
 
 .mzms-fields-con .easl-custom-checkbox span {
     display: block;
     margin: 0;
+}
+.mzms-inline-checkbox .easl-custom-checkbox span {
+    display: inline-block;
 }
 
 .mzms-fields-con .easl-custom-checkbox::after {
     top: 32px;
     left: 9px;
     font-size: 22px;
+}
+.mzms-inline-checkbox .easl-custom-checkbox::after{
+    top: 0;
+    left: 0;
+    font-size: 13px;
 }
 
 .mzms-field-wrap {
@@ -1710,10 +1729,6 @@ body .mzms-button::after {
 }
 
 /*Membership Form*/
-.mzms-support-docs-row {
-    display: none;
-}
-
 .mzms-field-file-wrap {
     display: block;
     position: relative;
@@ -2090,6 +2105,18 @@ span.mzms-field-file-button {
 .easl-mz-new-membership-form {
     min-height: 420px;
 }
+#mz-membership-other-address-wrap,
+#mzf_jhephardcopy_recipient_wrapper,
+#mz-membership-jhe-pother-address-wrap,
+#mzms-support-docs-wrap{
+    display: none;
+}
+#mz-membership-other-address-wrap.easl-active,
+#mzf_jhephardcopy_recipient_wrapper.easl-active,
+#mz-membership-jhe-pother-address-wrap.easl-active,
+#mzms-support-docs-wrap.easl-active {
+    display: block;
+}
 
 /* Checkout form */
 .mzcheckout-summery {
@@ -2112,5 +2139,8 @@ span.mzms-field-file-button {
 }
 
 .mzcheckout-summery-label {
-    width: 110px;
+    width: 124px;
+}
+.mz-checkout-submit-row {
+    text-align: right;
 }
