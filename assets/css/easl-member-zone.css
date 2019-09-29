@@ -355,7 +355,7 @@ body .mzms-button::after {
     flex-direction: column;
     align-items: stretch;
     text-align: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     min-width: 180px;
     max-width: 220px;
 }
@@ -363,11 +363,14 @@ body .mzms-button::after {
 .easl-mz-header-member-card .easl-mz-header-buttons a {
     background: #62cff5;
     color: #005499;
-    padding: 14px 5px;
+    padding: 5px;
     font-family: "KnockoutHTF51Middleweight", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 20px;
-    margin: 0;
+    margin: 0 0 15px;
+}
+.easl-mz-header-member-card .easl-mz-header-buttons a:last-child {
+    margin-bottom: 0;
 }
 
 .easl-mz-header-member-card .easl-mz-header-buttons a:hover,
@@ -457,7 +460,7 @@ body .mzms-button::after {
 
 .easl-header-sticky-active .easl-mz-header-buttons {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     max-width: 100%;
 }
 
