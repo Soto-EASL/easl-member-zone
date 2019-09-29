@@ -6,20 +6,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @var $member array
  */
-$title         = 'My membership';
+$title = 'My membership';
 $template_base = easl_mz_get_manager()->path( 'CRM_VIEWS', '/memeber-details' );
 ?>
 
     <div class="easl-mz-membership-fields">
         <form id="easl-mz-membership-form" action="" method="post">
             <input type="hidden" name="id" id="mzf_id" value="<?php echo $member['id']; ?>">
+            <input type="hidden" name="dotb_public_profile_fields" id="mzf_dotb_public_profile_fields" value="<?php echo esc_attr( $member['dotb_public_profile_fields'] ); ?>">
             <div class="mzms-fields-row easl-mz-membership-header">
 				<?php if ( $title ): ?>
                     <h2 class="mz-page-heading"><?php echo $title; ?></h2>
 				<?php endif; ?>
                 <div class="mzms-field-wrap mzms-field-wrap-public">
                     <label for="mzms_dotb_public_profile" class="easl-custom-checkbox">
-                        <input type="checkbox" name="dotb_public_profile" id="mzms_dotb_public_profile" value="Yes" <?php checked( 'Yes', $member['dotb_public_profile'], true ); ?>>
+                        <input type="checkbox" name="dotb_public_profile" id="mzms_dotb_public_profile" value="Yes" <?php checked( in_array( $member['dotb_public_profile'], array(
+							'Yes',
+							'Yes_Partial'
+						) ), true ); ?>>
                         <span>Make my profile public</span>
                     </label>
                 </div>

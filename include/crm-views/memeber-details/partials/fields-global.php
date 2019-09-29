@@ -101,7 +101,9 @@ if ( ! defined( 'ABSPATH' ) ) {
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_birthdate_fz">Date of birth</label>
-            <div class="mzms-field-wrap">
+            <div class="mzms-field-wrap mzms-field-has-privacy<?php if ( ! easl_mz_field_is_public( 'birthdate', $member['dotb_public_profile'], $member['dotb_public_profile_fields'] ) ) {
+				echo ' mzms-privacy-enabled';
+			} ?>">
 				<?php
 				$date_of_birth           = $member['birthdate'];
 				$date_of_birth_formatted = '';
@@ -114,6 +116,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				?>
                 <input type="hidden" placeholder="" name="birthdate" id="mzf_birthdate" value="<?php echo esc_attr( $member['birthdate'] ); ?>" class="easl-mz-date">
                 <input type="text" placeholder="" name="" id="mzf_birthdate_fz" value="<?php echo esc_attr( $date_of_birth_formatted ); ?>" class="easl-mz-date">
+				<?php echo easl_mz_field_public_field( 'birthdate', $member['dotb_public_profile'], $member['dotb_public_profile_fields'] ); ?>
             </div>
         </div>
     </div>

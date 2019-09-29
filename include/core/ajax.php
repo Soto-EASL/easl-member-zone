@@ -211,6 +211,13 @@ class EASL_MZ_Ajax_Handler {
 		if ( count( $errors ) > 0 ) {
 			$this->respond_field_errors( $errors );
 		}
+		if ( ! isset( $request_data['dotb_public_profile'] ) ) {
+			$request_data['dotb_public_profile'] = 'No';
+		}
+		if ( $request_data['dotb_public_profile'] == 'No' ) {
+			$request_data['dotb_public_profile_fields'] = '';
+		}
+
 		unset( $request_data['id'] );
 		$updated = $this->api->update_member_personal_info( $member_id, $request_data );
 		if ( ! $updated ) {

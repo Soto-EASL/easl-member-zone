@@ -17,6 +17,7 @@ function easl_mz_parse_crm_contact_data( $response ) {
 		'picture'    => $response->picture,
 
 		'dotb_public_profile'           => $response->dotb_public_profile,
+		'dotb_public_profile_fields'    => $response->dotb_public_profile_fields,
 		'dotb_job_function'             => $response->dotb_job_function,
 		'dotb_job_function_other'       => $response->dotb_job_function_other,
 		'dotb_area_of_interest'         => $response->dotb_area_of_interest,
@@ -392,4 +393,29 @@ function easl_mz_get_formatted_address( $address, $line_separator = '<br/>' ) {
 	}
 
 	return implode( $line_separator, $components );
+}
+
+function easl_mz_field_is_public( $field, $public_type, $public_fields ) {
+	$public_fields = explode( ',', $public_fields );
+
+	if ( ! $public_type || ( $public_type == 'No' ) ) {
+		return false;
+	}
+	if ( ! $public_fields && ( $public_type == 'Yes' ) ) {
+		return true;
+	}
+	if ( is_array( $public_fields ) && in_array( $field, $public_fields ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+function easl_mz_field_public_field( $field, $public_type, $public_fields ) {
+//	$is_checked = '';
+//	if ( easl_mz_field_is_public( $field, $public_type, $public_fields ) ) {
+//		$is_checked .= ' checked="checked"';
+//	}
+
+	return '<span class="mzms-fields-privacy-icon ticon ticon-eye"></span>';
 }

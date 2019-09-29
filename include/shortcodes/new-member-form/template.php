@@ -57,7 +57,7 @@ easl_mz_enqueue_select_assets();
             <div class="mzms-fields-separator"></div>
             <div class="mzms-fields-row">
                 <div class="mzms-fields-con">
-                    <label for="mzms_personal_profile">Personal Profile</label>
+                    <label class="mzms-field-label" for="mzms_personal_profile">Personal Profile</label>
                     <div class="mzms-field-wrap">
                         <textarea name="description" id="mzms_personal_profile" placeholder=""></textarea>
                     </div>

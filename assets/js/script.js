@@ -131,6 +131,8 @@
             var $jobFunctionOther = $("#mzms-fields-con-dotb_job_function_other", $el);
             var $speciality = $("#mzf_dotb_easl_specialty", $el);
             var $specialityOther = $("#mzms-fields-con-dotb_easl_specialty_other", $el);
+            var $publicField = $("#mzms_dotb_public_profile", $el);
+            var $publicProfileFields = $("#mzf_dotb_public_profile_fields", $el);
 
             if ($jobFunction.val() === "other") {
                 $jobFunctionOther.removeClass("easl-mz-hide");
@@ -174,6 +176,26 @@
                 event.preventDefault();
                 $el.removeClass("mz-show-picture-change-form");
             });
+            $(".mzms-fields-privacy-icon", $el).on("click", function (event) {
+                var $fieldWrap = $(this).closest(".mzms-field-wrap");
+                event.preventDefault();
+                if (!$fieldWrap.hasClass("mzms-privacy-enabled")) {
+                    $fieldWrap.addClass("mzms-privacy-enabled");
+                } else {
+                    $fieldWrap.removeClass("mzms-privacy-enabled");
+                    !$publicField.prop("checked") && $publicField.prop("checked", true).closest("label").addClass("easl-active");
+                }
+                $publicProfileFields.val(_this.getMemberProfilePublicFieldsValue());
+            });
+            $publicField.on("click", function (event) {
+                if (!$(this).prop("checked")) {
+                    $(".mzms-field-has-privacy", $el).addClass("mzms-privacy-enabled");
+                    $publicProfileFields.val('');
+                } else {
+                    $(".mzms-field-has-privacy", $el).removeClass("mzms-privacy-enabled");
+                    $publicProfileFields.val(_this.getMemberProfilePublicFieldsValue());
+                }
+            });
 
             // Change password form events
             $(".mzms-change-password", $el).on("click", function (event) {
@@ -192,6 +214,13 @@
                 event.preventDefault();
                 _this.submitMemberShipForm($(this));
             });
+        },
+        getMemberProfilePublicFieldsValue: function ($el) {
+            var field_names = [];
+            $(".mzms-field-has-privacy").not(".mzms-privacy-enabled").find(":input").each(function () {
+                $(this).attr('name') && field_names.push($(this).attr('name'));
+            });
+            return field_names.join(',');
         },
         changePassword: function ($el) {
             var _this = this;

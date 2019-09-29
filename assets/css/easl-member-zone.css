@@ -47,6 +47,12 @@ body .mzms-field-wrap .select2-container--default .select2-selection--single .se
 .mzms-field-wrap .select2-container--default .select2-selection--multiple .select2-selection__choice {
     font-size: 12px;
 }
+.mzms-field-has-privacy .select2-container--default .select2-selection--single .select2-selection__arrow {
+    right: 38px;
+}
+.mzms-field-has-privacy  .select2-container .select2-selection--single .select2-selection__rendered {
+    padding-right: 58px;
+}
 
 .ui-datepicker .ui-datepicker-header {
     background: #62cff5;
@@ -1439,7 +1445,7 @@ body .mzms-button::after {
     height: 100px;
     color: #666;
     font-size: 14px;
-    padding: 13px 12px;
+    padding: 8px 12px;
     width: 100%;
     resize: vertical;
 }
@@ -1451,17 +1457,17 @@ body .mzms-button::after {
 }
 
 .mzms-field-has-privacy input[type="text"],
-.mzms-field-has-privacy input[type="email"] {
+.mzms-field-has-privacy input[type="email"],
+.mzms-field-has-privacy textarea {
     padding-right: 40px;
 }
 
 .mzms-field-has-privacy .mzms-fields-privacy-icon {
     position: absolute;
-    top: 50%;
+    top: 9px;
     right: 10px;
     font-size: 22px;
     cursor: pointer;
-    transform: translateY(-50%);
     color: #004b87;
 }
 
