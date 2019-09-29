@@ -212,14 +212,14 @@ if ( $member['last_name'] ) {
                 </div>
             </div>
         </div>
-        <div class="mzms-fields-row">
-            <div class="mzms-fields-con">
-                <div class="mzms-field-wrap mzms-inline-checkbox">
-                    <label for="mzf_agree_docs_terms" class="easl-custom-checkbox">
-                        <input type="checkbox" name="agree_docs_terms" id="mzf_agree_docs_terms" value="1">
-                        <span>I agree to terms and conditionsl</span>
-                    </label>
-                </div>
+    </div>
+    <div class="mzms-fields-row">
+        <div class="mzms-fields-con">
+            <div class="mzms-field-wrap mzms-inline-checkbox">
+                <label for="mzf_agree_docs_terms" class="easl-custom-checkbox">
+                    <input type="checkbox" name="terms_condition" id="mzf_terms_condition" value="1">
+                    <span>I agree to terms and conditions</span>
+                </label>
             </div>
         </div>
     </div>

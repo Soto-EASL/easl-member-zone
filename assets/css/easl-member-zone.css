@@ -1365,6 +1365,7 @@ body .mzms-button::after {
 }
 .mzms-inline-checkbox .easl-custom-checkbox {
     padding-left: 30px;
+    min-height: 10px;
 }
 
 .mzms-fields-con .easl-custom-checkbox::before {
