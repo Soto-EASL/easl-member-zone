@@ -1641,19 +1641,19 @@ body .mzms-button::after {
 .mzms-birthday-box {
     background-color: #004b87;
     background-image: url("../images/icon-bd-cake-white.png");
-    background-position: 15px center;
-    background-size: 50px auto;
+    background-position: 8px 15px;
+    background-size: 38px auto;
     background-repeat: no-repeat;
-    padding: 15px 25px 15px 75px;
-    min-height: 80px;
+    padding: 15px 10px 15px 58px;
+    min-height: 74px;
     color: #fff;
 }
 
 .mzms-birthday-box strong {
     font-family: "KnockoutHTF51Middleweight", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 21px;
+    font-size: 15px;
     font-weight: 400;
-    line-height: 16px;
+    line-height: 20px;
     display: block;
 }
 

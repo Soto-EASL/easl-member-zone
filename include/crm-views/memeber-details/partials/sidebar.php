@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="mzms-sbitem">
                 <div class="mzms-birthday-box">
                     <strong>Happy Birthday</strong>
-                    <span>Best wishes from the all the EASL team</span>
+                    <span>Best wishes from the EASL team.</span>
                 </div>
             </div>
 		<?php endif; ?>
