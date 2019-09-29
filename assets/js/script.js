@@ -267,6 +267,7 @@
                     if (response.Status === 200) {
                         // TODO - Replace with a modal
                         alert("Your password has been changed successfully!");
+                        $el.removeClass("mz-show-password-change-form");
                     }
                     if (response.Status === 400) {
                         // TODO - Replace with a modal
