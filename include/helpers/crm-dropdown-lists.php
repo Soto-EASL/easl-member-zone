@@ -308,23 +308,24 @@ function easl_mz_get_list_job_functions( $current = '' ) {
 
 function easl_mz_get_list_area_of_interests( $current = '' ) {
 	$area_of_interests = array(
-		'alcoholic_liver_disease'       => 'Alcoholic Liver Disease',
-		'nafld_nash'                    => 'Non Alcoholic Fatty Liver Disease and NASH',
-		'autoimmune_ccld'               => 'Autoimmune and Chronic Cholestatic Liver Diseases',
-		'cirrhosis'                     => 'Cirrhosis and Complications',
-		'liver_transplantation_surgery' => 'Liver Transplantation / Surgery',
+		'basic_scientist'               => 'Basic Scientist',
+		'clinical_scientist'            => 'Clinical Scientist',
 		'acute_liver_failure'           => 'Acute Liver Failure',
-		'liver_tumours'                 => 'Liver Tumours',
-		'molecular_cellular_bilogoy'    => 'Molecular and Cellular Biology',
-		'pediatric_hepatology'          => 'Paediatric Hepatology',
-		'rare_diseases_liver'           => 'Rare Diseases of the Liver',
-		'viral_hepatitis'               => 'Viral Hepatitis',
-		'fibrosis'                      => 'Fibrosis',
-		'basic_translational_scien'     => 'Basic and translational science',
-		'public_health'                 => 'Public health',
-		'imaging_interventional'        => 'Imaging and interventional',
-		'general_hepatology'            => 'General hepatology',
-		'dili'                          => 'DILI',
+		'alcohol_related_liver_disease' => 'Alcohol Related Liver Disease',
+		'autoimmune_liver_disease'      => 'Autoimmune Liver Disease',
+		'basic_translational_science'   => 'Basic Translational Science',
+		'complications_of_cirrhosis'    => 'Complications Of Cirrhosis',
+		'fibrosis_pathogenesis'         => 'Fibrosis Pathogenesis',
+		'general_hepatology'            => 'General Hepatology',
+		'imaging_interventional'        => 'Imaging Interventional',
+		'liver_transplantation'         => 'Liver Transplantation',
+		'liver_tumors'                  => 'Liver Tumors',
+		'molecular_cellular_biology'    => 'Molecular Cellular Biology',
+		'nafld_nash'                    => 'Non Alcoholic Fatty Liver Disease and NASH',
+		'pediatric_hepatology'          => 'Pediatric Hepatology',
+		'public_health'                 => 'Public Health',
+		'rare_liver_diseases'           => 'Rare Liver Diseases',
+		'viral_hepatitis'               => 'Viral Hepatitis'
 	);
 
 	return $area_of_interests;
