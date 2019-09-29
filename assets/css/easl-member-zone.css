@@ -1690,16 +1690,16 @@ body .mzms-button::after {
 }
 
 .mzms-modal-cancel-wrap {
-    text-align: right;
+    text-align: left;
 }
 
 .easl-mz-membership-modal-inner .mzms-button {
     min-width: 110px;
-    text-align: center;
+    text-align: left;
 }
 
 .mzms-modal-submit-wrap {
-    text-align: left;
+    text-align: right;
 }
 
 .easl-mz-membership-modal-inner {

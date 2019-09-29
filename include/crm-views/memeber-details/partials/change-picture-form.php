@@ -27,13 +27,13 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="mzms-fields-separator"></div>
             <div class="mzms-fields-row easl-row easl-row-col-2" style="margin-bottom: 0;">
                 <div class="easl-col">
-                    <div class="easl-col-inner mzms-fields-con mzms-modal-submit-wrap">
-                        <button class="mzms-button mzms-change-picture-submit mzms-modal-submit" href="#">Go ahead</button>
+                    <div class="easl-col-inner mzms-fields-con mzms-modal-cancel-wrap">
+                        <a class="mzms-button mzms-change-picture-cancel mzms-modal-cancel" href="#">Cancel</a>
                     </div>
                 </div>
                 <div class="easl-col">
-                    <div class="easl-col-inner mzms-fields-con mzms-modal-cancel-wrap">
-                        <a class="mzms-button mzms-change-picture-cancel mzms-modal-cancel" href="#">Cancel</a>
+                    <div class="easl-col-inner mzms-fields-con mzms-modal-submit-wrap">
+                        <button class="mzms-button mzms-change-picture-submit mzms-modal-submit" href="#">Go ahead</button>
                     </div>
                 </div>
             </div>
