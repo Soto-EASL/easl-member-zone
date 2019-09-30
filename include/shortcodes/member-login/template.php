@@ -43,7 +43,9 @@ if ( ! easl_mz_is_member_logged_in() ):
 		}
 		$buttons_to_display[] = sprintf( $button_html_format, esc_url( $button_url ), $button_new_tab, strip_tags( $button_title ) );
 	}
-	$buttons_to_display[] = '<a href="#" class="easl-header-mz-buttons easl-mz-header-login-button">' . $member_login_link_title . '</a>';
+	if ( $member_login_link_title ) {
+		$buttons_to_display[] = '<a href="#" class="easl-header-mz-buttons easl-mz-header-login-button">' . $member_login_link_title . '</a>';
+	}
 	?>
     <div class="header-aside-buttons mz-loggedout-buttons">
 		<?php echo implode( '<span class="mz-buttonsep">|</span>', $buttons_to_display ); ?>
