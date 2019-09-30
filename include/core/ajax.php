@@ -306,7 +306,7 @@ class EASL_MZ_Ajax_Handler {
 			$this->respond( 'Error!', 405 );
 		}
 
-		$membership_page = get_field( 'membership_plan_url', 'option' );
+		$membership_page = easl_member_new_membership_form_url();
 		if ( ! $membership_page ) {
 			$membership_page = get_field( 'member_dashboard_url', 'option' );
 		}

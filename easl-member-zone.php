@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-define( 'EASL_MZ_VERSION', '1.0' );
+define( 'EASL_MZ_VERSION', '1.0.1.1' );
 
 class EASL_MZ_Manager {
 	/**
@@ -184,7 +184,7 @@ class EASL_MZ_Manager {
 
 		$auth_response_status = $this->api->get_auth_token( $member_login, $member_password, true );
 		if ( ! $auth_response_status ) {
-			$this->set_message( 'login_error', 'Invalid username/password.' );
+			$this->set_message( 'login_error', 'Invalid username or password.' );
 
 			return false;
 		}
@@ -366,7 +366,7 @@ class EASL_MZ_Manager {
 		}
 
 		$status = 'in_progress';
-		if ( $renew ) {
+		if ( $renew && ( $current_end_date != 'now' ) ) {
 			$status = 'active';
 		}
 
@@ -458,7 +458,7 @@ class EASL_MZ_Manager {
 		$redirect_url = easl_membership_thanks_page_url();
 		if ( $billing_type == 'offline_payment' ) {
 			$redirect_url = add_query_arg( 'membership_status', 'created_offline', $redirect_url );
-		} elseif ( $billing_type == 'ingenico_epayments' ) {
+		} elseif ( $billing_type == 'online_cc_indiv' ) {
 			$redirect_url = easl_membership_checkout_url();
 			$this->session->add_data( 'cart_data', $membership_cart_data );
 			$this->session->save_session_data();

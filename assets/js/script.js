@@ -489,6 +489,11 @@
                     $("#mz-membership-jhe-pother-address-wrap").removeClass("easl-active");
                 }
             });
+            $("form222", $el).on("submit", function (event) {
+                if (!$("#mzf_terms_condition", $el).prop("checked")) {
+                    event.preventDefault();
+                }
+            });
         },
         getNewMembershipForm: function () {
             var _this = this;

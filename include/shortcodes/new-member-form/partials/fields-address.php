@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <div class="mzms-fields-con">
         <label class="mzms-field-label" for="dotb_tmp_account">Organisation / Institution / Company</label>
         <div class="mzms-field-wrap">
-            <input type="text" placeholder="" name="dotb_tmp_account" id="mzf_dotb_tmp_account" value="">
+            <input type="text" placeholder="" name="dotb_tmp_account" id="mzf_dotb_tmp_account" value="" autocomplete="off">
         </div>
     </div>
 </div>
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="mzms-fields-con">
 					<label class="mzms-field-label" for="mzf_primary_address_street">Street</label>
 					<div class="mzms-field-wrap">
-						<textarea name="primary_address_street" id="mzf_primary_address_street" placeholder=""></textarea>
+						<textarea name="primary_address_street" id="mzf_primary_address_street" placeholder="" autocomplete="off"></textarea>
 					</div>
 				</div>
 			</div>
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="mzms-fields-con">
 					<label class="mzms-field-label" for="mzf_primary_address_city">City</label>
 					<div class="mzms-field-wrap">
-						<input type="text" placeholder="" name="primary_address_city" id="mzf_primary_address_city" value="">
+						<input type="text" placeholder="" name="primary_address_city" id="mzf_primary_address_city" value="" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="mzms-fields-con">
 					<label class="mzms-field-label" for="mzf_primary_address_state">State</label>
 					<div class="mzms-field-wrap">
-						<input type="text" placeholder="" name="primary_address_state" id="mzf_primary_address_state" value="">
+						<input type="text" placeholder="" name="primary_address_state" id="mzf_primary_address_state" value="" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="mzms-fields-con">
 					<label class="mzms-field-label" for="mzf_primary_address_postalcode">Postal code</label>
 					<div class="mzms-field-wrap">
-						<input type="text" placeholder="" name="primary_address_postalcode" id="mzf_primary_address_postalcode" value="">
+						<input type="text" placeholder="" name="primary_address_postalcode" id="mzf_primary_address_postalcode" value="" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -69,7 +69,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="mzms-fields-con">
 					<label class="mzms-field-label" for="mzf_alt_address_street">Street</label>
 					<div class="mzms-field-wrap">
-						<textarea name="alt_address_street" id="mzf_alt_address_street" placeholder=""></textarea>
+						<textarea name="alt_address_street" id="mzf_alt_address_street" placeholder="" autocomplete="off"></textarea>
 					</div>
 				</div>
 			</div>
@@ -77,7 +77,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="mzms-fields-con">
 					<label class="mzms-field-label" for="mzf_alt_address_city">City</label>
 					<div class="mzms-field-wrap">
-						<input type="text" placeholder="" name="alt_address_city" id="mzf_alt_address_city" value="">
+						<input type="text" placeholder="" name="alt_address_city" id="mzf_alt_address_city" value="" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -85,7 +85,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="mzms-fields-con">
 					<label class="mzms-field-label" for="mzf_alt_address_state">State</label>
 					<div class="mzms-field-wrap">
-						<input type="text" placeholder="" name="alt_address_state" id="mzf_alt_address_state" value="">
+						<input type="text" placeholder="" name="alt_address_state" id="mzf_alt_address_state" value="" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -93,7 +93,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="mzms-fields-con">
 					<label class="mzms-field-label" for="mzf_alt_address_postalcode">Postal code</label>
 					<div class="mzms-field-wrap">
-						<input type="text" placeholder="" name="alt_address_postalcode" id="mzf_alt_address_postalcode" value="">
+						<input type="text" placeholder="" name="alt_address_postalcode" id="mzf_alt_address_postalcode" value="" autocomplete="off">
 					</div>
 				</div>
 			</div>

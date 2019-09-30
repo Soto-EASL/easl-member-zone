@@ -24,7 +24,10 @@ function easl_member_new_membership_form_url( $renew = false ) {
 	$url = get_field( 'membership_plan_url', 'option' );
 	if ( $renew ) {
 		$url = add_query_arg( 'mz_renew', 1, $url );
+	}else{
+		$url = add_query_arg( 'mz_add', 1, $url );
 	}
+
 
 	return $url;
 }

@@ -210,7 +210,7 @@ body .mzms-button::after {
 .mz-loggedout-buttons.header-aside-buttons {
     position: relative;
     overflow: hidden;
-    width: 510px;
+    width: 630px;
 }
 
 .easl-header-sticky-active .mz-loggedout-buttons.header-aside-buttons {
@@ -222,7 +222,7 @@ body .mzms-button::after {
     right: 0;
     top: 0;
     background: #454545;
-    width: 100%;
+    width: 510px;
     padding: 5px;
     height: 61px;
     visibility: hidden;
@@ -234,11 +234,23 @@ body .mzms-button::after {
     transform: translateY(0);
     visibility: visible;
 }
+.easl-mz-login-form.mz-login-form-has-error {
+    padding-left: 120px;
+    background: #d0011b;
+    color: #fff;
+    width: 100%;
+}
 
-.mz-login-errors {
+.mz-login-row.mz-login-errors {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 110px;
+    line-height: 1.4em;
     text-align: left;
-    color: #de2a57;
-    margin-bottom: 8px;
+    font-size: 12px;
+    padding: 4px 0 0 12px;
 }
 
 .mz-login-row {

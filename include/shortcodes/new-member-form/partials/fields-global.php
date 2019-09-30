@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con" id="mzms-fields-con-dotb_job_function_other">
             <label class="mzms-field-label" for="mzf_dotb_job_function_other">Job function - Other</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="dotb_job_function_other" id="mzf_mzms_first_name" value="">
+                <input type="text" placeholder="" name="dotb_job_function_other" id="mzf_mzms_first_name" value="" autocomplete="off">
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_title">Profession / Job Title</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="title" id="mzf_title" value="">
+                <input type="text" placeholder="" name="title" id="mzf_title" value="" autocomplete="off">
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con" id="mzms-fields-con-dotb_easl_specialty_other">
             <label class="mzms-field-label" for="mzf_dotb_easl_specialty_other">Specialty - Other</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="dotb_easl_specialty_other" id="mzf_dotb_easl_specialty_other" value="">
+                <input type="text" placeholder="" name="dotb_easl_specialty_other" id="mzf_dotb_easl_specialty_other" value="" autocomplete="off">
             </div>
         </div>
     </div>
@@ -102,7 +102,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_birthdate">Date of birth</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="birthdate" id="mzf_birthdate" value="" class="easl-mz-date">
+                <input type="text" placeholder="" name="birthdate" id="mzf_birthdate" value="" class="easl-mz-date" autocomplete="off">
             </div>
         </div>
     </div>

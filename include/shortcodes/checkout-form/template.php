@@ -112,6 +112,7 @@ if ( easl_mz_is_member_logged_in() ):
 
 					//$order_id = $membership['id'] . time();
 					$order_id      = time();
+
 					$accept_url    = add_query_arg( array(
 						'mz_action'     => 'payment_feedback',
 						'mz_status'     => 'accepted',
@@ -198,8 +199,8 @@ if ( easl_mz_is_member_logged_in() ):
 
                     <div class="mzcheckout-summery">
                         <div class="mzcheckout-summery-row">
-                            <span class="mzcheckout-summery-label">Order ID:</span>
-                            <span class="mzcheckout-summery-value"><?php echo $order_id; ?></span>
+                            <span class="mzcheckout-summery-label">Membership ID:</span>
+                            <span class="mzcheckout-summery-value"><?php echo $membership['id']; ?></span>
                         </div>
                         <div class="mzcheckout-summery-row">
                             <span class="mzcheckout-summery-label">Order Title:</span>

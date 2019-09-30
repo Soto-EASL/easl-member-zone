@@ -37,6 +37,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </div>
             </div>
 		<?php endif; ?>
+        <?php
+        $membersip_sidear_items = false;
+        if($membersip_sidear_items) :
+        ?>
         <div class="mzms-sbitem">
             <div class="mzms-icon-cta">
                 <div class="mzms-icon-cta-inner">
@@ -67,12 +71,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </div>
             </div>
         </div>
+        <?php endif; ?>
 		<?php if ( in_array( $member['dotb_mb_current_status'], array( 'expired', 'active' ) ) ): ?>
             <div class="mzms-sbitem">
                 <a class="mzms-button" href="<?php echo easl_member_new_membership_form_url(true) ?>">Renew Membership</a>
             </div>
-		<?php endif; ?>
-		<?php if ( ! $member['dotb_mb_id'] ): ?>
+		<?php elseif ( ! $member['dotb_mb_id'] ): ?>
             <div class="mzms-sbitem">
                 <a class="mzms-button" href="<?php echo easl_member_new_membership_form_url(false); ?>">Add Membership</a>
             </div>

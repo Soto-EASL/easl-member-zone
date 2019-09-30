@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_first_name">First Name</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="first_name" id="mzf_first_name" value="">
+                <input type="text" placeholder="" name="first_name" id="mzf_first_name" value="" autocomplete="off">
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_last_name">Last Name</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="last_name" id="mzf_last_name" value="">
+                <input type="text" placeholder="" name="last_name" id="mzf_last_name" value="" autocomplete="off">
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_email1">Email</label>
             <div class="mzms-field-wrap">
-                <input type="email" placeholder="" name="email1" id="mzf_email1" value="">
+                <input type="email" placeholder="" name="email1" id="mzf_email1" value="" autocomplete="off">
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_password">Password</label>
             <div class="mzms-field-wrap">
-                <input type="password" placeholder="" name="password" id="mzf_password" value="">
+                <input type="password" placeholder="" name="password" id="mzf_password" value="" autocomplete="off">
             </div>
         </div>
     </div>
@@ -55,7 +55,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_password2">Confirm password</label>
             <div class="mzms-field-wrap">
-                <input type="password" placeholder="" name="password2" id="mzf_password2" value="">
+                <input type="password" placeholder="" name="password2" id="mzf_password2" value="" autocomplete="off">
             </div>
         </div>
     </div>

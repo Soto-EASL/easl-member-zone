@@ -30,8 +30,9 @@ $button_html_format = '<a href="%s" class="easl-header-mz-buttons"%s>%s</a>';
 $login_error_messages = easl_mz_get_manager()->get_message( 'login_error' );
 $login_form_class     = 'easl-mz-login-form';
 if ( $login_error_messages ) {
-	$login_form_class .= ' easl-active';
+	$login_form_class .= ' mz-login-form-has-error easl-active';
 }
+
 if ( ! easl_mz_is_member_logged_in() ):
 	while ( have_rows( 'mz_logged_out_links', 'option' ) ) {
 		the_row();
@@ -42,6 +43,11 @@ if ( ! easl_mz_is_member_logged_in() ):
 			$button_new_tab = ' target="_blank"';
 		}
 		$buttons_to_display[] = sprintf( $button_html_format, esc_url( $button_url ), $button_new_tab, strip_tags( $button_title ) );
+	}
+	if ( ! $member_login_link_title && is_user_logged_in() && current_user_can( 'manage_options' ) ) {
+		$member_login_link_title = 'Member Login';
+
+		array_pop( $buttons_to_display );
 	}
 	if ( $member_login_link_title ) {
 		$buttons_to_display[] = '<a href="#" class="easl-header-mz-buttons easl-mz-header-login-button">' . $member_login_link_title . '</a>';
