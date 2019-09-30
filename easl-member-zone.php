@@ -138,6 +138,22 @@ class EASL_MZ_Manager {
 		$this->handle_member_login();
 		$this->handle_member_logout();
 		$this->handle_mz_actions();
+
+		if ( easl_mz_is_member_logged_in() ) {
+			add_action( 'template_redirect', array( $this, 'maybe_disable_wp_rocket_cache' ) );
+		}
+	}
+
+	public function maybe_disable_wp_rocket_cache() {
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+			define( 'DONOTCACHEPAGE', true );
+		}
+
+		if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
+			define( 'DONOTROCKETOPTIMIZE', true );
+		}
+
+		return true;
 	}
 
 	public function handle_mz_actions() {
