@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_title">Profession / Job Title</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="title" id="mzf_title" value="<?php echo esc_attr( $member['title'] ); ?>">
+                <input type="text" placeholder="" name="title" id="mzf_title" value="<?php echo esc_attr( $member['title'] ); ?>" autocomplete="off">
             </div>
         </div>
     </div>
@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con" id="mzms-fields-con-dotb_easl_specialty_other">
             <label class="mzms-field-label" for="mzf_dotb_easl_specialty_other">Specialty - Other</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="dotb_easl_specialty_other" id="mzf_dotb_easl_specialty_other" value="<?php echo esc_attr( $member['dotb_easl_specialty_other'] ); ?>">
+                <input type="text" placeholder="" name="dotb_easl_specialty_other" id="mzf_dotb_easl_specialty_other" value="<?php echo esc_attr( $member['dotb_easl_specialty_other'] ); ?>" autocomplete="off">
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_department">Department</label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="department" id="mzf_department" value="<?php echo esc_attr( $member['department'] ); ?>">
+                <input type="text" placeholder="" name="department" id="mzf_department" value="<?php echo esc_attr( $member['department'] ); ?>" autocomplete="off">
             </div>
         </div>
     </div>
@@ -115,7 +115,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				}
 				?>
                 <input type="hidden" placeholder="" name="birthdate" id="mzf_birthdate" value="<?php echo esc_attr( $member['birthdate'] ); ?>" class="easl-mz-date">
-                <input type="text" placeholder="" name="" id="mzf_birthdate_fz" value="<?php echo esc_attr( $date_of_birth_formatted ); ?>" class="easl-mz-date">
+                <input type="text" placeholder="" name="" id="mzf_birthdate_fz" value="<?php echo esc_attr( $date_of_birth_formatted ); ?>" class="easl-mz-date" autocomplete="off">
 				<?php echo easl_mz_field_public_field( 'birthdate', $member['dotb_public_profile'], $member['dotb_public_profile_fields'] ); ?>
             </div>
         </div>

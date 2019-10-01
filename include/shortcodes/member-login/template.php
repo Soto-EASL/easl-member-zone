@@ -20,6 +20,7 @@ extract( $atts );
 $css_animation = $this->getCSSAnimation( $css_animation );
 
 $member_dashboard_url     = get_field( 'member_dashboard_url', 'option' );
+$members_profile_page     = get_field( 'member_dashboard_url', 'option' );
 $member_zone_button_title = get_field( 'member_zone_button_title', 'option' );
 $member_login_link_title  = get_field( 'member_login_link_title', 'option' );
 

@@ -1764,6 +1764,9 @@ body .mzms-button::after {
     height: 40px;
     border: 1px solid #d1d0d0;
 }
+.easl-mz-field-has-error .mzms-field-file-wrap {
+    border-color: #de2a57;
+}
 
 .mzms-field-file-wrap input[type="file"] {
     width: .1px;

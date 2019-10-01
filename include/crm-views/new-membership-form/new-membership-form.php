@@ -23,8 +23,8 @@ if ( $member['last_name'] ) {
 ?>
 <form action="" method="post" enctype="multipart/form-data">
 
-	<?php if ( isset( $messages['membership_error'] ) && count($messages['membership_error']) > 0 ): ?>
-        <div class="easl-mz-error"><?php echo implode ('<br/>', $messages['membership_error']); ?></div>
+	<?php if ( isset( $messages['membership_error'] ) && count( $messages['membership_error'] ) > 0 ): ?>
+        <div class="easl-mz-error"><?php echo implode( '<br/>', $messages['membership_error'] ); ?></div>
 	<?php endif; ?>
     <input type="hidden" name="mz_action" value="create_membership">
     <input type="hidden" name="mz_member_id" value="<?php echo $member['id']; ?>">
@@ -33,6 +33,8 @@ if ( $member['last_name'] ) {
     <input type="hidden" name="mz_current_cat" value="<?php echo $member['dotb_mb_category']; ?>">
     <input type="hidden" name="mz_current_end_date" value="<?php echo $member['dotb_mb_current_end_date']; ?>">
     <input type="hidden" name="mz_member_name" value="<?php echo implode( ' ', $member_name_parts ); ?>">
+    <input type="hidden" name="mz_member_fname" value="<?php echo $member['first_name']; ?>">
+    <input type="hidden" name="mz_member_lname" value="<?php echo $member['last_name']; ?>">
 
     <div class="mzms-fields-row easl-row easl-row-col-2">
         <div class="easl-col">
@@ -101,7 +103,7 @@ if ( $member['last_name'] ) {
             <div class="mzms-fields-con">
                 <label class="mzms-field-label" for="mzf_billing_address_street">Street</label>
                 <div class="mzms-field-wrap">
-                    <textarea name="billing_address_street" id="mzf_billing_address_street" placeholder=""><?php echo esc_textarea( $member['billing_address_street'] ); ?></textarea>
+                    <textarea name="billing_address_street" id="mzf_billing_address_street" placeholder="" autocomplete="off"><?php echo esc_textarea( $member['billing_address_street'] ); ?></textarea>
                 </div>
             </div>
         </div>
@@ -110,7 +112,7 @@ if ( $member['last_name'] ) {
                 <div class="easl-col-inner mzms-fields-con">
                     <label class="mzms-field-label" for="mzf_billing_address_city">City</label>
                     <div class="mzms-field-wrap">
-                        <input type="text" placeholder="" name="billing_address_city" id="mzf_billing_address_city" value="<?php echo esc_attr( $member['billing_address_city'] ); ?>">
+                        <input type="text" placeholder="" name="billing_address_city" id="mzf_billing_address_city" value="<?php echo esc_attr( $member['billing_address_city'] ); ?>" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -118,7 +120,7 @@ if ( $member['last_name'] ) {
                 <div class="easl-col-inner mzms-fields-con">
                     <label class="mzms-field-label" for="mzf_billing_address_state">State</label>
                     <div class="mzms-field-wrap">
-                        <input type="text" placeholder="" name="billing_address_state" id="mzf_billing_address_state" value="<?php echo esc_attr( $member['billing_address_state'] ); ?>">
+                        <input type="text" placeholder="" name="billing_address_state" id="mzf_billing_address_state" value="<?php echo esc_attr( $member['billing_address_state'] ); ?>" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -128,7 +130,7 @@ if ( $member['last_name'] ) {
                 <div class="easl-col-inner mzms-fields-con">
                     <label class="mzms-field-label" for="mzf_billing_address_postalcode">Postal code</label>
                     <div class="mzms-field-wrap">
-                        <input type="text" placeholder="" name="billing_address_postalcode" id="mzf_billing_address_postalcode" value="<?php echo esc_attr( $member['billing_address_postalcode'] ); ?>">
+                        <input type="text" placeholder="" name="billing_address_postalcode" id="mzf_billing_address_postalcode" value="<?php echo esc_attr( $member['billing_address_postalcode'] ); ?>" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -153,7 +155,7 @@ if ( $member['last_name'] ) {
             <div class="mzms-fields-con">
                 <label class="mzms-field-label" for="mzf_jhephardcopyotheraddress_street">Street</label>
                 <div class="mzms-field-wrap">
-                    <textarea name="jhephardcopyotheraddress_street" id="mzf_jhephardcopyotheraddress_street" placeholder=""><?php echo esc_textarea( $member['jhephardcopyotheraddress_street'] ); ?></textarea>
+                    <textarea name="jhephardcopyotheraddress_street" id="mzf_jhephardcopyotheraddress_street" placeholder="" autocomplete="off"><?php echo esc_textarea( $member['jhephardcopyotheraddress_street'] ); ?></textarea>
                 </div>
             </div>
         </div>
@@ -162,7 +164,7 @@ if ( $member['last_name'] ) {
                 <div class="easl-col-inner mzms-fields-con">
                     <label class="mzms-field-label" for="mzf_jhephardcopyotheraddress_city">City</label>
                     <div class="mzms-field-wrap">
-                        <input type="text" placeholder="" name="jhephardcopyotheraddress_city" id="mzf_jhephardcopyotheraddress_city" value="<?php echo esc_attr( $member['jhephardcopyotheraddress_city'] ); ?>">
+                        <input type="text" placeholder="" name="jhephardcopyotheraddress_city" id="mzf_jhephardcopyotheraddress_city" value="<?php echo esc_attr( $member['jhephardcopyotheraddress_city'] ); ?>" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -170,7 +172,7 @@ if ( $member['last_name'] ) {
                 <div class="easl-col-inner mzms-fields-con">
                     <label class="mzms-field-label" for="mzf_jhephardcopyotheraddress_state">State</label>
                     <div class="mzms-field-wrap">
-                        <input type="text" placeholder="" name="jhephardcopyotheraddress_state" id="mzf_jhephardcopyotheraddress_state" value="<?php echo esc_attr( $member['jhephardcopyotheraddress_state'] ); ?>">
+                        <input type="text" placeholder="" name="jhephardcopyotheraddress_state" id="mzf_jhephardcopyotheraddress_state" value="<?php echo esc_attr( $member['jhephardcopyotheraddress_state'] ); ?>" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -180,7 +182,7 @@ if ( $member['last_name'] ) {
                 <div class="easl-col-inner mzms-fields-con">
                     <label class="mzms-field-label" for="mzf_jhephardcopyotheraddress_postalcode">Postal code</label>
                     <div class="mzms-field-wrap">
-                        <input type="text" placeholder="" name="jhephardcopyotheraddress_postalcode" id="mzf_jhephardcopyotheraddress_postalcode" value="<?php echo esc_attr( $member['jhephardcopyotheraddress_postalcode'] ); ?>">
+                        <input type="text" placeholder="" name="jhephardcopyotheraddress_postalcode" id="mzf_jhephardcopyotheraddress_postalcode" value="<?php echo esc_attr( $member['jhephardcopyotheraddress_postalcode'] ); ?>" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -206,7 +208,7 @@ if ( $member['last_name'] ) {
                 <div class="mzms-field-wrap">
                     <label class="mzms-field-file-wrap">
                         <span class="mzms-field-file-label"></span>
-                        <input type="file" name="supporting_docs" accept="image/*,.pdf,application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                        <input type="file" name="supporting_docs" id="mzf_supporting_docs" accept="image/*,.pdf,application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                         <span class="mzms-field-file-button"><span class="ticon ticon-folder-open"></span> Browse</span>
                     </label>
                 </div>

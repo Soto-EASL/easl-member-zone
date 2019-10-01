@@ -180,7 +180,7 @@ class EASL_MZ_Manager {
 		}
 		$member_login    = $_POST['mz_member_login'];
 		$member_password = $_POST['mz_member_password'];
-		$redirect        = $_POST['mz_rdirect_url'];
+		$redirect        = get_field( 'member_profile_url', 'option' );
 
 		$auth_response_status = $this->api->get_auth_token( $member_login, $member_password, true );
 		if ( ! $auth_response_status ) {
@@ -267,6 +267,8 @@ class EASL_MZ_Manager {
 		$member_email           = $_POST['mz_member_email'];
 		$member_cat             = $_POST['membership_category'];
 		$member_name            = $_POST['mz_member_name'];
+		$first_name             = $_POST['mz_member_fname'];
+		$last_name              = $_POST['mz_member_lname'];
 		$renew                  = $_POST['mz_renew'];
 		$current_end_date       = $_POST['mz_current_end_date'];
 		$current_cat            = $_POST['mz_current_cat'];
@@ -356,18 +358,19 @@ class EASL_MZ_Manager {
 			$billing_type = 'ingenico_epayments';
 		}
 
+		$status = 'in_progress';
+		if ( $renew && ( $current_end_date != 'now' ) ) {
+			$status = 'active';
+		}
+
 		switch ( $_POST['membership_payment_type'] ) {
 			case 'ingenico_epayments':
 				$billing_type = 'online_cc_indiv';
 				break;
 			case 'offline_payment':
 				$billing_type = 'offline_payment';
+				$status       = 'in_progress';
 				break;
-		}
-
-		$status = 'in_progress';
-		if ( $renew && ( $current_end_date != 'now' ) ) {
-			$status = 'active';
 		}
 
 		if ( ! in_array( $billing_mode, array( 'c1', 'c2', 'other' ) ) ) {
@@ -442,7 +445,7 @@ class EASL_MZ_Manager {
 
 		if ( $require_proof && ! empty( $_FILES['supporting_docs'] ) && ( $_FILES['supporting_docs']['error'] === UPLOAD_ERR_OK ) ) {
 			$subject = 'Membership proof from EASL Memberzone';
-			$to      = 'mmhasaneee@gmail.com';
+			$to      = 'membership@easloffice.eu';
 			$message = "Membership ID: {$membership_id}\n";
 			$message .= "Member ID: {$member_id}\n";
 			foreach ( $membership_api_data as $data_key => $data_value ) {
@@ -457,7 +460,12 @@ class EASL_MZ_Manager {
 
 		$redirect_url = easl_membership_thanks_page_url();
 		if ( $billing_type == 'offline_payment' ) {
-			$redirect_url = add_query_arg( 'membership_status', 'created_offline', $redirect_url );
+			$redirect_url = add_query_arg( array(
+				'membership_status' => 'created_offline',
+				'mbs_id'            => $membership_id,
+				'fname'             => $first_name,
+				'lname'             => $last_name
+			), $redirect_url );
 		} elseif ( $billing_type == 'online_cc_indiv' ) {
 			$redirect_url = easl_membership_checkout_url();
 			$this->session->add_data( 'cart_data', $membership_cart_data );
@@ -486,6 +494,7 @@ class EASL_MZ_Manager {
 		$response_digest = ! empty( $_GET['SHASIGN'] ) ? strtoupper( $_GET['SHASIGN'] ) : false;
 		$status          = ! empty( $_GET['mz_status'] ) ? $_GET['mz_status'] : false;
 		$invoice_number  = ! empty( $_GET['PAYID'] ) ? $_GET['PAYID'] : '';
+		$name            = ! empty( $_GET['CN'] ) ? $_GET['CN'] : '';
 		$amount          = ! empty( $_GET['amount'] ) ? $_GET['amount'] : '';
 		if ( ! $response_digest || ! $membership_id ) {
 			die( "Are you sure you want to do this?" );
@@ -510,6 +519,7 @@ class EASL_MZ_Manager {
 		$redirect_url = easl_membership_thanks_page_url();
 		if ( $status == 'accepted' ) {
 			$membership_api_data = array(
+				'status'                              => 'active',
 				'billing_status'                      => 'paid',
 				'billing_invoice_id'                  => $invoice_number,
 				'billing_invoice_date'                => $current_date,
@@ -521,7 +531,11 @@ class EASL_MZ_Manager {
 			$this->api->get_user_auth_token();
 			$updated = $this->api->update_membership( $membership_id, $membership_api_data );
 			if ( $updated ) {
-				$redirect_url = add_query_arg( array( 'membership_status' => 'paid_online' ), $redirect_url );
+				$redirect_url = add_query_arg( array(
+					'membership_status' => 'paid_online',
+					'mbs_id'            => $membership_id,
+					'mb_name'           => $name
+				), $redirect_url );
 			}
 		} elseif ( $status == 'declined' ) {
 			$redirect_url = add_query_arg( array( 'membership_status' => 'declined_online' ), $redirect_url );
@@ -547,6 +561,7 @@ class EASL_MZ_Manager {
 			'easl_mz_member_login',
 			'easl_mz_new_member_form',
 			'easl_mz_members_documents',
+			'easl_mz_membership_confirm_message',
 			'easl_mz_publications',
 		);
 

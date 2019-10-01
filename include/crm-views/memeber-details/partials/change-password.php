@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="mzms-fields-con">
                 <label class="mzms-field-label" for="mzf_old_password">Old password</label>
                 <div class="mzms-field-wrap">
-                    <input type="password" placeholder="" name="old_password" id="mzf_old_password" value="">
+                    <input type="password" placeholder="" name="old_password" id="mzf_old_password" value="" autocomplete="off">
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="mzms-fields-con">
                 <label class="mzms-field-label" for="mzf_new_password">New password</label>
                 <div class="mzms-field-wrap">
-                    <input type="password" placeholder="" name="new_password" id="mzf_new_password" value="">
+                    <input type="password" placeholder="" name="new_password" id="mzf_new_password" value="" autocomplete="off">
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="mzms-fields-con">
                 <label class="mzms-field-label" for="mzf_new_password2">Confirm new password</label>
                 <div class="mzms-field-wrap">
-                    <input type="password" placeholder="" name="new_password2" id="mzf_new_password2" value="">
+                    <input type="password" placeholder="" name="new_password2" id="mzf_new_password2" value="" autocomplete="off">
                 </div>
             </div>
         </div>

@@ -454,6 +454,7 @@
             var $mzf_membership_category = $("#mzf_membership_category", $el);
             var $mzf_billing_mode = $("#mzf_billing_mode", $el);
             var $mzf_jhephardcopy_recipient = $("#mzf_jhephardcopy_recipient", $el);
+            var $mzf_supporting_docs = $("#mzf_supporting_docs", $el);
 
             if (-1 !== requireProof.indexOf($mzf_membership_category.val())) {
                 $("#mzms-support-docs-wrap").addClass("easl-active");
@@ -498,11 +499,22 @@
             });
             var $termsCondition = $("#mzf_terms_condition", $el);
             $("form", $el).on("submit", function (event) {
+                var hasError = false;
                 if (!$termsCondition.prop("checked")) {
-                    event.preventDefault();
+                    hasError = true;
                     _this.showFieldError("terms_condition", "You must agree to our terms and conditions.", $el);
                 } else {
                     _this.clearSingleFieldError("terms_condition", $el);
+                }
+                if ((-1 !== requireProof.indexOf($mzf_membership_category.val())) && !$mzf_supporting_docs.val()) {
+                    hasError = true;
+                    _this.showFieldError("supporting_docs", "Please upload  supporting document.", $el);
+                } else {
+                    _this.clearSingleFieldError("supporting_docs", $el);
+                }
+
+                if (hasError) {
+                    event.preventDefault();
                 }
             });
         },
