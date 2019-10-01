@@ -216,9 +216,9 @@ if ( $member['last_name'] ) {
     <div class="mzms-fields-row">
         <div class="mzms-fields-con">
             <div class="mzms-field-wrap mzms-inline-checkbox">
-                <label for="mzf_agree_docs_terms" class="easl-custom-checkbox">
+                <label for="mzf_terms_condition" class="easl-custom-checkbox">
                     <input type="checkbox" name="terms_condition" id="mzf_terms_condition" value="1">
-                    <span>I agree to terms and conditions</span>
+                    <span>I agree to <a href="https://easl.eu/terms-conditions/" target="+_blank">terms and conditions</a></span>
                 </label>
             </div>
         </div>

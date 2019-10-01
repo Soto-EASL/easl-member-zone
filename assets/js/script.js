@@ -406,9 +406,16 @@
                         $specialityOther.addClass("easl-mz-hide");
                     }
                 });
+                var $termsCondition = $("#mzf_terms_condition", $el);
                 $("#easl-mz-new-member-form").on("submit", function (event) {
                     event.preventDefault();
-                    _this.submitNewMemberForm($(this));
+                    if (!$termsCondition.prop("checked")) {
+                        _this.showFieldError("terms_condition", "You must agree to our terms and conditions.", $el);
+                        event.preventDefault();
+                    } else {
+                        _this.clearSingleFieldError("terms_condition", $el);
+                        _this.submitNewMemberForm($(this));
+                    }
                 });
             }
         },
@@ -489,9 +496,13 @@
                     $("#mz-membership-jhe-pother-address-wrap").removeClass("easl-active");
                 }
             });
-            $("form222", $el).on("submit", function (event) {
-                if (!$("#mzf_terms_condition", $el).prop("checked")) {
+            var $termsCondition = $("#mzf_terms_condition", $el);
+            $("form", $el).on("submit", function (event) {
+                if (!$termsCondition.prop("checked")) {
                     event.preventDefault();
+                    _this.showFieldError("terms_condition", "You must agree to our terms and conditions.", $el);
+                } else {
+                    _this.clearSingleFieldError("terms_condition", $el);
                 }
             });
         },
