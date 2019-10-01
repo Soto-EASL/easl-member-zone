@@ -397,7 +397,7 @@ class EASL_MZ_Manager {
 			'billing_status' => 'waiting',
 			'billing_type'   => $billing_type,
 			'billing_mode'   => $billing_mode,
-			'billing_amount' => $membership_cat_fee,
+			//'billing_amount' => $membership_cat_fee,
 		);
 
 		if ( $billing_mode == 'other' ) {
@@ -486,6 +486,7 @@ class EASL_MZ_Manager {
 		$response_digest = ! empty( $_GET['SHASIGN'] ) ? strtoupper( $_GET['SHASIGN'] ) : false;
 		$status          = ! empty( $_GET['mz_status'] ) ? $_GET['mz_status'] : false;
 		$invoice_number  = ! empty( $_GET['PAYID'] ) ? $_GET['PAYID'] : '';
+		$amount          = ! empty( $_GET['amount'] ) ? $_GET['amount'] : '';
 		if ( ! $response_digest || ! $membership_id ) {
 			die( "Are you sure you want to do this?" );
 		}
@@ -514,6 +515,7 @@ class EASL_MZ_Manager {
 				'billing_invoice_date'                => $current_date,
 				'billing_invoice_last_generated_date' => $current_date,
 				'billing_initiated_on'                => $current_date,
+				'billing_amount'                      => $amount,
 			);
 			// Update Membership in CRM
 			$this->api->get_user_auth_token();
