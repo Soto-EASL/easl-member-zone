@@ -225,6 +225,10 @@ if ( $member['last_name'] ) {
             </div>
         </div>
     </div>
+    <div class="mzms-fields-row">
+        <div class="mzms-fields-con">
+            <p>Please note that your membership will become active for 12 months on receipt of payment.</p>
+    </div>
     <div class="mzms-fields-separator"></div>
     <div style="text-align: right;">
         <button class="mzms-button mzms-add-membership-submit mzms-modal-submit" href="#">Go ahead</button>

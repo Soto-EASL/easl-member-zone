@@ -18,8 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 $el_class      = '';
 $el_id         = '';
 $css_animation = '';
-$title         = '';
-$atts          = vc_map_get_attributes( $this->getShortcode(), $atts );
+$title_add     = '';
+$title_renew   = '';
+
+$atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
 
 $css_animation = $this->getCSSAnimation( $css_animation );
@@ -35,9 +37,24 @@ if ( ! empty( $el_id ) ) {
 if ( ! empty( $css_class ) ) {
 	$wrapper_attributes[] = 'class="' . esc_attr( $css_class ) . '"';
 }
+
+if ( ! $title_renew ) {
+	$title_renew = 'Renew Membership';
+}
+if ( ! $title_add ) {
+	$title_add = 'Add Membership';
+}
+
 if ( easl_mz_is_member_logged_in() ):
 	easl_mz_enqueue_select_assets();
 	$payment_type = ! empty( $_GET['mz_renew'] ) ? 'yes' : 'no';
+
+	if ( ! empty( $_GET['mz_renew'] ) ) {
+		$title = $title_renew;
+	} else {
+		$title = $title_add;
+	}
+
 	?>
 
     <div <?php echo implode( ' ', $wrapper_attributes ); ?>>

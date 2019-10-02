@@ -370,7 +370,9 @@
                     closeOnSelect: false
                 });
                 $(".easl-mz-date", $el).datepicker({
-                    dateFormat: "yy-mm-dd",
+                    dateFormat: "dd.mm.yy",
+                    altFormat: "yy-mm-dd",
+                    altField: "#mzf_birthdate",
                     changeMonth: true,
                     changeYear: true,
                     yearRange: "1900:-00",

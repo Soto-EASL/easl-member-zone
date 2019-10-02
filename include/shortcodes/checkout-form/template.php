@@ -55,7 +55,7 @@ if ( easl_mz_is_member_logged_in() ):
 		$membership = $api->get_membership_details( $membership_checkout_id, false );
 	}
 	if ( $member && $membership ):
-		$billing_amount = intval( $membership['billing_amount'] * 100 );
+		$billing_amount = intval( $membership['fee'] * 100 );
 
 		$member_name_parts = array();
 		if ( $member['salutation'] ) {
@@ -94,8 +94,8 @@ if ( easl_mz_is_member_logged_in() ):
 			$billing_address_title = easl_mz_get_formatted_address( $billing_address );
 		}
 
-		$pspid              = 'EASLevent2TEST';
-		$saw_in_pass_phrase = '123456789ABCDEfghijk';
+		$pspid              = 'EASLEvent2';
+		$saw_in_pass_phrase = 'Omj010159gj061148dsm190384';
 		$sha_string         = '';
 
 		?>
@@ -105,37 +105,41 @@ if ( easl_mz_is_member_logged_in() ):
                 <h2 class="mz-page-heading"><?php echo $title; ?></h2>
 			<?php endif; ?>
             <div class="easl-mz-membership-checkout-form">
-                <form method="post" action="https://ogone.test.v-psp.com/ncol/test/orderstandard_utf8.asp" id="form1" name="form1">
+                <form method="post" action="https://secure.ogone.com/ncol/prod/orderstandard_utf8.asp" id="form1" name="form1">
                     <!-- general parameters: see Form parameters -->
 					<?php
 					$billing_country = easl_mz_get_country_name( $billing_address['country'] );
 
 					//$order_id = $membership['id'] . time();
-					$order_id      = time();
+					$order_id = $member['dotb_mb_id'];
 
 					$accept_url    = add_query_arg( array(
 						'mz_action'     => 'payment_feedback',
 						'mz_status'     => 'accepted',
 						'mz_sid'        => $user_session_db_id,
 						'membership_id' => $membership['id'],
+						'membership_number' => $member['dotb_mb_id'],
 					), get_site_url() );
 					$decline_url   = add_query_arg( array(
 						'mz_action'     => 'payment_feedback',
 						'mz_status'     => 'declined',
 						'mz_sid'        => $user_session_db_id,
 						'membership_id' => $membership['id'],
+						'membership_number' => $member['dotb_mb_id'],
 					), get_site_url() );
 					$exception_url = add_query_arg( array(
 						'mz_action'     => 'payment_feedback',
 						'mz_status'     => 'failed',
 						'mz_sid'        => $user_session_db_id,
 						'membership_id' => $membership['id'],
+						'membership_number' => $member['dotb_mb_id'],
 					), get_site_url() );;
 					$cancel_url = add_query_arg( array(
 						'mz_action'     => 'payment_feedback',
 						'mz_status'     => 'cancelled',
 						'mz_sid'        => $user_session_db_id,
 						'membership_id' => $membership['id'],
+						'membership_number' => $member['dotb_mb_id'],
 					), get_site_url() );
 
 					$sha_string .= "ACCEPTURL={$accept_url}{$saw_in_pass_phrase}";
@@ -169,7 +173,7 @@ if ( easl_mz_is_member_logged_in() ):
 
 					$sha_string .= "PSPID={$pspid}{$saw_in_pass_phrase}";
 
-					$digest = sha1( $sha_string );
+					$digest = hash("sha512", $sha_string);
 					?>
                     <input type="hidden" name="PSPID" value="<?php echo $pspid; ?>">
                     <input type="hidden" name="ORDERID" value="<?php echo $order_id; ?>">
@@ -199,8 +203,8 @@ if ( easl_mz_is_member_logged_in() ):
 
                     <div class="mzcheckout-summery">
                         <div class="mzcheckout-summery-row">
-                            <span class="mzcheckout-summery-label">Membership ID:</span>
-                            <span class="mzcheckout-summery-value"><?php echo $membership['id']; ?></span>
+                            <span class="mzcheckout-summery-label">Membership Number:</span>
+                            <span class="mzcheckout-summery-value"><?php echo $order_id ?></span>
                         </div>
                         <div class="mzcheckout-summery-row">
                             <span class="mzcheckout-summery-label">Order Title:</span>
@@ -208,7 +212,7 @@ if ( easl_mz_is_member_logged_in() ):
                         </div>
                         <div class="mzcheckout-summery-row">
                             <span class="mzcheckout-summery-label">Amount:</span>
-                            <span class="mzcheckout-summery-value"><?php echo $membership['billing_amount']; ?>€</span>
+                            <span class="mzcheckout-summery-value"><?php echo $membership['fee']; ?>€</span>
                         </div>
                         <div class="mzcheckout-summery-row">
                             <span class="mzcheckout-summery-label">Billing address:</span>
@@ -224,7 +228,7 @@ if ( easl_mz_is_member_logged_in() ):
         </div>
 	<?php else: ?>
         <div class="easl-mz-nottice">
-                <p>you haven’t selected a membership type.</p>
+            <p>you haven’t selected a membership type.</p>
         </div>
 	<?php endif; ?>
 <?php endif; ?>

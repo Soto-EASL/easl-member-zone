@@ -40,14 +40,105 @@ $message = '';
 if ( $type == 'created_offline' ) {
 	$message_title = get_field( 'mz_offline_payment_msg_title', 'option' );
 	$message       = get_field( 'mz_offline_payment_msg_content', 'option' );
-	$membership_id = ! empty( $_GET['mbs_id'] ) ? $_GET['mbs_id'] : '';
-	$name          = ! empty( $_GET['mb_name'] ) ? $_GET['mb_name'] : '';
-	$fname         = ! empty( $_GET['fname'] ) ? $_GET['fname'] : '';
-	$lname         = ! empty( $_GET['lname'] ) ? $_GET['lname'] : '';
+	//$membership_id = ! empty( $_GET['mbs_id'] ) ? $_GET['mbs_id'] : '';
+	$membership_number = ! empty( $_GET['mbs_num'] ) ? $_GET['mbs_num'] : '';
+	$name              = ! empty( $_GET['mb_name'] ) ? $_GET['mb_name'] : '';
+	$fname             = ! empty( $_GET['fname'] ) ? $_GET['fname'] : '';
+	$lname             = ! empty( $_GET['lname'] ) ? $_GET['lname'] : '';
 
 	$membership_details = array();
-	if ( $membership_id ) {
-		$membership_details[] = "Membership ID: {$membership_id}";
+	if ( $membership_number ) {
+		$membership_details[] = "Membership Number: {$membership_number}";
+	}
+	if ( $fname ) {
+		$membership_details[] = "First Name: {$fname}";
+	}
+	if ( $lname ) {
+		$membership_details[] = "Last Name: {$lname}";
+	}
+	if ( $name ) {
+		$membership_details[] = "Full Name: {$name}";
+	}
+
+	if ( count( $membership_details ) ) {
+		$membership_details = implode( '<br/>', $membership_details );
+	} else {
+		$membership_details = '';
+	}
+	$message = str_replace( array( '{{membership_details}}' ), array( $membership_details ), $message );
+
+} elseif ( $type == 'declined_online' ) {
+	$message_title = get_field( 'mz_online_declined_payment_msg_title', 'option' );
+	$message       = get_field( 'mz_online_declined_payment_msg_content', 'option' );
+	//$membership_id = ! empty( $_GET['mbs_id'] ) ? $_GET['mbs_id'] : '';
+	$membership_number = ! empty( $_GET['mbs_num'] ) ? $_GET['mbs_num'] : '';
+	$name              = ! empty( $_GET['mb_name'] ) ? $_GET['mb_name'] : '';
+	$fname             = ! empty( $_GET['fname'] ) ? $_GET['fname'] : '';
+	$lname             = ! empty( $_GET['lname'] ) ? $_GET['lname'] : '';
+
+	$membership_details = array();
+	if ( $membership_number ) {
+		$membership_details[] = "Membership Number: {$membership_number}";
+	}
+	if ( $fname ) {
+		$membership_details[] = "First Name: {$fname}";
+	}
+	if ( $lname ) {
+		$membership_details[] = "Last Name: {$lname}";
+	}
+	if ( $name ) {
+		$membership_details[] = "Full Name: {$name}";
+	}
+
+	if ( count( $membership_details ) ) {
+		$membership_details = implode( '<br/>', $membership_details );
+	} else {
+		$membership_details = '';
+	}
+	$message = str_replace( array( '{{membership_details}}' ), array( $membership_details ), $message );
+
+} elseif ( $type == 'cancelled_online' ) {
+	$message_title = get_field( 'mz_online_cancelled_payment_msg_title', 'option' );
+	$message       = get_field( 'mz_online_cancelled_payment_msg_content', 'option' );
+	//$membership_id = ! empty( $_GET['mbs_id'] ) ? $_GET['mbs_id'] : '';
+	$membership_number = ! empty( $_GET['mbs_num'] ) ? $_GET['mbs_num'] : '';
+	$name              = ! empty( $_GET['mb_name'] ) ? $_GET['mb_name'] : '';
+	$fname             = ! empty( $_GET['fname'] ) ? $_GET['fname'] : '';
+	$lname             = ! empty( $_GET['lname'] ) ? $_GET['lname'] : '';
+
+	$membership_details = array();
+	if ( $membership_number ) {
+		$membership_details[] = "Membership Number: {$membership_number}";
+	}
+	if ( $fname ) {
+		$membership_details[] = "First Name: {$fname}";
+	}
+	if ( $lname ) {
+		$membership_details[] = "Last Name: {$lname}";
+	}
+	if ( $name ) {
+		$membership_details[] = "Full Name: {$name}";
+	}
+
+	if ( count( $membership_details ) ) {
+		$membership_details = implode( '<br/>', $membership_details );
+	} else {
+		$membership_details = '';
+	}
+	$message = str_replace( array( '{{membership_details}}' ), array( $membership_details ), $message );
+
+} elseif ( $type == 'failed_online' ) {
+	$message_title = get_field( 'mz_online_failed_payment_msg_title', 'option' );
+	$message       = get_field( 'mz_online_falied_payment_msg_content', 'option' );
+	//$membership_id = ! empty( $_GET['mbs_id'] ) ? $_GET['mbs_id'] : '';
+	$membership_number = ! empty( $_GET['mbs_num'] ) ? $_GET['mbs_num'] : '';
+	$name              = ! empty( $_GET['mb_name'] ) ? $_GET['mb_name'] : '';
+	$fname             = ! empty( $_GET['fname'] ) ? $_GET['fname'] : '';
+	$lname             = ! empty( $_GET['lname'] ) ? $_GET['lname'] : '';
+
+	$membership_details = array();
+	if ( $membership_number ) {
+		$membership_details[] = "Membership Number: {$membership_number}";
 	}
 	if ( $fname ) {
 		$membership_details[] = "First Name: {$fname}";
@@ -69,12 +160,13 @@ if ( $type == 'created_offline' ) {
 } elseif ( $type == 'paid_online' ) {
 	$message_title = get_field( 'mz_online_payment_msg_title', 'option' );
 	$message       = get_field( 'mz_online_payment_msg_content', 'option' );
-	$membership_id = ! empty( $_GET['mbs_id'] ) ? $_GET['mbs_id'] : '';
-	$name          = ! empty( $_GET['mb_name'] ) ? $_GET['mb_name'] : '';
+	//$membership_id = ! empty( $_GET['mbs_id'] ) ? $_GET['mbs_id'] : '';
+	$membership_number = ! empty( $_GET['mbs_num'] ) ? $_GET['mbs_num'] : '';
+	$name              = ! empty( $_GET['mb_name'] ) ? $_GET['mb_name'] : '';
 
 	$membership_details = array();
-	if ( $membership_id ) {
-		$membership_details[] = "Membership ID: {$membership_id}";
+	if ( $membership_number ) {
+		$membership_details[] = "Membership Number: {$membership_number}";
 	}
 	if ( $name ) {
 		$membership_details[] = "Full Name: {$name}";

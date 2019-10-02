@@ -89,6 +89,7 @@ function easl_mz_parse_crm_membership_data( $response ) {
 		'status'                              => $response->status,
 		'start_date'                          => $response->start_date,
 		'end_date'                            => $response->end_date,
+		'fee'                                 => $response->fee,
 		'billing_status'                      => $response->billing_status,
 		'billing_type'                        => $response->billing_type,
 		'billing_amount'                      => $response->billing_amount,
@@ -155,6 +156,9 @@ function easl_mz_validate_member_data( $data = array() ) {
 	}
 	if ( empty( $data['dotb_gender'] ) ) {
 		$errors['dotb_gender'] = 'Mandatory field';
+	}
+	if ( empty( $data['birthdate'] ) ) {
+		$errors['birthdate'] = 'Mandatory field';
 	}
 	if ( ! empty( $data['birthdate'] ) && ! preg_match( "/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $data['birthdate'] ) ) {
 		$errors['birthdate'] = 'Enter date in yyyy-mm-dd format.';
@@ -418,4 +422,15 @@ function easl_mz_field_public_field( $field, $public_type, $public_fields ) {
 //	}
 
 	return '<span class="mzms-fields-privacy-icon ticon ticon-eye"></span>';
+}
+
+function get_formatted_birthday_crm_to_europe($date_of_birth){
+	$date_of_birth_formatted = '';
+	if ( $date_of_birth ) {
+		$date_of_birth = explode( '-', $date_of_birth );
+		if ( count( $date_of_birth ) == 3 ) {
+			$date_of_birth_formatted = trim( $date_of_birth[2] ) . '.' . trim( $date_of_birth[1] ) . '.' . trim( $date_of_birth[0] );
+		}
+	}
+	return $date_of_birth_formatted;
 }

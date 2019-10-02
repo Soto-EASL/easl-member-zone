@@ -46,6 +46,12 @@ $template_base = easl_mz_get_manager()->path( 'CRM_VIEWS', '/memeber-details' );
                     </div>
                 </div>
             </div>
+            <div class="mzms-fields-row">
+                <p>EASL can not be held responsible for the accuracy of the information published on this page. All data is provided by EASL members themselves.</p>
+            </div>
+            <div class="mzms-fields-row">
+                <p>*mandatory fields</p>
+            </div>
             <div class="mzms-fields-separator"></div>
             <div class="mzms-fields-row mzms-submit-row">
                 <button class="mzms-submit">Save Updates</button>

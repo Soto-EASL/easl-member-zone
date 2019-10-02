@@ -433,29 +433,42 @@ class EASL_MZ_Manager {
 
 			return;
 		}
-		$result = $this->api->add_membeship_to_member( $member_id, $membership_id );
-		if ( ! $result ) {
+		$membership_number = $this->api->add_membeship_to_member( $member_id, $membership_id );
+		if ( ! $membership_number ) {
 			$this->set_message( 'membership_error', 'Membership created but it could not be linked to contact.' );
 
 			return;
 		}
 		$membership_cart_data = array(
-			'membership_created_id' => $membership_id
+			'membership_created_id' => $membership_id,
+			'membership_number'     => $membership_number,
 		);
 
 		if ( $require_proof && ! empty( $_FILES['supporting_docs'] ) && ( $_FILES['supporting_docs']['error'] === UPLOAD_ERR_OK ) ) {
+
+			if ( ! function_exists( 'wp_handle_upload' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/file.php' );
+			}
+			$supporting_file_data = wp_handle_upload( $_FILES['supporting_docs'], array( 'test_form' => false ) );
+			if ( $supporting_file_data && empty( $supporting_file_data['error'] ) && $supporting_file_data['file'] ) {
+				$attachments = array( $supporting_file_data['file'] );
+			}
+
 			$subject = 'Membership proof from EASL Memberzone';
 			$to      = 'membership@easloffice.eu';
-			$message = "Membership ID: {$membership_id}\n";
+			$message = "Membership Number: {$membership_number}\n";
 			$message .= "Member ID: {$member_id}\n";
 			foreach ( $membership_api_data as $data_key => $data_value ) {
 				$message .= "{$data_key}: {$data_value}\n";
 			}
 
-			$attachments = array( $_FILES['supporting_docs']['tmp_name'] );
 			add_filter( 'wp_mail_from_name', 'easl_mz_mail_form_name', 20 );
 			wp_mail( $to, $subject, $message, '', $attachments );
 			remove_filter( 'wp_mail_from_name', 'easl_mz_mail_form_name', 20 );
+			if ( $attachments[0] ) {
+				@unlink( $attachments[0] );
+			}
+
 		}
 
 		$redirect_url = easl_membership_thanks_page_url();
@@ -463,6 +476,7 @@ class EASL_MZ_Manager {
 			$redirect_url = add_query_arg( array(
 				'membership_status' => 'created_offline',
 				'mbs_id'            => $membership_id,
+				'mbs_num'           => $membership_number,
 				'fname'             => $first_name,
 				'lname'             => $last_name
 			), $redirect_url );
@@ -480,28 +494,30 @@ class EASL_MZ_Manager {
 
 	public function handle_payment_feedback() {
 		$shaw_string = '';
-		$passphrase  = '123456789ABCDEfghijk';
+		$passphrase  = 'am1709xtwrn18cmbm24tw3';
 		$ingore_keys = array(
 			'mz_action',
 			'mz_status',
 			'membership_id',
+			'membership_number',
 			'mz_sid',
 			'SHASIGN',
 		);
 
-		$membership_id   = ! empty( $_GET['membership_id'] ) ? $_GET['membership_id'] : false;
-		$session_db_id   = ! empty( $_GET['mz_sid'] ) ? $_GET['mz_sid'] : false;
-		$response_digest = ! empty( $_GET['SHASIGN'] ) ? strtoupper( $_GET['SHASIGN'] ) : false;
-		$status          = ! empty( $_GET['mz_status'] ) ? $_GET['mz_status'] : false;
-		$invoice_number  = ! empty( $_GET['PAYID'] ) ? $_GET['PAYID'] : '';
-		$name            = ! empty( $_GET['CN'] ) ? $_GET['CN'] : '';
-		$amount          = ! empty( $_GET['amount'] ) ? $_GET['amount'] : '';
+		$membership_id     = ! empty( $_GET['membership_id'] ) ? $_GET['membership_id'] : false;
+		$membership_number = ! empty( $_GET['membership_number'] ) ? $_GET['membership_number'] : false;
+		$session_db_id     = ! empty( $_GET['mz_sid'] ) ? $_GET['mz_sid'] : false;
+		$response_digest   = ! empty( $_GET['SHASIGN'] ) ? strtoupper( $_GET['SHASIGN'] ) : false;
+		$status            = ! empty( $_GET['mz_status'] ) ? $_GET['mz_status'] : false;
+		$invoice_number    = ! empty( $_GET['PAYID'] ) ? $_GET['PAYID'] : '';
+		$name              = ! empty( $_GET['CN'] ) ? $_GET['CN'] : '';
+		$amount            = ! empty( $_GET['amount'] ) ? $_GET['amount'] : '';
 		if ( ! $response_digest || ! $membership_id ) {
 			die( "Are you sure you want to do this?" );
 		}
 		$feedback = array();
 		foreach ( $_GET as $item_key => $item_value ) {
-			if ( in_array( $item_key, $ingore_keys ) ) {
+			if ( empty( $_GET[ $item_key ] ) || in_array( $item_key, $ingore_keys ) ) {
 				continue;
 			}
 			$feedback[ strtoupper( $item_key ) ] = $item_value;
@@ -511,7 +527,8 @@ class EASL_MZ_Manager {
 		foreach ( $feedback as $item_key => $item_value ) {
 			$shaw_string .= $item_key . '=' . $item_value . $passphrase;
 		}
-		$digest = strtoupper( sha1( $shaw_string ) );
+		//$digest = strtoupper( sha1( $shaw_string ) );
+		$digest = strtoupper( hash( "sha512", $shaw_string ) );
 		if ( $response_digest != $digest ) {
 			die( "Are you sure you want to do this?" );
 		}
@@ -533,7 +550,7 @@ class EASL_MZ_Manager {
 			if ( $updated ) {
 				$redirect_url = add_query_arg( array(
 					'membership_status' => 'paid_online',
-					'mbs_id'            => $membership_id,
+					'mbs_num'           => $membership_number,
 					'mb_name'           => $name
 				), $redirect_url );
 			}

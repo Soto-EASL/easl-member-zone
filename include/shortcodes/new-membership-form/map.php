@@ -14,8 +14,14 @@ return array(
 	'params'         => array(
 		array(
 			'type' => 'textfield',
-			'heading' => __( 'Widget title', 'easl-member-zone' ),
-			'param_name' => 'title',
+			'heading' => __( 'Widget title for renew membership', 'easl-member-zone' ),
+			'param_name' => 'title_renew',
+			'description' => __( 'Enter text used as widget title (Note: located above content element).', 'easl-member-zone' ),
+		),
+		array(
+			'type' => 'textfield',
+			'heading' => __( 'Widget title for new membership', 'easl-member-zone' ),
+			'param_name' => 'title_add',
 			'description' => __( 'Enter text used as widget title (Note: located above content element).', 'easl-member-zone' ),
 		),
 		vc_map_add_css_animation(),

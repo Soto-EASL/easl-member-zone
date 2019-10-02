@@ -33,7 +33,7 @@ if(!$member_image) {
 <div class="mzms-fields-row easl-row easl-row-col-3">
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label class="mzms-field-label" for="mzf_salutation">Title</label>
+            <label class="mzms-field-label" for="mzf_salutation">Title <span class="mzms-asteric">*</span></label>
             <div class="mzms-field-wrap">
                 <span class="ec-cs-label"></span>
                 <select class="easl-mz-select2" name="salutation" id="mzf_salutation" data-placeholder="Select an option" style="width: 100%;">
@@ -45,7 +45,7 @@ if(!$member_image) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label class="mzms-field-label" for="mzf_first_name">First Name</label>
+            <label class="mzms-field-label" for="mzf_first_name">First Name <span class="mzms-asteric">*</span></label>
             <div class="mzms-field-wrap">
                 <input type="text" placeholder="" name="first_name" id="mzf_first_name" value="<?php echo esc_attr( $member['first_name'] ); ?>" autocomplete="off">
             </div>
@@ -53,7 +53,7 @@ if(!$member_image) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label class="mzms-field-label" for="mzf_last_name">Last Name</label>
+            <label class="mzms-field-label" for="mzf_last_name">Last Name <span class="mzms-asteric">*</span></label>
             <div class="mzms-field-wrap">
                 <input type="text" placeholder="" name="last_name" id="mzf_last_name" value="<?php echo esc_attr( $member['last_name'] ); ?>" autocomplete="off">
             </div>

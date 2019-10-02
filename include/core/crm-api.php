@@ -576,8 +576,9 @@ class EASL_MZ_API {
 		if ( ! $result ) {
 			return false;
 		}
+		$response = $this->request->get_response_body();
 
-		return true;
+		return $response->record->dotb_mb_id;
 	}
 
 	public function delete_member_account( $member_id ) {

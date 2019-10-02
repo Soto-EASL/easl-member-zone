@@ -46,7 +46,7 @@ easl_mz_enqueue_select_assets();
 		<?php if ( $title ): ?>
             <h2 class="mz-page-heading"><?php echo $title; ?></h2>
 		<?php endif; ?>
-        <form id="easl-mz-new-member-form" action="" method="post">
+        <form id="easl-mz-new-member-form" action="" method="post" autocomplete="off">
 			<?php include $template_base . '/partials/fields-basic.php'; ?>
             <div class="mzms-fields-separator"></div>
 			<?php include $template_base . '/partials/fields-global.php'; ?>
@@ -72,6 +72,9 @@ easl_mz_enqueue_select_assets();
                         </label>
                     </div>
                 </div>
+            </div>
+            <div class="mzms-fields-row">
+                <p>*mandatory fields</p>
             </div>
             <div class="mzms-fields-separator"></div>
             <div class="mzms-fields-row mzms-submit-row">
