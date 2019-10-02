@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-define( 'EASL_MZ_VERSION', '1.0.1.2' );
+define( 'EASL_MZ_VERSION', '1.0.1.3' );
 
 class EASL_MZ_Manager {
 	/**
@@ -60,6 +60,8 @@ class EASL_MZ_Manager {
 		add_action( 'init', array( $this->session, 'init', ), 0 );
 		add_action( 'init', array( $this, 'init', ), 8 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'assets', ), 11 );
+
+		add_action( 'easl_mz_memberzone_page_content', array( $this, 'memberzone_page_content' ) );
 	}
 
 	/**
@@ -144,6 +146,10 @@ class EASL_MZ_Manager {
 		}
 	}
 
+	public function memberzone_page_content() {
+		include $this->path('TEMPLATES_DIR', 'main.php');
+	}
+
 	public function maybe_disable_wp_rocket_cache() {
 		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', true );
@@ -181,6 +187,10 @@ class EASL_MZ_Manager {
 		$member_login    = $_POST['mz_member_login'];
 		$member_password = $_POST['mz_member_password'];
 		$redirect        = get_field( 'member_profile_url', 'option' );
+
+		if(!empty($member_password['mz_redirect_url'])){
+			$redirect = $member_password['mz_redirect_url'];
+		}
 
 		$auth_response_status = $this->api->get_auth_token( $member_login, $member_password, true );
 		if ( ! $auth_response_status ) {

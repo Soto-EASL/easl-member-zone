@@ -47,10 +47,12 @@ body .mzms-field-wrap .select2-container--default .select2-selection--single .se
 .mzms-field-wrap .select2-container--default .select2-selection--multiple .select2-selection__choice {
     font-size: 12px;
 }
+
 .mzms-field-has-privacy .select2-container--default .select2-selection--single .select2-selection__arrow {
     right: 38px;
 }
-.mzms-field-has-privacy  .select2-container .select2-selection--single .select2-selection__rendered {
+
+.mzms-field-has-privacy .select2-container .select2-selection--single .select2-selection__rendered {
     padding-right: 58px;
 }
 
@@ -183,6 +185,7 @@ body .mzms-button:active {
     background-color: #004b87;
     text-decoration: none;
 }
+
 body .mzms-button.mz-input-submit-wrap:hover input[type="submit"],
 body .mzms-button.mz-input-submit-wrap:active input[type="submit"] {
     background-color: transparent;
@@ -234,6 +237,7 @@ body .mzms-button::after {
     transform: translateY(0);
     visibility: visible;
 }
+
 .easl-mz-login-form.mz-login-form-has-error {
     padding-left: 120px;
     background: #d0011b;
@@ -381,6 +385,7 @@ body .mzms-button::after {
     line-height: 20px;
     margin: 0 0 15px;
 }
+
 .easl-mz-header-member-card .easl-mz-header-buttons a:last-child {
     margin-bottom: 0;
 }
@@ -1378,6 +1383,7 @@ body .mzms-button::after {
     padding-left: 0;
     min-height: 52px;
 }
+
 .mzms-inline-checkbox .easl-custom-checkbox {
     padding-left: 30px;
     min-height: 10px;
@@ -1388,6 +1394,7 @@ body .mzms-button::after {
     height: 40px;
     width: 40px;
 }
+
 .mzms-inline-checkbox .easl-custom-checkbox::before {
     top: 0;
     height: 20px;
@@ -1398,6 +1405,7 @@ body .mzms-button::after {
     display: block;
     margin: 0;
 }
+
 .mzms-inline-checkbox .easl-custom-checkbox span {
     display: inline-block;
 }
@@ -1407,7 +1415,8 @@ body .mzms-button::after {
     left: 9px;
     font-size: 22px;
 }
-.mzms-inline-checkbox .easl-custom-checkbox::after{
+
+.mzms-inline-checkbox .easl-custom-checkbox::after {
     top: 0;
     left: 0;
     font-size: 13px;
@@ -1656,6 +1665,7 @@ body .mzms-button::after {
 .mzms-delete-account-request {
 
 }
+
 .mzms-delete-account-request p {
 
 }
@@ -1764,6 +1774,7 @@ body .mzms-button::after {
     height: 40px;
     border: 1px solid #d1d0d0;
 }
+
 .easl-mz-field-has-error .mzms-field-file-wrap {
     border-color: #de2a57;
 }
@@ -2137,12 +2148,14 @@ span.mzms-field-file-button {
 .easl-mz-new-membership-form {
     min-height: 420px;
 }
+
 #mz-membership-other-address-wrap,
 #mzf_jhephardcopy_recipient_wrapper,
 #mz-membership-jhe-pother-address-wrap,
-#mzms-support-docs-wrap{
+#mzms-support-docs-wrap {
     display: none;
 }
+
 #mz-membership-other-address-wrap.easl-active,
 #mzf_jhephardcopy_recipient_wrapper.easl-active,
 #mz-membership-jhe-pother-address-wrap.easl-active,
@@ -2173,6 +2186,42 @@ span.mzms-field-file-button {
 .mzcheckout-summery-label {
     width: 165px;
 }
+
 .mz-checkout-submit-row {
     text-align: right;
+}
+
+
+.membership-pages-login-wrap {
+    width: 360px;
+    margin: 0 auto 44px;
+    border: 1px solid #ededed;
+    padding: 20px;
+}
+
+.membership-pages-login-wrap .mz-login-row {
+    display: block;
+    float: none;
+    margin: 0 0 15px;
+}
+
+.membership-pages-login-wrap input {
+    display: block;
+    width: 100% !important;
+    border: 1px solid #b0b0b0;
+    height: 40px;
+    font-size: 16px;
+    padding: 0 10px;
+}
+
+.membership-pages-login-wrap .easl-generic-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    line-height: 1em;
+    height: auto;
+    font-size: 16px;
+}
+.membership-pages-login-wrap .mz-forgot-pass-row a {
+    color: #666!important;
 }
