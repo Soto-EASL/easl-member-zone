@@ -346,7 +346,8 @@
                     _this.loadHtml($(this), response);
                     $("body").trigger("mz_reload_custom_fields");
                     $(".easl-mz-select2", $(this)).select2({
-                        closeOnSelect: true
+                        closeOnSelect: true,
+                        allowClear: true
                     });
                     $("#mzf_birthdate_fz", $(this)).datepicker({
                         dateFormat: "dd.mm.yy",
@@ -367,7 +368,8 @@
             var $el = $(".wpb_easl_mz_new_member_form");
             if ($el.length) {
                 $(".easl-mz-select2", $el).select2({
-                    closeOnSelect: false
+                    closeOnSelect: true,
+                    allowClear: true
                 });
                 $(".easl-mz-date", $el).datepicker({
                     dateFormat: "dd.mm.yy",
@@ -528,7 +530,8 @@
                     _this.loadHtml($(this), response);
                     $("body").trigger("mz_reload_custom_fields");
                     $(".easl-mz-select2", $(this)).select2({
-                        closeOnSelect: true
+                        closeOnSelect: true,
+                        allowClear: true
                     });
                     _this.customFileInput($el);
                     _this.newMembershipFormEvents($el);

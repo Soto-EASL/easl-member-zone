@@ -100,7 +100,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label class="mzms-field-label" for="mzf_birthdate">Date of birth</label>
+            <label class="mzms-field-label" for="mzf_birthdate">Date of birth <span class="mzms-asteric">*</span></label>
             <div class="mzms-field-wrap">
                 <input type="hidden" placeholder="" name="birthdate" id="mzf_birthdate" value="" class="easl-mz-date" autocomplete="off">
                 <input type="text" placeholder="" name="" id="mzf_birthdate_fz" value="<?php echo esc_attr( $date_of_birth_formatted ); ?>" class="easl-mz-date" autocomplete="off">

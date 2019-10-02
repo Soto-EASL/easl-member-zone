@@ -12,7 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_dotb_job_function">Job function <span class="mzms-asteric">*</span></label>
             <div class="mzms-field-wrap">
-                <select class="easl-mz-select2" name="dotb_job_function" id="mzf_dotb_job_function" style="width: 100%;">
+                <select class="easl-mz-select2" name="dotb_job_function" id="mzf_dotb_job_function" data-placeholder="Select an option" style="width: 100%;">
+                    <option value=""></option>
 					<?php echo easl_mz_get_crm_dropdown_items( 'job_functions', $member['dotb_job_function'] ); ?>
                 </select>
             </div>
@@ -80,7 +81,8 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_dotb_interaction_with_patient">Interaction with patients</label>
             <div class="mzms-field-wrap">
-                <select class="easl-mz-select2" name="dotb_interaction_with_patient" id="mzf_dotb_interaction_with_patient" style="width: 100%;">
+                <select class="easl-mz-select2" name="dotb_interaction_with_patient" id="mzf_dotb_interaction_with_patient" data-placeholder="Select an option" style="width: 100%;">
+                    <option value=""></option>
 					<?php echo easl_mz_get_crm_dropdown_items( 'interactions_patient', $member['dotb_interaction_with_patient'] ); ?>
                 </select>
             </div>
@@ -92,7 +94,8 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_dotb_gender">Gender <span class="mzms-asteric">*</span></label>
             <div class="mzms-field-wrap">
-                <select class="easl-mz-select2" name="dotb_gender" id="mzf_dotb_gender" style="width: 100%;">
+                <select class="easl-mz-select2" name="dotb_gender" id="mzf_dotb_gender" data-placeholder="Select an option" style="width: 100%;">
+                    <option value=""></option>
 					<?php echo easl_mz_get_crm_dropdown_items( 'genders', $member['dotb_gender'] ); ?>
                 </select>
             </div>
@@ -100,7 +103,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
     <div class="easl-col">
         <div class="easl-col-inner mzms-fields-con">
-            <label class="mzms-field-label" for="mzf_birthdate_fz">Date of birth</label>
+            <label class="mzms-field-label" for="mzf_birthdate_fz">Date of birth <span class="mzms-asteric">*</span></label>
             <div class="mzms-field-wrap mzms-field-has-privacy<?php if ( ! easl_mz_field_is_public( 'birthdate', $member['dotb_public_profile'], $member['dotb_public_profile_fields'] ) ) {
 				echo ' mzms-privacy-enabled';
 			} ?>">

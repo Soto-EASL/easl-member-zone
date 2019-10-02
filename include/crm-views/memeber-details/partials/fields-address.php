@@ -60,7 +60,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <div class="mzms-fields-con">
                     <label class="mzms-field-label" for="mzf_primary_address_country">Country <span class="mzms-asteric">*</span></label>
                     <div class="mzms-field-wrap mzms-field-has-privacy<?php if(!easl_mz_field_is_public('primary_address_country', $member['dotb_public_profile'], $member['dotb_public_profile_fields'])){echo ' mzms-privacy-enabled';} ?>">
-                        <select class="easl-mz-select2" name="primary_address_country" id="mzf_primary_address_country" style="width: 100%;">
+                        <select class="easl-mz-select2" name="primary_address_country" id="mzf_primary_address_country" data-placeholder="Select an option" style="width: 100%;">
+                            <option value=""></option>
 							<?php echo easl_mz_get_crm_dropdown_items( 'countries', $member['primary_address_country'] ); ?>
                         </select>
 	                    <?php echo easl_mz_field_public_field('primary_address_country', $member['dotb_public_profile'], $member['dotb_public_profile_fields']); ?>
@@ -112,7 +113,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <div class="mzms-fields-con">
                     <label class="mzms-field-label" for="mzf_alt_address_country">Country</label>
                     <div class="mzms-field-wrap mzms-field-has-privacy<?php if(!easl_mz_field_is_public('alt_address_country', $member['dotb_public_profile'], $member['dotb_public_profile_fields'])){echo ' mzms-privacy-enabled';} ?>">
-                        <select class="easl-mz-select2" name="alt_address_country" id="mzf_alt_address_country" style="width: 100%;">
+                        <select class="easl-mz-select2" name="alt_address_country" id="mzf_alt_address_country" style="width: 100%;" data-placeholder="Select a country">
+                            <option value=""></option>
 							<?php echo easl_mz_get_crm_dropdown_items( 'countries', $member['alt_address_country'] ); ?>
                         </select>
 	                    <?php echo easl_mz_field_public_field('alt_address_country', $member['dotb_public_profile'], $member['dotb_public_profile_fields']); ?>
