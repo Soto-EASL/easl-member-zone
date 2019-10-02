@@ -63,6 +63,6 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <button class="easl-generic-button easl-color-lightblue">Login</button>
             </div>
         </form>
-        <div class="mz-forgot-pass-row"><a class="mz-forgot-password" href="https://easl.eu/become-a-member/">Become a member</a></div>
+        <div class="mz-forgot-pass-row"><a href="https://easl.eu/become-a-member/">Become a member</a></div>
     </div>
 <?php endif; ?>

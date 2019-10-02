@@ -147,7 +147,7 @@ class EASL_MZ_Manager {
 	}
 
 	public function memberzone_page_content() {
-		include $this->path('TEMPLATES_DIR', 'main.php');
+		include $this->path( 'TEMPLATES_DIR', 'main.php' );
 	}
 
 	public function maybe_disable_wp_rocket_cache() {
@@ -188,7 +188,7 @@ class EASL_MZ_Manager {
 		$member_password = $_POST['mz_member_password'];
 		$redirect        = get_field( 'member_profile_url', 'option' );
 
-		if(!empty($member_password['mz_redirect_url'])){
+		if ( ! empty( $member_password['mz_redirect_url'] ) ) {
 			$redirect = $member_password['mz_redirect_url'];
 		}
 
@@ -492,8 +492,6 @@ class EASL_MZ_Manager {
 			), $redirect_url );
 		} elseif ( $billing_type == 'online_cc_indiv' ) {
 			$redirect_url = easl_membership_checkout_url();
-			$this->session->add_data( 'cart_data', $membership_cart_data );
-			$this->session->save_session_data();
 		}
 		if ( $redirect_url ) {
 			wp_redirect( $redirect_url );
@@ -508,6 +506,8 @@ class EASL_MZ_Manager {
 		$ingore_keys = array(
 			'mz_action',
 			'mz_status',
+			'mz_fname',
+			'mz_lname',
 			'membership_id',
 			'membership_number',
 			'mz_sid',
@@ -516,6 +516,8 @@ class EASL_MZ_Manager {
 
 		$membership_id     = ! empty( $_GET['membership_id'] ) ? $_GET['membership_id'] : false;
 		$membership_number = ! empty( $_GET['membership_number'] ) ? $_GET['membership_number'] : false;
+		$mz_fname          = ! empty( $_GET['mz_fname'] ) ? $_GET['mz_fname'] : '';
+		$mz_lname          = ! empty( $_GET['mz_lname'] ) ? $_GET['mz_lname'] : '';
 		$session_db_id     = ! empty( $_GET['mz_sid'] ) ? $_GET['mz_sid'] : false;
 		$response_digest   = ! empty( $_GET['SHASIGN'] ) ? strtoupper( $_GET['SHASIGN'] ) : false;
 		$status            = ! empty( $_GET['mz_status'] ) ? $_GET['mz_status'] : false;
@@ -542,8 +544,9 @@ class EASL_MZ_Manager {
 		if ( $response_digest != $digest ) {
 			die( "Are you sure you want to do this?" );
 		}
-		$current_date = date( 'Y-m-d' );
-		$redirect_url = easl_membership_thanks_page_url();
+		$current_date  = date( 'Y-m-d' );
+		$redirect_url  = easl_membership_thanks_page_url();
+		$redirect_type = '';
 		if ( $status == 'accepted' ) {
 			$membership_api_data = array(
 				'status'                              => 'active',
@@ -554,22 +557,37 @@ class EASL_MZ_Manager {
 				'billing_initiated_on'                => $current_date,
 				'billing_amount'                      => $amount,
 			);
-			// Update Membership in CRM
-			$this->api->get_user_auth_token();
-			$updated = $this->api->update_membership( $membership_id, $membership_api_data );
-			if ( $updated ) {
-				$redirect_url = add_query_arg( array(
-					'membership_status' => 'paid_online',
-					'mbs_num'           => $membership_number,
-					'mb_name'           => $name
-				), $redirect_url );
-			}
+			$redirect_type       = 'paid_online';
 		} elseif ( $status == 'declined' ) {
-			$redirect_url = add_query_arg( array( 'membership_status' => 'declined_online' ), $redirect_url );
+			$membership_api_data = array(
+				'status'         => 'incomplete',
+				'billing_status' => 'waiting',
+			);
+			$redirect_type       = 'declined_online';
 		} elseif ( $status == 'cancelled' ) {
-			$redirect_url = add_query_arg( array( 'membership_status' => 'cancelled_online' ), $redirect_url );
+			$membership_api_data = array(
+				'status'         => 'incomplete',
+				'billing_status' => 'waiting',
+			);
+			$redirect_type       = 'cancelled_online';
 		} else {
-			$redirect_url = add_query_arg( array( 'membership_status' => 'failed_online' ), $redirect_url );
+			$membership_api_data = array(
+				'status'         => 'incomplete',
+				'billing_status' => 'waiting',
+			);
+			$redirect_type       = 'failed_online';
+		}
+
+		// Update Membership in CRM
+		$this->api->get_user_auth_token();
+		$updated = $this->api->update_membership( $membership_id, $membership_api_data );
+		if ( $updated ) {
+			$redirect_url = add_query_arg( array(
+				'membership_status' => $redirect_type,
+				'mbs_num'           => $membership_number,
+				'fname'          => $mz_fname,
+				'name'          => $mz_lname,
+			), $redirect_url );
 		}
 
 		$this->session->clear_session_cart( $session_db_id );

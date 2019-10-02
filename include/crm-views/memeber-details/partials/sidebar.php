@@ -87,26 +87,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 		<?php
-		$session_data           = easl_mz_get_current_session_data();
-		$cart_data              = isset( $session_data['cart_data'] ) ? $session_data['cart_data'] : array();
-		$membership_checkout_id = isset( $cart_data['membership_created_id'] ) ? $cart_data['membership_created_id'] : '';
-		if ( $membership_checkout_id ):
+		$membership_button_title = '';
+		$membership_button_link  = '';
+		$confirmation_page       = easl_membership_thanks_page_url();
+
+		if ( $member['dotb_mb_id'] && isset( $member['latest_membership']['billing_status'] ) && 'waiting' == $member['latest_membership']['billing_status'] ) {
+			$membership_button_title = 'Complete payment';
+			if ( 'offline_payment' == $member['latest_membership']['billing_type'] ) {
+				$membership_button_url = add_query_arg( array(
+					'membership_status' => 'created_offline',
+					'mbs_id'            => $member['latest_membership']['id'],
+					'mbs_num'           => $member['dotb_mb_id'],
+					'fname'             => $member['first_name'],
+					'lname'             => $member['last_name']
+				), $confirmation_page );
+			} else {
+				$membership_button_url = easl_membership_checkout_url();
+			}
+		} elseif ( in_array( $member['dotb_mb_current_status'], array( 'expired', 'active' ) ) ) {
+			$membership_button_title = 'Renew Membership';
+			$membership_button_url   = easl_member_new_membership_form_url( true );
+		} else {
+			$membership_button_title = 'Add Membership';
+			$membership_button_url   = easl_member_new_membership_form_url( false );
+		}
+
+
+		if ( $membership_button_title && $membership_button_url ):
 			?>
             <div class="mzms-sbitem">
-                <a class="mzms-button" href="<?php echo easl_membership_checkout_url(); ?>">Complete payment</a>
-            </div>
-		<?php elseif ( in_array( $member['dotb_mb_current_status'], array( 'expired', 'active' ) ) ): ?>
-            <div class="mzms-sbitem">
-                <a class="mzms-button" href="<?php echo easl_member_new_membership_form_url( true ) ?>">Renew Membership</a>
-            </div>
-		<?php elseif ( ! $member['dotb_mb_id'] ): ?>
-            <div class="mzms-sbitem">
-                <a class="mzms-button" href="<?php echo easl_member_new_membership_form_url( false ); ?>">Add Membership</a>
+                <a class="mzms-button" href="<?php echo $membership_button_url ?>"><?php echo $membership_button_title; ?></a>
             </div>
 		<?php endif; ?>
-        <dib class="mzms-sbitem mzms-delete-account-request">
+        <div class="mzms-sbitem mzms-delete-account-request">
             <p>If you would like to delete your account, please contact
                 <a href="mailto:membership@easloffice.eu">membership@easloffice.eu</a></p>
-        </dib>
+        </div>
     </div>
 </div>

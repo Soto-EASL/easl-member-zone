@@ -581,6 +581,63 @@ class EASL_MZ_API {
 		return $response->record->dotb_mb_id;
 	}
 
+	public function get_members_latest_membership( $member_id ) {
+		$headers = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$data    = array(
+			'max_num'  => 1,
+			'fields'   => 'id,status,billing_type,billing_status,start_date,end_date',
+			'order_by' => 'start_date:DESC,date_entered:DESC'
+		);
+		$result  = $this->get( "/Contacts/{$member_id}/link/contacts_easl1_memberships_1", false, $headers );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+
+		if ( empty( $response->records[0] ) ) {
+			return false;
+		}
+
+		$return_data = array(
+			'id'             => '',
+			'status'         => '',
+			'billing_type'   => '',
+			'billing_status' => '',
+			'start_date'     => '',
+			'end_date'       => '',
+		);
+
+		if ( isset( $response->records[0]->id ) ) {
+			$return_data['id'] = $response->records[0]->id;
+		}
+
+		if ( isset( $response->records[0]->status ) ) {
+			$return_data['status'] = $response->records[0]->status;
+		}
+
+		if ( isset( $response->records[0]->billing_type ) ) {
+			$return_data['billing_type'] = $response->records[0]->billing_type;
+		}
+
+		if ( isset( $response->records[0]->billing_status ) ) {
+			$return_data['billing_status'] = $response->records[0]->billing_status;
+		}
+
+		if ( isset( $response->records[0]->start_date ) ) {
+			$return_data['start_date'] = $response->records[0]->start_date;
+		}
+
+		if ( isset( $response->records[0]->end_date ) ) {
+			$return_data['end_date'] = $response->records[0]->end_date;
+		}
+
+
+		return $return_data;
+	}
+
 	public function delete_member_account( $member_id ) {
 		$headers = array(
 			'Content-Type' => 'application/json',

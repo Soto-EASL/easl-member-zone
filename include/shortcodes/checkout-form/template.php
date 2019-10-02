@@ -28,7 +28,7 @@ $class_to_filter = 'wpb_easl_mz_membership_checkout_form wpb_content_element ' .
 $class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
 $css_class       = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 
-$wrapper_attributes = array();
+$wrapper_attributes     = array();
 if ( ! empty( $el_id ) ) {
 	$wrapper_attributes[] = 'id="' . esc_attr( $el_id ) . '"';
 }
@@ -36,11 +36,6 @@ if ( ! empty( $css_class ) ) {
 	$wrapper_attributes[] = 'class="' . esc_attr( $css_class ) . '"';
 }
 
-$session_data = easl_mz_get_current_session_data();
-
-$cart_data = isset( $session_data['cart_data'] ) ? $session_data['cart_data'] : array();
-
-$membership_checkout_id = isset( $cart_data['membership_created_id'] ) ? $cart_data['membership_created_id'] : '';
 
 if ( easl_mz_is_member_logged_in() ):
 	$api = easl_mz_get_manager()->getApi();
@@ -49,7 +44,20 @@ if ( easl_mz_is_member_logged_in() ):
 	$member_id          = $session->ge_current_member_id();
 	$member             = false;
 	$membership         = false;
-	if ( $membership_checkout_id ) {
+
+	$membership_checkout_id = '';
+
+	$billing_type = '';
+
+	if ( $member_id ) {
+		$members_latest_membership = $api->get_members_latest_membership( $member_id );
+		if ( isset( $members_latest_membership['id'] ) ) {
+			$membership_checkout_id = $members_latest_membership['id'];
+			$billing_type           = $members_latest_membership['billing_type'];
+		}
+	}
+
+	if ( ( 'online_cc_indiv' == $billing_type ) && $membership_checkout_id ) {
 		$api->get_user_auth_token();
 		$member     = $api->get_member_details( $member_id, false );
 		$membership = $api->get_membership_details( $membership_checkout_id, false );
@@ -110,36 +118,44 @@ if ( easl_mz_is_member_logged_in() ):
 					<?php
 					$billing_country = easl_mz_get_country_name( $billing_address['country'] );
 
-					//$order_id = $membership['id'] . time();
-					$order_id = $member['dotb_mb_id'];
+
+					$order_id = $member['dotb_mb_id'] . '_' . time();
 
 					$accept_url    = add_query_arg( array(
-						'mz_action'     => 'payment_feedback',
-						'mz_status'     => 'accepted',
-						'mz_sid'        => $user_session_db_id,
-						'membership_id' => $membership['id'],
+						'mz_action'         => 'payment_feedback',
+						'mz_status'         => 'accepted',
+						'mz_sid'            => $user_session_db_id,
+						'membership_id'     => $membership['id'],
 						'membership_number' => $member['dotb_mb_id'],
+						'mz_fname'          => $member['first_name'],
+						'mz_lname'          => $member['last_name'],
 					), get_site_url() );
 					$decline_url   = add_query_arg( array(
-						'mz_action'     => 'payment_feedback',
-						'mz_status'     => 'declined',
-						'mz_sid'        => $user_session_db_id,
-						'membership_id' => $membership['id'],
+						'mz_action'         => 'payment_feedback',
+						'mz_status'         => 'declined',
+						'mz_sid'            => $user_session_db_id,
+						'membership_id'     => $membership['id'],
 						'membership_number' => $member['dotb_mb_id'],
+						'mz_fname'          => $member['first_name'],
+						'mz_lname'          => $member['last_name'],
 					), get_site_url() );
 					$exception_url = add_query_arg( array(
-						'mz_action'     => 'payment_feedback',
-						'mz_status'     => 'failed',
-						'mz_sid'        => $user_session_db_id,
-						'membership_id' => $membership['id'],
+						'mz_action'         => 'payment_feedback',
+						'mz_status'         => 'failed',
+						'mz_sid'            => $user_session_db_id,
+						'membership_id'     => $membership['id'],
 						'membership_number' => $member['dotb_mb_id'],
+						'mz_fname'          => $member['first_name'],
+						'mz_lname'          => $member['last_name'],
 					), get_site_url() );;
 					$cancel_url = add_query_arg( array(
-						'mz_action'     => 'payment_feedback',
-						'mz_status'     => 'cancelled',
-						'mz_sid'        => $user_session_db_id,
-						'membership_id' => $membership['id'],
+						'mz_action'         => 'payment_feedback',
+						'mz_status'         => 'cancelled',
+						'mz_sid'            => $user_session_db_id,
+						'membership_id'     => $membership['id'],
 						'membership_number' => $member['dotb_mb_id'],
+						'mz_fname'          => $member['first_name'],
+						'mz_lname'          => $member['last_name'],
 					), get_site_url() );
 
 					$sha_string .= "ACCEPTURL={$accept_url}{$saw_in_pass_phrase}";
@@ -173,7 +189,7 @@ if ( easl_mz_is_member_logged_in() ):
 
 					$sha_string .= "PSPID={$pspid}{$saw_in_pass_phrase}";
 
-					$digest = hash("sha512", $sha_string);
+					$digest = hash( "sha512", $sha_string );
 					?>
                     <input type="hidden" name="PSPID" value="<?php echo $pspid; ?>">
                     <input type="hidden" name="ORDERID" value="<?php echo $order_id; ?>">
@@ -204,7 +220,7 @@ if ( easl_mz_is_member_logged_in() ):
                     <div class="mzcheckout-summery">
                         <div class="mzcheckout-summery-row">
                             <span class="mzcheckout-summery-label">Membership Number:</span>
-                            <span class="mzcheckout-summery-value"><?php echo $order_id ?></span>
+                            <span class="mzcheckout-summery-value"><?php echo $member['dotb_mb_id'] ?></span>
                         </div>
                         <div class="mzcheckout-summery-row">
                             <span class="mzcheckout-summery-label">Order Title:</span>

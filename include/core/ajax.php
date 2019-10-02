@@ -145,7 +145,8 @@ class EASL_MZ_Ajax_Handler {
 			$this->respond( 'Member ' . $current_member_id . ' not found!', 404 );
 		}
 
-		$member_details['profile_picture'] = $this->api->get_member_profile_picture( $current_member_id );
+		$member_details['profile_picture']  = $this->api->get_member_profile_picture( $current_member_id );
+		$member_details['latest_membership'] = $this->api->get_members_latest_membership( $current_member_id );
 
 		$this->respond_file( '/memeber-details/memeber-details.php', array( 'member' => $member_details ), 200 );
 	}
@@ -167,6 +168,9 @@ class EASL_MZ_Ajax_Handler {
 		if ( ! $member_details ) {
 			$this->respond( 'Member ' . $current_member_id . ' not found!', 404 );
 		}
+
+		$member_details['latest_membership'] = $this->api->get_members_latest_membership( $current_member_id );
+
 		$renew    = 'no';
 		$messages = false;
 		if ( isset( $_POST['request_data']['renew'] ) ) {
