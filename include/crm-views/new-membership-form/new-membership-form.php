@@ -35,6 +35,14 @@ if ( $member['dotb_mb_id'] && isset( $member['latest_membership']['billing_statu
 		$membership_button_url = easl_membership_checkout_url();
 	}
 }
+
+$member_has_home_address = true;
+
+if ( ! $member['alt_address_street'] || ! $member['alt_address_postalcode'] || ! $member['alt_address_city'] || ! $member['alt_address_state'] || ! $member['alt_address_country'] ) {
+	$member_has_home_address = false;
+}
+
+
 if ( ! $member_has_waiting_payemnt ):
 	?>
     <form action="" method="post" enctype="multipart/form-data">
@@ -90,8 +98,8 @@ if ( ! $member_has_waiting_payemnt ):
                     <label class="mzms-field-label" for="mzf_membership_payment_type">Billing Address</label>
                     <div class="mzms-field-wrap">
                         <select class="easl-mz-select2" name="billing_mode" id="mzf_billing_mode" style="width: 100%;">
-                            <option value="c2">Home</option>
                             <option value="c1" selected="selected">Institution</option>
+							<?php if ( $member_has_home_address ): ?><option value="c2">Home</option><?php endif; ?>
                             <option value="other">or other?</option>
                         </select>
                     </div>
@@ -103,8 +111,8 @@ if ( ! $member_has_waiting_payemnt ):
                         <label class="mzms-field-label" for="mzf_jhephardcopy_recipient">JHEP - Where?</label>
                         <div class="mzms-field-wrap">
                             <select class="easl-mz-select2" name="jhephardcopy_recipient" id="mzf_jhephardcopy_recipient" style="width: 100%;">
-                                <option value="c2">Home</option>
                                 <option value="c1" selected="selected">Institution</option>
+	                            <?php if ( $member_has_home_address ): ?><option value="c2">Home</option><?php endif; ?>
                                 <option value="other">or other?</option>
                             </select>
                         </div>
@@ -251,7 +259,8 @@ if ( ! $member_has_waiting_payemnt ):
             </div>
     </form>
 <?php else: ?>
-<div class="mz-membership-form-has-waiting-payment">
-    You already have an unpaid membership request. Please <a href="<?php echo $membership_button_url; ?>">complete you payment</a>.
-</div>
+    <div class="mz-membership-form-has-waiting-payment">
+        You already have an unpaid membership request. Please
+        <a href="<?php echo $membership_button_url; ?>">complete you payment</a>.
+    </div>
 <?php endif; ?>

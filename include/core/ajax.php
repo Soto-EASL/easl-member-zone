@@ -298,6 +298,8 @@ class EASL_MZ_Ajax_Handler {
 
 		$request_data['portal_name']     = $request_data['email1'];
 		$request_data['portal_password'] = $password;
+		$request_data['portal_password1'] = $password;
+		$request_data['portal_active'] = true;
 
 
 		$this->api->get_user_auth_token();
