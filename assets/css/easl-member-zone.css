@@ -2205,13 +2205,17 @@ span.mzms-field-file-button {
     margin: 0 0 15px;
 }
 
-.membership-pages-login-wrap input {
+.membership-pages-login-wrap input,
+.membership-pages-login-wrap .mz-forgot-pass-fields  .mz-reset-pass-email{
     display: block;
     width: 100% !important;
     border: 1px solid #b0b0b0;
     height: 40px;
     font-size: 16px;
     padding: 0 10px;
+}
+.membership-pages-login-wrap .mz-forgot-pass-fields  .mz-reset-pass-email {
+    margin-bottom: 15px;
 }
 
 .membership-pages-login-wrap .easl-generic-button {
@@ -2224,4 +2228,34 @@ span.mzms-field-file-button {
 }
 .membership-pages-login-wrap .mz-forgot-pass-row a {
     color: #666!important;
+}
+.membership-pages-login-wrap .mz-become-member-link {
+    float: left;
+}
+.membership-pages-login-wrap .mz-forgot-password {
+    float: right;
+}
+
+.easl-mz-login-form-wrapper.membership-pages-login-wrap {
+    position: relative;
+}
+.membership-pages-login-wrap.mz-show-reset-form form {
+    display: none;
+}
+.membership-pages-login-wrap.mz-show-reset-form .mz-forgot-pass-fields {
+    display: block;
+}
+.membership-pages-login-wrap.mz-reset-pass-processing::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: rgba(255,255,255,.85);
+    z-index: 1;
+}
+.membership-pages-login-wrap.mz-reset-pass-processing .easl-mz-loader {
+    display: block;
 }

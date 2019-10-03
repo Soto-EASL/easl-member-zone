@@ -98,16 +98,17 @@ class EASL_MZ_Ajax_Handler {
 			if ( $current_member_id ) {
 				$this->session->add_data( 'member_id', $current_member_id );
 				$this->session->save_session_data();
+			} else {
+				$this->session->unset_auth_cookie( true );
+				$this->respond( 'Member not found!', 404 );
 			}
-		}
-		if ( ! $current_member_id ) {
-			$this->respond( 'Member not found!', 404 );
 		}
 		$this->api->get_user_auth_token();
 		$member_details = $this->api->get_member_details( $current_member_id, false );
 
 		if ( ! $member_details ) {
-			$this->respond( 'Member not found!', 404 );
+			$this->session->unset_auth_cookie( true );
+			$this->respond( 'Members details not found!', 404 );
 		}
 
 		$member_details['profile_picture'] = $this->api->get_member_profile_picture( $current_member_id );
@@ -143,7 +144,7 @@ class EASL_MZ_Ajax_Handler {
 			$this->respond( 'Member ' . $current_member_id . ' not found!', 404 );
 		}
 
-		$member_details['profile_picture']  = $this->api->get_member_profile_picture( $current_member_id );
+		$member_details['profile_picture']   = $this->api->get_member_profile_picture( $current_member_id );
 		$member_details['latest_membership'] = $this->api->get_members_latest_membership( $current_member_id );
 
 		$this->respond_file( '/memeber-details/memeber-details.php', array( 'member' => $member_details ), 200 );
@@ -296,10 +297,10 @@ class EASL_MZ_Ajax_Handler {
 			$this->respond_field_errors( $errors );
 		}
 
-		$request_data['portal_name']     = $request_data['email1'];
-		$request_data['portal_password'] = $password;
+		$request_data['portal_name']      = $request_data['email1'];
+		$request_data['portal_password']  = $password;
 		$request_data['portal_password1'] = $password;
-		$request_data['portal_active'] = true;
+		$request_data['portal_active']    = true;
 
 
 		$this->api->get_user_auth_token();
@@ -310,7 +311,7 @@ class EASL_MZ_Ajax_Handler {
 			$this->respond( 'Error!', 405 );
 		}
 
-		$membership_page = easl_member_new_membership_form_url(false);
+		$membership_page = easl_member_new_membership_form_url( false );
 		if ( ! $membership_page ) {
 			$membership_page = get_field( 'member_dashboard_url', 'option' );
 		}

@@ -29,7 +29,7 @@ $button_nt          = '';
 $button_html_format = '<a href="%s" class="easl-header-mz-buttons"%s>%s</a>';
 
 $login_error_messages = easl_mz_get_manager()->get_message( 'login_error' );
-$login_form_class     = 'easl-mz-login-form';
+$login_form_class     = 'easl-mz-login-form-wrapper easl-mz-login-form';
 if ( $login_error_messages ) {
 	$login_form_class .= ' mz-login-form-has-error easl-active';
 }

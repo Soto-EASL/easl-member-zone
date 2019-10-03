@@ -41,11 +41,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	if ( ! empty( $_GET['redirect_url'] ) ) {
 		$redirect_url = $_GET['redirect_url'];
 	} else {
-		$redirect_url = home_url($_SERVER['REQUEST_URI']);
+		$redirect_url = home_url( $_SERVER['REQUEST_URI'] );
 	}
 
 	?>
-    <div class="membership-pages-login-wrap">
+    <div class="membership-pages-login-wrap easl-mz-login-form-wrapper">
         <form action="" method="post" class="clr">
 			<?php if ( $login_error_messages ): ?>
                 <div class="mz-login-row mz-login-errors">
@@ -63,6 +63,17 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <button class="easl-generic-button easl-color-lightblue">Login</button>
             </div>
         </form>
-        <div class="mz-forgot-pass-row"><a href="https://easl.eu/become-a-member/">Become a member</a></div>
+        <div class="mz-forgot-pass-fields clr">
+            <input class="mz-reset-pass-email" type="text" value="" placeholder="Your email address">
+            <button class="easl-generic-button easl-color-lightblue mz-reset-pass-button">Reset Password</button>
+        </div>
+        <div class="mz-forgot-pass-row clr">
+            <a class="mz-become-member-link" href="https://easl.eu/become-a-member/">Become a member</a>
+            <a class="mz-forgot-password" href="#">Forgot your password?</a>
+        </div>
+
+        <div class="easl-mz-loader">
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/easl-loader.gif" alt="loading...">
+        </div>
     </div>
 <?php endif; ?>

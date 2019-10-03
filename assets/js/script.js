@@ -82,13 +82,25 @@
             $(".mz-reset-pass-button").on("mz_loaded:" + this.methods.resetPassword, function (event, response, method) {
                 if (response.Status === 200) {
                     alert("Password has been reset! Please check your email.");
-                    $(this).closest(".easl-mz-login-form").removeClass("mz-show-reset-form mz-reset-pass-processing").find(".mz-forgot-password").html("Forgot your password?");
+                    $(this)
+                        .closest(".easl-mz-login-form-wrapper")
+                        .removeClass("mz-show-reset-form mz-reset-pass-processing")
+                        .find(".mz-forgot-password")
+                        .html("Forgot your password?");
+                }else{
+                    alert("We could not find your email.");
+                    $(this)
+                        .closest(".easl-mz-login-form-wrapper")
+                        .removeClass("mz-show-reset-form mz-reset-pass-processing")
+                        .find(".mz-forgot-password")
+                        .html("Forgot your password?");
                 }
+
             });
             $(".mz-reset-pass-button").on("click", function (event) {
                 event.preventDefault();
                 $el = $(this);
-                var email = $el.closest(".easl-mz-login-form").addClass("mz-reset-pass-processing").find(".mz-reset-pass-email").val();
+                var email = $el.closest(".easl-mz-login-form-wrapper").addClass("mz-reset-pass-processing").find(".mz-reset-pass-email").val();
                 if (email) {
                     _this.request(_this.methods.resetPassword, $el, {"email": email});
                 }
@@ -567,7 +579,7 @@
         events: function () {
             $(".mz-forgot-password").on("click", function (event) {
                 event.preventDefault();
-                var $formWrap = $(this).closest(".easl-mz-login-form");
+                var $formWrap = $(this).closest(".easl-mz-login-form-wrapper");
                 if ($formWrap.hasClass("mz-show-reset-form")) {
                     $formWrap.removeClass("mz-show-reset-form");
                     $(this).html("Forgot your password?");

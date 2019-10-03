@@ -44,6 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             </div>
         </div>
         <div class="easl-mz-loader">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/easl-loader.gif" alt="loading..."></div>
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/easl-loader.gif" alt="loading...">
+        </div>
     </div>
 </div>
