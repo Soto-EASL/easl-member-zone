@@ -11,7 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     <div class="mzms-fields-con">
         <label class="mzms-field-label" for="mzf_email1">Email <span class="mzms-asteric">*</span></label>
         <div class="mzms-field-wrap mzms-field-has-privacy<?php if(!easl_mz_field_is_public('email1', $member['dotb_public_profile'], $member['dotb_public_profile_fields'])){echo ' mzms-privacy-enabled';} ?>">
-            <input type="email" placeholder="" name="email1" id="mzf_email1" value="<?php echo esc_attr( $member['email1'] ); ?>" autocomplete="off" disabled="disabled" readonly="readonly">
+            <input type="hidden" placeholder="" name="email1" id="mzf_email1" value="<?php echo esc_attr( $member['email1'] ); ?>" autocomplete="off">
+            <input type="email" placeholder="" id="mzf_email1" value="<?php echo esc_attr( $member['email1'] ); ?>" autocomplete="off" disabled="disabled" readonly="readonly">
 	        <?php echo easl_mz_field_public_field('email1', $member['dotb_public_profile'], $member['dotb_public_profile_fields']); ?>
         </div>
     </div>

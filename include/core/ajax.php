@@ -103,10 +103,8 @@ class EASL_MZ_Ajax_Handler {
 		if ( ! $current_member_id ) {
 			$this->respond( 'Member not found!', 404 );
 		}
-		$member_details = wp_cache_get( 'easl_mz_api_member' . $current_member_id, 'easlmz_cache_group' );
-		if ( ! $member_details ) {
-			$member_details = $this->api->get_member_details( $current_member_id );
-		}
+		$this->api->get_user_auth_token();
+		$member_details = $this->api->get_member_details( $current_member_id, false );
 
 		if ( ! $member_details ) {
 			$this->respond( 'Member not found!', 404 );
@@ -310,7 +308,7 @@ class EASL_MZ_Ajax_Handler {
 			$this->respond( 'Error!', 405 );
 		}
 
-		$membership_page = easl_member_new_membership_form_url();
+		$membership_page = easl_member_new_membership_form_url(false);
 		if ( ! $membership_page ) {
 			$membership_page = get_field( 'member_dashboard_url', 'option' );
 		}
@@ -320,7 +318,7 @@ class EASL_MZ_Ajax_Handler {
 
 		$auth_response_status = $this->api->get_auth_token( $request_data['portal_name'], $password, true );
 		if ( ! $auth_response_status ) {
-			$this->respond_file( 'member-login/login-form.php', array( 'redirect_url' => $membership_page ), 201 );
+			$this->respond_file( 'member-login/basic-login-form.php', array( 'redirect_url' => $membership_page ), 201 );
 		}
 		// Member authenticated
 		$this->session->set_auth_cookie( $request_data['portal_name'], $this->api->get_credential_data( true ) );

@@ -20,7 +20,7 @@
             "deleteMyAccount": "delete_current_member"
         },
         loadHtml: function ($el, response) {
-            if (response.Status === 200) {
+            if (response.Status === 200 || response.Status === 201) {
                 $el.html(response.Html);
                 $el.removeClass("easl-mz-loading");
             } else if (response.Status === 401) {
@@ -436,7 +436,7 @@
                     window.location.href = response.Html;
                 }
                 if (response.Status === 201) {
-                    _this.loadHtml($(this).closest(".easl-mz-new-member-form-inner"), response);
+                    _this.loadHtml($form.closest(".easl-mz-new-member-form-inner"), response);
                 }
                 if (response.Status === 400) {
                     for (var fieldName in response.Errors) {
