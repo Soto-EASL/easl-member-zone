@@ -2,7 +2,7 @@
 /*
 Plugin Name: EASL Member Zone
 Description: The plugin contains the functionality for EASL Member zone
-Version: 1.0.1.2
+Version: 1.0.2
 Author: Soto
 Author URI: http://www.gosoto.co/
 Text Domain: easlmz
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-define( 'EASL_MZ_VERSION', '1.0.1.14' );
+define( 'EASL_MZ_VERSION', '1.0.2' );
 
 class EASL_MZ_Manager {
 	/**
