@@ -2259,3 +2259,11 @@ span.mzms-field-file-button {
 .membership-pages-login-wrap.mz-reset-pass-processing .easl-mz-loader {
     display: block;
 }
+.membership-pages-login-wrap .mz-login-row.mz-login-errors {
+    position: relative;
+    width: auto;
+    margin-bottom: 15px;
+    padding: 0;
+    color: #d0011b;
+    font-size: 14px;
+}
