@@ -424,13 +424,87 @@ function easl_mz_field_public_field( $field, $public_type, $public_fields ) {
 	return '<span class="mzms-fields-privacy-icon ticon ticon-eye"></span>';
 }
 
-function get_formatted_birthday_crm_to_europe($date_of_birth){
-	$date_of_birth_formatted = '';
-	if ( $date_of_birth ) {
-		$date_of_birth = explode( '-', $date_of_birth );
-		if ( count( $date_of_birth ) == 3 ) {
-			$date_of_birth_formatted = trim( $date_of_birth[2] ) . '.' . trim( $date_of_birth[1] ) . '.' . trim( $date_of_birth[0] );
+function get_formatted_birthday_crm_to_europe( $date_of_birth ) {
+	return mz_europe_data_from_crm_date( $date_of_birth );
+}
+
+function mz_europe_data_from_crm_date( $crm_date ) {
+	$date_formatted = '';
+	if ( $crm_date ) {
+		$crm_date = explode( '-', $crm_date );
+		if ( count( $crm_date ) == 3 ) {
+			$date_formatted = trim( $crm_date[2] ) . '.' . trim( $crm_date[1] ) . '.' . trim( $crm_date[0] );
 		}
 	}
-	return $date_of_birth_formatted;
+
+	return $date_formatted;
+}
+
+function easl_mz_get_membership_expiring( $member_details ) {
+	if ( empty( $member_details['dotb_mb_current_end_date'] ) ) {
+		return '';
+	}
+	$show_message = false;
+	$renew_title  = '';
+	$renew_url    = '';
+
+	if ( $member_details['dotb_mb_id'] && isset( $member_details['latest_membership']['billing_status'] ) && 'waiting' == $member_details['latest_membership']['billing_status'] ) {
+		$renew_title = 'complete payment';
+		if ( 'offline_payment' == $member_details['latest_membership']['billing_type'] ) {
+			$renew_url = add_query_arg( array(
+				'membership_status' => 'created_offline',
+				'mbs_id'            => $member_details['latest_membership']['id'],
+				'mbs_num'           => $member_details['dotb_mb_id'],
+				'fname'             => $member_details['first_name'],
+				'lname'             => $member_details['last_name']
+			), easl_membership_thanks_page_url() );
+		} else {
+			$renew_url = easl_membership_checkout_url();
+		}
+		$show_message = true;
+	} elseif ( in_array( $member_details['dotb_mb_current_status'], array( 'expired', 'active' ) ) ) {
+		$renew_title  = 'renew';
+		$renew_url    = easl_member_new_membership_form_url( true );
+		$show_message = true;
+	}
+
+	if ( ! $show_message ) {
+		return '';
+	}
+	$end = DateTime::createFromFormat( 'Y-m-d', $member_details['dotb_mb_current_end_date'] );
+
+	if ( $end->format( 'Y' ) > date( 'Y' ) ) {
+		return '';
+	}
+
+	$now                 = new DateTime();
+	$diff                = $now->diff( $end );
+	$remaining_formatted = array();
+	if ( $diff->y > 1 ) {
+		$remaining_formatted[] = "{$diff->y} years";
+	} elseif ( $diff->y ) {
+		$remaining_formatted[] = "{$diff->y} year";
+	}
+	if ( $diff->m > 1 ) {
+		$remaining_formatted[] = "{$diff->m} months";
+	} elseif ( $diff->m ) {
+		$remaining_formatted[] = "{$diff->m} month";
+	}
+	$week = intdiv( $diff->d, 7 );
+	$days = $diff->d % 7;
+	if ( $week > 1 ) {
+		$remaining_formatted[] = "{$week} weeks";
+	} elseif ( $week ) {
+		$remaining_formatted[] = "{$week} weeks";
+	}
+	if ( $days > 1 ) {
+		$remaining_formatted[] = "{$days} days";
+	} elseif ( $days ) {
+		$remaining_formatted[] = "{$days} day";
+	}
+	if ( count( $remaining_formatted ) < 1 ) {
+		return '';
+	}
+
+	return 'Your membership is due to expire in ' . implode( ' ', $remaining_formatted ) . '. Please <a href="' . $renew_url . '">' . $renew_title . '</a> today.';
 }

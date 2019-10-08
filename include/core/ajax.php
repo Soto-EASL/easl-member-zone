@@ -49,7 +49,7 @@ class EASL_MZ_Ajax_Handler {
 		) );
 	}
 
-	public function respond_file( $file, $data = array(), $status = 200 ) {
+	public function respond_file( $file, $data = array(), $status = 200, $extra_data = array() ) {
 		if ( ! is_array( $data ) ) {
 			$data = (array) $data;
 		}
@@ -59,7 +59,8 @@ class EASL_MZ_Ajax_Handler {
 		$html = ob_get_clean();
 		wp_send_json( array(
 			'Status' => $status,
-			'Html'   => $html
+			'Html'   => $html,
+			'Data'   => $extra_data,
 		) );
 	}
 
@@ -147,7 +148,56 @@ class EASL_MZ_Ajax_Handler {
 		$member_details['profile_picture']   = $this->api->get_member_profile_picture( $current_member_id );
 		$member_details['latest_membership'] = $this->api->get_members_latest_membership( $current_member_id );
 
-		$this->respond_file( '/memeber-details/memeber-details.php', array( 'member' => $member_details ), 200 );
+		$extra_data = array();
+
+		$membership_expiring = easl_mz_get_membership_expiring( array(
+			'dotb_mb_current_end_date' => $member_details['dotb_mb_current_end_date'],
+			'dotb_mb_id'               => $member_details['dotb_mb_id'],
+			'latest_membership'        => $member_details['latest_membership'],
+			'first_name'               => $member_details['first_name'],
+			'last_name'                => $member_details['last_name'],
+			'dotb_mb_current_status'   => $member_details['dotb_mb_current_status'],
+		) );
+		if($membership_expiring){
+			$extra_data['banner'] = $membership_expiring;
+		}
+
+
+		$this->respond_file( '/memeber-details/memeber-details.php', array( 'member' => $member_details ), 200, $extra_data );
+	}
+
+	public function get_membership_banner(){
+		$current_member_id = $this->session->ge_current_member_id();
+		if ( ! $current_member_id ) {
+			$current_member_id = $this->api->get_member_id();
+
+			if ( $current_member_id ) {
+				$this->session->add_data( 'member_id', $current_member_id );
+				$this->session->save_session_data();
+			}
+		}
+		if ( ! $current_member_id ) {
+			$this->respond( 'Member not found!', 404 );
+		}
+		$member_details = $this->api->get_member_details( $current_member_id );
+		if ( ! $member_details ) {
+			$this->respond( 'Member ' . $current_member_id . ' not found!', 404 );
+		}
+
+		$member_details['latest_membership'] = $this->api->get_members_latest_membership( $current_member_id );
+
+		$membership_expiring = easl_mz_get_membership_expiring( array(
+			'dotb_mb_current_end_date' => $member_details['dotb_mb_current_end_date'],
+			'dotb_mb_id'               => $member_details['dotb_mb_id'],
+			'latest_membership'        => $member_details['latest_membership'],
+			'first_name'               => $member_details['first_name'],
+			'last_name'                => $member_details['last_name'],
+			'dotb_mb_current_status'   => $member_details['dotb_mb_current_status'],
+		) );
+		if(!$membership_expiring){
+			$this->respond('', 400);
+		}
+		$this->respond($membership_expiring, 200);
 	}
 
 	public function get_new_membership_form() {
@@ -169,6 +219,19 @@ class EASL_MZ_Ajax_Handler {
 		}
 
 		$member_details['latest_membership'] = $this->api->get_members_latest_membership( $current_member_id );
+		$extra_data = array();
+
+		$membership_expiring = easl_mz_get_membership_expiring( array(
+			'dotb_mb_current_end_date' => $member_details['dotb_mb_current_end_date'],
+			'dotb_mb_id'               => $member_details['dotb_mb_id'],
+			'latest_membership'        => $member_details['latest_membership'],
+			'first_name'               => $member_details['first_name'],
+			'last_name'                => $member_details['last_name'],
+			'dotb_mb_current_status'   => $member_details['dotb_mb_current_status'],
+		) );
+		if($membership_expiring){
+			$extra_data['banner'] = $membership_expiring;
+		}
 
 		$renew    = 'no';
 		$messages = false;
@@ -182,7 +245,7 @@ class EASL_MZ_Ajax_Handler {
 			'member'   => $member_details,
 			'renew'    => $renew,
 			'messages' => $messages
-		), 200 );
+		), 200, $extra_data );
 	}
 
 	public function update_member_profile() {

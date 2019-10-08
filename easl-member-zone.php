@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-define( 'EASL_MZ_VERSION', '1.0.2.1' );
+define( 'EASL_MZ_VERSION', '1.0.3' );
 
 class EASL_MZ_Manager {
 	/**
@@ -62,6 +62,9 @@ class EASL_MZ_Manager {
 		add_action( 'wp_enqueue_scripts', array( $this, 'assets', ), 11 );
 
 		add_action( 'easl_mz_memberzone_page_content', array( $this, 'memberzone_page_content' ) );
+
+		add_action( 'template_redirect', array( $this, 'logged_member_actions' ) );
+		add_filter( 'body_class', array( $this, 'body_class' ) );
 	}
 
 	/**
@@ -148,6 +151,24 @@ class EASL_MZ_Manager {
 
 	public function memberzone_page_content() {
 		include $this->path( 'TEMPLATES_DIR', 'main.php' );
+	}
+
+	public function body_class( $classes = array() ) {
+		if ( easl_mz_is_member_logged_in() ) {
+			$classes[] = 'easl-mz-member-logged-in';
+		}
+
+		return $classes;
+	}
+
+	public function logged_member_actions() {
+		if ( easl_mz_is_member_logged_in() ) {
+			add_action( 'wpex_hook_main_before', array( $this, 'expiring_message' ) );
+		}
+	}
+
+	public function expiring_message() {
+		include $this->path( 'TEMPLATES_DIR', 'expiring-message.php' );
 	}
 
 	public function maybe_disable_wp_rocket_cache() {
@@ -585,8 +606,8 @@ class EASL_MZ_Manager {
 			$redirect_url = add_query_arg( array(
 				'membership_status' => $redirect_type,
 				'mbs_num'           => $membership_number,
-				'fname'          => $mz_fname,
-				'name'          => $mz_lname,
+				'fname'             => $mz_fname,
+				'name'              => $mz_lname,
 			), $redirect_url );
 		}
 

@@ -14,6 +14,7 @@
             "memberCard": 'get_member_card',
             "featuredMember": 'get_featured_member',
             "membershipForm": 'get_membership_form',
+            "membershipBanner": 'get_membership_banner',
             "newMembershipForm": 'get_new_membership_form',
             "submitMemberShipForm": "update_member_profile",
             "submitNewMemberForm": "create_member_profile",
@@ -87,7 +88,7 @@
                         .removeClass("mz-show-reset-form mz-reset-pass-processing")
                         .find(".mz-forgot-password")
                         .html("Forgot your password?");
-                }else{
+                } else {
                     alert("We could not find your email.");
                     $(this)
                         .closest(".easl-mz-login-form-wrapper")
@@ -354,6 +355,7 @@
             var _this = this;
             var $el = $(".easl-mz-membership-inner");
             if ($el.length) {
+                $(".mz-expiring-message-wrap").addClass('mz-banner-loading');
                 $el.on("mz_loaded:" + this.methods.membershipForm, function (event, response, method) {
                     _this.loadHtml($(this), response);
                     $("body").trigger("mz_reload_custom_fields");
@@ -370,9 +372,36 @@
                         yearRange: "1900:-00",
                         maxDate: "-0D"
                     });
+                    if ((response.Status === 200) && response.Data && response.Data.banner) {
+                        _this.loadBanner(response.Data.banner);
+                    }
                     _this.membershipFormEvents($el);
                 });
                 this.request(this.methods.membershipForm, $el);
+            }
+        },
+        loadBanner: function (msg) {
+            var $wrap = $(".mz-expiring-message-wrap");
+
+            if (msg) {
+                $wrap.find('.mz-expiring-message').html(msg);
+                $wrap.addClass('mz-banner-loaded easl-active').removeClass('mz-banner-loading');
+                $(".mz-expiring-message-close", $wrap).one("click", function (event) {
+                    event.preventDefault();
+                    $wrap.removeClass("easl-active");
+                });
+            }
+        },
+        getMembershipBanner: function () {
+            var _this = this;
+            var $el = $(".mz-expiring-message-wrap");
+            if ($el.length && !($el.hasClass('mz-banner-loaded') || $el.hasClass('mz-banner-loading') )) {
+                $el.on("mz_loaded:" + this.methods.membershipBanner, function (event, response, method) {
+                    if ((response.Status === 200) && response.Html) {
+                        _this.loadBanner(response.Html);
+                    }
+                });
+                this.request(this.methods.membershipBanner, $el);
             }
         },
         initNewMemberForm: function () {
@@ -538,6 +567,7 @@
             var _this = this;
             var $el = $(".easl-mz-new-membership-form");
             if ($el.length) {
+                $(".mz-expiring-message-wrap").addClass('mz-banner-loading');
                 $el.on("mz_loaded:" + this.methods.newMembershipForm, function (event, response, method) {
                     _this.loadHtml($(this), response);
                     $("body").trigger("mz_reload_custom_fields");
@@ -547,6 +577,9 @@
                     });
                     _this.customFileInput($el);
                     _this.newMembershipFormEvents($el);
+                    if ((response.Status === 200) && response.Data && response.Data.banner) {
+                        _this.loadBanner(response.Data.banner);
+                    }
                 });
                 this.request(this.methods.newMembershipForm, $el, {
                     'renew': $el.data('paymenttype'),
@@ -575,6 +608,7 @@
             this.getFeaturedMembers();
             this.getMembershipForm();
             this.getNewMembershipForm();
+            this.getMembershipBanner();
         },
         events: function () {
             $(".mz-forgot-password").on("click", function (event) {

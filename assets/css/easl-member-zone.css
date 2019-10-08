@@ -524,7 +524,8 @@ body .mzms-button::after {
     padding-top: 32px;
 }
 
-.page-template-member-zone #wrap {
+.page-template-member-zone #wrap,
+.easl-mz-member-logged-in #wrap{
     padding-top: 157px;
 }
 
@@ -2266,4 +2267,32 @@ span.mzms-field-file-button {
     padding: 0;
     color: #d0011b;
     font-size: 14px;
+}
+
+/*Member message*/
+.mz-expiring-message-wrap {
+    background: #004b87;
+    padding: 0;
+    height: 0;
+    overflow: hidden;
+    transition: height .25s;
+}
+.mz-expiring-message-wrap.easl-active {
+    height: auto;
+}
+.mz-expiring-message-wrap .container {
+    position: relative;
+    padding: 10px 0;
+}
+.mz-expiring-message {
+    color: #fff;
+    font-size: 24px;
+}
+.mz-expiring-message-wrap .mz-expiring-message-close {
+    font-size: 24px;
+    color: #fff;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
