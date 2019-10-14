@@ -42,7 +42,7 @@ $template_base = easl_mz_get_manager()->path( 'CRM_VIEWS', '/memeber-details' );
                 <div class="mzms-fields-con">
                     <label class="mzms-field-label" for="mzms_personal_profile">Personal Profile</label>
                     <div class="mzms-field-wrap">
-                        <textarea name="description" id="mzms_personal_profile" placeholder="" autocomplete="off"><?php echo esc_textarea( $member['description'] ); ?></textarea>
+                        <textarea name="description" id="mzms_personal_profile" placeholder="" autocomplete="new-password"><?php echo esc_textarea( $member['description'] ); ?></textarea>
                     </div>
                 </div>
             </div>

@@ -47,7 +47,7 @@ if(!$member_image) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_first_name">First Name <span class="mzms-asteric">*</span></label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="first_name" id="mzf_first_name" value="<?php echo esc_attr( $member['first_name'] ); ?>" autocomplete="off">
+                <input type="text" placeholder="" name="first_name" id="mzf_first_name" value="<?php echo esc_attr( $member['first_name'] ); ?>" autocomplete="new-password">
             </div>
         </div>
     </div>
@@ -55,7 +55,7 @@ if(!$member_image) {
         <div class="easl-col-inner mzms-fields-con">
             <label class="mzms-field-label" for="mzf_last_name">Last Name <span class="mzms-asteric">*</span></label>
             <div class="mzms-field-wrap">
-                <input type="text" placeholder="" name="last_name" id="mzf_last_name" value="<?php echo esc_attr( $member['last_name'] ); ?>" autocomplete="off">
+                <input type="text" placeholder="" name="last_name" id="mzf_last_name" value="<?php echo esc_attr( $member['last_name'] ); ?>" autocomplete="new-password">
             </div>
         </div>
     </div>

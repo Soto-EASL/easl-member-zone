@@ -21,7 +21,8 @@ $css_animation = '';
 $title_add     = '';
 $title_renew   = '';
 
-$atts = vc_map_get_attributes( $this->getShortcode(), $atts );
+
+$atts          = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
 
 $css_animation = $this->getCSSAnimation( $css_animation );
@@ -38,11 +39,11 @@ if ( ! empty( $css_class ) ) {
 	$wrapper_attributes[] = 'class="' . esc_attr( $css_class ) . '"';
 }
 
-if ( ! $title_renew ) {
+if(!$title_renew) {
 	$title_renew = 'Renew Membership';
 }
-if ( ! $title_add ) {
-	$title_add = 'Add Membership';
+if(!$title_add) {
+	$title_renew = 'Add Membership';
 }
 
 if ( easl_mz_is_member_logged_in() ):
