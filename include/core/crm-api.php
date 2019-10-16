@@ -446,6 +446,31 @@ class EASL_MZ_API {
 
 	}
 
+	public function get_member_profile_picture_raw( $member_id, $is_member = true ) {
+		$this->request->reset_headers();
+		$this->request->set_request_header( 'OAuth-Token', $this->get_access_token( $is_member ) );
+		$this->request->set_request_header( 'Cache-Control', 'no-cache' );
+		$this->request->get( '/Contacts/' . $member_id . '/file/picture', array(), array(), false );
+
+		if ( $this->request->get_response_code() != 200 ) {
+			return false;
+		}
+
+		$image_type = $this->request->get_response_header( 'Content-Type' );
+
+		if ( ! $image_type ) {
+			$image_type = 'image/jpeg';
+		}
+
+		$image_data = array(
+			'type' => $image_type,
+			'data' => $this->request->get_response_body()
+		);
+
+		return $image_data;
+
+	}
+
 	public function update_member_picture( $member_id, $img_file, $is_member = true ) {
 		$headers = array(
 			'Content-Type' => 'multipart/form-data',
@@ -457,6 +482,54 @@ class EASL_MZ_API {
 		}
 
 		return true;
+	}
+
+	public function get_members( $filter_args = array() ) {
+		$headers = array(
+			'Content-Type'  => 'application/json',
+			'Cache-Control' => 'no-cache',
+			'OAuth-Token'   => $this->get_access_token( false ),
+		);
+		$result  = $this->get( '/Contacts/filter', false, $headers, $filter_args );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->records ) ) {
+			return false;
+		}
+		$members = array();
+		foreach ( $response->records as $record ) {
+			$members[] = array(
+				'id'          => $record->id,
+				'salutation'  => $record->salutation,
+				'first_name'  => $record->first_name,
+				'last_name'   => $record->last_name,
+				'description' => $record->description,
+				'picture'     => $record->picture,
+				'country'     => $record->primary_address_country,
+			);
+		}
+
+		return $members;
+	}
+
+	public function count_members( $filter_args = array() ) {
+		$headers = array(
+			'Content-Type'  => 'application/json',
+			'Cache-Control' => 'no-cache',
+			'OAuth-Token'   => $this->get_access_token( false ),
+		);
+		$result  = $this->get( '/Contacts/filter/count', false, $headers, $filter_args );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->record_count ) ) {
+			return false;
+		}
+
+		return $response->record_count;
 	}
 
 	public function get_featured_members() {

@@ -118,6 +118,145 @@ class EASL_MZ_Ajax_Handler {
 
 	}
 
+	public function get_members_list() {
+		if ( ! easl_mz_is_member_logged_in() ) {
+			$this->respond( 'Member not logged in!', 401 );
+		}
+		$search      = '';
+		$country     = '';
+		$speciality  = '';
+		$letter      = '';
+		$page_offset = '';
+
+		if ( isset( $_POST['request_data']['search'] ) ) {
+			$search = trim( $_POST['request_data']['search'] );
+		}
+		if ( isset( $_POST['request_data']['country'] ) ) {
+			$country = trim( $_POST['request_data']['country'] );
+		}
+		if ( isset( $_POST['request_data']['speciality'] ) ) {
+			$speciality = trim( $_POST['request_data']['speciality'] );
+		}
+		if ( isset( $_POST['request_data']['letter'] ) ) {
+			$letter = trim( $_POST['request_data']['letter'] );
+		}
+		if ( isset( $_POST['request_data']['page_offset'] ) ) {
+			$page_offset = trim( $_POST['request_data']['page_offset'] );
+		}
+		$page_offset = absint( $page_offset );
+		$page_offset = $page_offset ? $page_offset : 1;
+		$num         = 12;
+		$filter_args = array(
+			'max_num'  => $num,
+			'offset'   => ( $page_offset - 1 ) * $num,
+			'order_by' => 'date_modified:ASC',
+			'fields'   => 'id,name,salutation,first_name,last_name,picture,dotb_public_profile,dotb_public_profile_fields,primary_address_country,description,dotb_easl_specialty'
+		);
+		$filter      = array();
+		$filter[]    = array(
+			'$or' => array(
+				array(
+					'dotb_public_profile' => array(
+						'$equals' => 'Yes'
+					)
+				),
+				array(
+					'dotb_public_profile' => array(
+						'$equals' => 'Yes_Partial'
+					)
+				),
+			)
+		);
+
+		if ( $search ) {
+			$search_pieces   = explode( ' ', $search );
+			$filter_search   = array();
+			$filter_search[] = array(
+				'first_name' => array(
+					'$contains' => $search
+				)
+			);
+			$filter_search[] = array(
+				'last_name' => array(
+					'$contains' => $search
+				)
+			);
+			if ( count( $search_pieces ) > 1 ) {
+				foreach ( $search_pieces as $search_term ) {
+					$filter_search[] = array(
+						'first_name' => array(
+							'$contains' => $search_term
+						)
+					);
+					$filter_search[] = array(
+						'last_name' => array(
+							'$contains' => $search_term
+						)
+					);
+				}
+			}
+			$filter[] = array(
+				'$or' => $filter_search
+			);
+		}
+		if ( $letter ) {
+			$filter[] = array(
+				'last_name' => array(
+					'$starts' => $letter
+				)
+			);
+		}
+		if ( $country ) {
+			$filter[] = array(
+				'primary_address_country' => $country
+			);
+		}
+		if ( $speciality ) {
+			$filter[] = array(
+				'dotb_easl_specialty' => array(
+					'$contains' => $speciality
+				)
+			);
+		}
+		if ( count( $filter ) > 0 ) {
+			$filter_args['filter'] = $filter;
+		}
+
+		$this->api->get_user_auth_token();
+		$members = $this->api->get_members( $filter_args );
+		if ( ! $members ) {
+			$this->respond( 'Member not found!', 404 );
+		}
+		$total_found_member = $this->api->count_members( array( 'filter' => $filter ) );
+
+		$data = array(
+			'members'            => $members,
+			'current_page'       => $page_offset,
+			'member_per_page'    => $num,
+			'total_found_member' => $total_found_member
+		);
+		$this->respond_file( '/member-directory/member-directory.php', $data, 200 );
+	}
+
+	public function get_member_details() {
+		if ( ! easl_mz_is_member_logged_in() ) {
+			$this->respond( 'Member not logged in!', 401 );
+		}
+		$member_id = '';
+
+		if ( isset( $_POST['request_data']['member_id'] ) ) {
+			$member_id = trim( $_POST['request_data']['member_id'] );
+		}
+		if ( ! $member_id ) {
+			$this->respond( 'Member not found!', 404 );
+		}
+		$member_details = $this->api->get_member_details( $member_id, false );
+		if ( ! $member_details ) {
+			$this->respond( 'Member not found!', 404 );
+		}
+		$this->respond_file( '/member-profile-details.php', array( 'member' => $member_details ), 200 );
+	}
+
 	public function get_featured_member() {
 		$this->api->maybe_get_user_auth_token();
 		$featured_members = $this->api->get_featured_members();
@@ -158,7 +297,7 @@ class EASL_MZ_Ajax_Handler {
 			'last_name'                => $member_details['last_name'],
 			'dotb_mb_current_status'   => $member_details['dotb_mb_current_status'],
 		) );
-		if($membership_expiring){
+		if ( $membership_expiring ) {
 			$extra_data['banner'] = $membership_expiring;
 		}
 
@@ -166,7 +305,7 @@ class EASL_MZ_Ajax_Handler {
 		$this->respond_file( '/memeber-details/memeber-details.php', array( 'member' => $member_details ), 200, $extra_data );
 	}
 
-	public function get_membership_banner(){
+	public function get_membership_banner() {
 		$current_member_id = $this->session->ge_current_member_id();
 		if ( ! $current_member_id ) {
 			$current_member_id = $this->api->get_member_id();
@@ -194,10 +333,10 @@ class EASL_MZ_Ajax_Handler {
 			'last_name'                => $member_details['last_name'],
 			'dotb_mb_current_status'   => $member_details['dotb_mb_current_status'],
 		) );
-		if(!$membership_expiring){
-			$this->respond('', 400);
+		if ( ! $membership_expiring ) {
+			$this->respond( '', 400 );
 		}
-		$this->respond($membership_expiring, 200);
+		$this->respond( $membership_expiring, 200 );
 	}
 
 	public function get_new_membership_form() {
@@ -219,7 +358,7 @@ class EASL_MZ_Ajax_Handler {
 		}
 
 		$member_details['latest_membership'] = $this->api->get_members_latest_membership( $current_member_id );
-		$extra_data = array();
+		$extra_data                          = array();
 
 		$membership_expiring = easl_mz_get_membership_expiring( array(
 			'dotb_mb_current_end_date' => $member_details['dotb_mb_current_end_date'],
@@ -229,7 +368,7 @@ class EASL_MZ_Ajax_Handler {
 			'last_name'                => $member_details['last_name'],
 			'dotb_mb_current_status'   => $member_details['dotb_mb_current_status'],
 		) );
-		if($membership_expiring){
+		if ( $membership_expiring ) {
 			$extra_data['banner'] = $membership_expiring;
 		}
 
@@ -283,6 +422,8 @@ class EASL_MZ_Ajax_Handler {
 		if ( $request_data['dotb_public_profile'] == 'No' ) {
 			$request_data['dotb_public_profile_fields'] = '';
 		}
+
+		$request_data['description'] = wp_unslash($request_data['description']);
 
 		unset( $request_data['id'] );
 		$updated = $this->api->update_member_personal_info( $member_id, $request_data );
@@ -359,6 +500,8 @@ class EASL_MZ_Ajax_Handler {
 		if ( count( $errors ) > 0 ) {
 			$this->respond_field_errors( $errors );
 		}
+
+		$request_data['description'] = wp_unslash($request_data['description']);
 
 		$request_data['portal_name']      = $request_data['email1'];
 		$request_data['portal_password']  = $password;

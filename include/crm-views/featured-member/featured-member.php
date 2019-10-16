@@ -52,7 +52,7 @@ if ( count( $members ) > 0 ):
                 <div class="mz-featured-member-details">
                     <h5><?php echo implode( ' ', $member_name_parts ); ?></h5>
                     <p><?php echo $member['description']; ?></p>
-                    <a href="#" data-id="<?php echo $member['id']; ?>">View profile</a>
+                    <a class="mz-member-details-trigger" href="#<?php echo $member['id']; ?>" data-id="<?php echo $member['id']; ?>">View profile</a>
                 </div>
             </div>
 		<?php endforeach; ?>

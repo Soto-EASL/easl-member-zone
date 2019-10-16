@@ -211,6 +211,23 @@ function easl_mz_get_crm_dropdown_items( $dropdown_name, $current = '' ) {
 	return $html;
 }
 
+function easl_mz_get_list_item_name( $dropdown_name, $current ) {
+	$dropdown_func_name = 'easl_mz_get_list_' . $dropdown_name;
+	if ( ! is_callable( $dropdown_func_name ) ) {
+		return '';
+	}
+	$list = call_user_func( $dropdown_func_name );
+	if ( ! $list && ! is_array( $list ) ) {
+		return '';
+	}
+
+	if ( ! $current ) {
+		return '';
+	}
+
+	return isset( $list[ $current ] ) ? $list[ $current ] : '';
+}
+
 function easl_mz_get_membership_category_name( $category_key ) {
 	$categories = easl_mz_get_list_membership_categories();
 

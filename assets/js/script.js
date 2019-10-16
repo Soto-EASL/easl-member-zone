@@ -8,6 +8,7 @@
         messages: EASLMZSETTINGS.messages,
         Fees: EASLMZSETTINGS.membershipFees,
         modulesLoadTrigger: false,
+        memberDirectoryRequest: false,
         methods: {
             "resetPassword": 'reset_member_password',
             "changePassword": 'change_member_password',
@@ -18,7 +19,9 @@
             "newMembershipForm": 'get_new_membership_form',
             "submitMemberShipForm": "update_member_profile",
             "submitNewMemberForm": "create_member_profile",
-            "deleteMyAccount": "delete_current_member"
+            "deleteMyAccount": "delete_current_member",
+            "getMemberDirectory": "get_members_list",
+            "getMemberDetails": "get_member_details"
         },
         loadHtml: function ($el, response) {
             if (response.Status === 200 || response.Status === 201) {
@@ -395,7 +398,7 @@
         getMembershipBanner: function () {
             var _this = this;
             var $el = $(".mz-expiring-message-wrap");
-            if ($el.length && !($el.hasClass('mz-banner-loaded') || $el.hasClass('mz-banner-loading') )) {
+            if ($el.length && !($el.hasClass('mz-banner-loaded') || $el.hasClass('mz-banner-loading'))) {
                 $el.on("mz_loaded:" + this.methods.membershipBanner, function (event, response, method) {
                     if ((response.Status === 200) && response.Html) {
                         _this.loadBanner(response.Html);
@@ -587,9 +590,91 @@
                 });
             }
         },
+        getMemberDirectory: function ($el) {
+            var _this = this;
+            var search = $("#mz-md-filter-search", $el).val();
+            var country = $("#mz-md-filter-country", $el).val();
+            var speciality = $("#mz-md-filter-spec", $el).val();
+            var letter = $("#mz-md-filter-letter", $el).val();
+            var page = $("#mz-md-filter-page", $el).val();
+
+            if (typeof _this.memberDirectoryRequest === 'object') {
+                _this.memberDirectoryRequest.abort();
+            }
+            $el.addClass("mz-md-loading");
+            _this.memberDirectoryRequest = _this.request(this.methods.getMemberDirectory, $el, {
+                "search": search,
+                "country": country,
+                "speciality": speciality,
+                "letter": letter,
+                "page_offset": page
+            });
+        },
+        initMemberDirectory: function () {
+            var _this = this;
+            var $el = $(".easl-mz-directory-inner");
+            if ($el.length) {
+                $el.on("mz_loaded:" + this.methods.getMemberDirectory, function (event, response, method) {
+                    if (response.Status === 200) {
+                        $(".easl-mz-members-direcoty-content-inner", $el).html(response.Html);
+                    } else if (response.Status === 404) {
+                        $(".easl-mz-members-direcoty-content-inner", $el).html("No members found!");
+                    } else if (response.Status === 401) {
+                        // TODO-maybe reload
+                    }
+                    $el.removeClass("mz-md-loading");
+                });
+                $el.on("click", ".easl-mz-clear-filters", function (event) {
+                    event.preventDefault();
+                    $("#mz-md-filter-search", $el).val("");
+                    $("#mz-md-filter-letter", $el).val("");
+                    $("#mz-md-filter-page", $el).val("");
+                    $(".easl-mz-select2", $el).val(null).trigger('change');
+                    _this.getMemberDirectory($el);
+                });
+                $el.on("keyup", "#mz-md-filter-search", function (event) {
+                    if (event.which === 13) {
+                        $("#mz-md-filter-page", $el).val("");
+                        _this.getMemberDirectory($el);
+                    }
+                });
+                $el.on("click", "#mz-search-trigger", function (event) {
+                    event.preventDefault();
+                    $("#mz-md-filter-page", $el).val("");
+                    _this.getMemberDirectory($el);
+                });
+                $el.on("click", ".easl-mz-letter-filter a", function (event) {
+                    event.preventDefault();
+                    $("#mz-md-filter-page", $el).val("");
+                    if (!$(this).hasClass("mz-active")) {
+                        $("#mz-md-filter-letter", $el).val($(this).data('value'));
+                        $(this).siblings("mz-active").removeClass("mz-active");
+                        $(this).addClass("mz-active");
+                    } else {
+                        $("#mz-md-filter-letter", $el).val("");
+                        $(this).removeClass("mz-active");
+                    }
+                    _this.getMemberDirectory($el);
+                });
+                $("#mz-md-filter-country", $el).on("change.select2", function (event) {
+                    $("#mz-md-filter-page", $el).val("");
+                    _this.getMemberDirectory($el);
+                });
+                $("#mz-md-filter-spec", $el).on("change.select2", function (event) {
+                    $("#mz-md-filter-page", $el).val("");
+                    _this.getMemberDirectory($el);
+                });
+                $el.on("click", ".easl-mz-pagination-list a", function (event) {
+                    event.preventDefault();
+                    $("#mz-md-filter-page", $el).val($(this).text());
+                    _this.getMemberDirectory($el);
+                });
+                _this.getMemberDirectory($el);
+            }
+        },
         request: function (method, $el, reqData) {
             reqData = reqData || {};
-            $.ajax({
+            return $.ajax({
                 url: this.url,
                 method: "POST",
                 data: {
@@ -609,8 +694,18 @@
             this.getMembershipForm();
             this.getNewMembershipForm();
             this.getMembershipBanner();
+            this.initMemberDirectory();
+        },
+        getMemberDetailsCon: function () {
+            var $con = $(".easl-mz-container-inner .easl-mz-member-profile-wrap");
+            if ($con.length === 0) {
+                $con = $('<div class="easl-mz-member-profile-wrap"><div class="easl-mz-member-profile-con"><div class="easl-mz-back-link-wrap"><a class="easl-mz-back-link" href="#">Back</a></div><div class="easl-easl-mz-member-profile"></div></div>' + this.loaderHtml + '</div>');
+                $(".easl-mz-container-inner").append($con);
+            }
+            return $con;
         },
         events: function () {
+            var _this = this;
             $(".mz-forgot-password").on("click", function (event) {
                 event.preventDefault();
                 var $formWrap = $(this).closest(".easl-mz-login-form-wrapper");
@@ -621,7 +716,45 @@
                     $formWrap.addClass("mz-show-reset-form");
                     $(this).html("Login");
                 }
+            });
 
+            $("body").on("click", ".mz-member-details-trigger", function (event) {
+                var $con = _this.getMemberDetailsCon();
+                var $conWrap = $(".easl-mz-container-inner");
+                var id = $(this).data("memberid");
+                event.preventDefault();
+                $con.find(".easl-easl-mz-member-profile").html("");
+                $con.addClass("mz-mpd-loading");
+                $conWrap.addClass("easl-mz-mp-show-details").data('easlscrollpos', document.documentElement.scrollTop);
+                $('html, body').animate({
+                    scrollTop: $conWrap.offset().top - $('#site-header').height() - 100
+                }, 275);
+                $con.one("mz_loaded:" + _this.methods.getMemberDetails, function (event, response, method) {
+
+                    if (response.Status === 200) {
+                        $con.find(".easl-easl-mz-member-profile").html(response.Html);
+                    } else if (response.Status === 404) {
+                        $(".easl-mz-members-direcoty-content-inner", $el).html("Member not found!");
+                    } else if (response.Status === 401) {
+                        // TODO-maybe reload
+                    }
+                    $con.removeClass("mz-mpd-loading");
+                });
+                _this.request(_this.methods.getMemberDetails, $con, {
+                    'member_id': id
+                });
+            });
+            $("body").on("click", ".easl-mz-back-link", function (event) {
+                var $conWrap = $(".easl-mz-container-inner");
+                event.preventDefault();
+                $conWrap.removeClass("easl-mz-mp-show-details");
+                var scrollPosition = $conWrap.data('easlscrollpos') || false;
+                if (scrollPosition) {
+                    $('html, body').animate({
+                        scrollTop: scrollPosition
+                    }, 275);
+                }
+                $conWrap.data('easlscrollpos', false);
             });
         },
         init: function () {
@@ -638,28 +771,12 @@
             event.preventDefault();
             $(".easl-mz-login-form").toggleClass("easl-active");
         });
-
-        $(".md-item-name a").on("click", function (event) {
-            var $conWrap = $(this).closest(".wpb_easl_mz_directory");
-            event.preventDefault();
-            $conWrap.addClass("easl-mz-mp-show-details").data('easlscrollpos', document.documentElement.scrollTop);
-
-            $('html, body').animate({
-                scrollTop: $conWrap.offset().top - $('#site-header').height() - 100
-            }, 275);
-        });
-        $(".easl-mz-back-link").on("click", function (event) {
-            var $conWrap = $(this).closest(".wpb_easl_mz_directory");
-            event.preventDefault();
-            $conWrap.removeClass("easl-mz-mp-show-details");
-            var scrollPosition = $conWrap.data('easlscrollpos') || false;
-            if (scrollPosition) {
-                $('html, body').animate({
-                    scrollTop: scrollPosition
-                }, 275);
-            }
-            $mscContentWrap.data('easlscrollpos', false);
-        });
+        if (typeof $.fn.select2 !== "undefined") {
+            $(".easl-mz-select2").length && $(".easl-mz-select2").select2({
+                closeOnSelect: true,
+                allowClear: true
+            });
+        }
 
 
         easlMemberZone.init();

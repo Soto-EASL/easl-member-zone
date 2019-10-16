@@ -24,7 +24,7 @@ function easl_member_new_membership_form_url( $renew = false ) {
 	$url = get_field( 'membership_plan_url', 'option' );
 	if ( $renew ) {
 		$url = add_query_arg( 'mz_renew', 1, $url );
-	}else{
+	} else {
 		$url = add_query_arg( 'mz_add', 1, $url );
 	}
 
@@ -74,4 +74,17 @@ function easl_mz_mail_form_name( $from_name ) {
 	$from_name = 'EASL Memberzone';
 
 	return $from_name;
+}
+
+function easl_mz_get_member_image_src( $member_id, $member_picture ) {
+	$member_image = easl_mz_get_asset_url( 'images/default-avatar.jpg' );;
+	if ( $member_picture ) {
+		$ssl_scheme   = is_ssl() ? 'https' : 'http';
+		$member_image = add_query_arg( array(
+			'mz_action' => 'member_image',
+			'member_id' => $member_id
+		), admin_url( 'admin-ajax.php', $ssl_scheme ) );
+	}
+
+	return $member_image;
 }

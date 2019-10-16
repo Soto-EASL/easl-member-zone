@@ -525,7 +525,7 @@ body .mzms-button::after {
 }
 
 .page-template-member-zone #wrap,
-.easl-mz-member-logged-in #wrap{
+.easl-mz-member-logged-in #wrap {
     padding-top: 157px;
 }
 
@@ -907,6 +907,9 @@ body .mzms-button::after {
     display: inline-block;
     padding: 5px;
 }
+.easl-mz-letter-filter a.mz-active {
+    color: #71c5e8;
+}
 
 .easl-mz-filter-clear-wrap {
     position: relative;
@@ -926,8 +929,59 @@ body .mzms-button::after {
     white-space: nowrap;
 }
 
+.easl-mz-members-direcoty-content {
+    border-top: 2px solid #004b87;
+    border-bottom: 2px solid #004b87;
+    position: relative;
+    padding: 0;
+    margin-top: 36px;
+    margin-bottom: 35px;
+    min-height: 172px;
+}
+
+.easl-mz-members-direcoty-content-inner {
+    position: relative;
+    z-index: 1;
+    visibility: visible;
+    opacity: 1;
+    padding: 30px 0;
+    transition: opacity .3s, visibility .3s;
+}
+
+.mz-md-loading .easl-mz-members-direcoty-content-inner {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.easl-mz-members-direcoty-content .easl-mz-loader {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    z-index: -1;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.mz-md-loading .easl-mz-loader {
+    visibility: visible;
+    opacity: 1;
+    z-index: 2;
+}
+
 .easl-mz-pagination-top {
-    margin-bottom: 11px
+    margin-bottom: 11px;
+    position: absolute;
+    left: 0;
+    right: 100px;
+    top: -38px;
+}
+
+.easl-mz-pagination-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -37px;
 }
 
 .easl-mz-pagination .easl-mz-pagination-list {
@@ -968,15 +1022,17 @@ body .mzms-button::after {
     vertical-align: top;
 }
 
-.easl-mz-pagination-list li .prev,
-.easl-mz-pagination-list li .next {
+.easl-mz-pagination-list li .page-numbers.prev,
+.easl-mz-pagination-list li .page-numbers.next {
     color: #004b87;
     display: inline-block;
     height: 25px;
     font-size: 24px;
     line-height: 25px;
-    width: 5px;
+    width: 10px;
+    padding: 0;
     vertical-align: top;
+    background: transparent;
 }
 
 .easl-mz-pagination-list li .ticon {
@@ -985,10 +1041,8 @@ body .mzms-button::after {
 }
 
 .easl-mz-directory-members-wrap {
-    border-top: 2px solid #004b87;
-    border-bottom: 2px solid #004b87;
-    padding: 30px 0;
-    margin: 0 0 10px;
+    padding: 0;
+    margin: 0;
 }
 
 .easl-mz-md-item {
@@ -1000,6 +1054,8 @@ body .mzms-button::after {
 
 .md-item-image {
     width: 95px;
+    height: 95px;
+    overflow: hidden;
     position: absolute;
     left: 0;
     top: 0;
@@ -1063,32 +1119,47 @@ body .mzms-button::after {
 }
 
 .easl-mz-directory-inner {
-
     position: relative;
     z-index: 1;
 }
-
-.easl-mz-mp-show-details .easl-mz-directory-inner {
-    visibility: hidden;
-    opacity: 0;
+.easl-mz-mp-show-details.easl-mz-container-inner {
+    position: relative;
 }
-
+.easl-mz-mp-show-details.easl-mz-container-inner::before{
+    content: "";
+    background: #fff;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+}
 .easl-mz-member-profile-wrap {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    opacity: 0;
-    visibility: hidden;
-    z-index: -9;
+    display: none;
+    z-index: 3;
+    min-height: 320px;
 }
 
 .easl-mz-mp-show-details .easl-mz-member-profile-wrap {
-    opacity: 1;
-    visibility: visible;
-    z-index: 2;
+    display: block;
 }
-
+.easl-mz-member-profile-wrap.mz-mpd-loading .easl-mz-member-profile-con {
+    display: none;
+}
+.easl-mz-member-profile-wrap .easl-mz-loader {
+    display: none;
+    top: 72px;
+    transform: translateX(-50%);
+}
+.easl-mz-member-profile-wrap.mz-mpd-loading .easl-mz-loader {
+    display: block;
+}
 .easl-mz-back-link-wrap {
     margin: 0 0 15px;
 }
@@ -2207,7 +2278,7 @@ span.mzms-field-file-button {
 }
 
 .membership-pages-login-wrap input,
-.membership-pages-login-wrap .mz-forgot-pass-fields  .mz-reset-pass-email{
+.membership-pages-login-wrap .mz-forgot-pass-fields .mz-reset-pass-email {
     display: block;
     width: 100% !important;
     border: 1px solid #b0b0b0;
@@ -2215,7 +2286,8 @@ span.mzms-field-file-button {
     font-size: 16px;
     padding: 0 10px;
 }
-.membership-pages-login-wrap .mz-forgot-pass-fields  .mz-reset-pass-email {
+
+.membership-pages-login-wrap .mz-forgot-pass-fields .mz-reset-pass-email {
     margin-bottom: 15px;
 }
 
@@ -2227,12 +2299,15 @@ span.mzms-field-file-button {
     height: auto;
     font-size: 16px;
 }
+
 .membership-pages-login-wrap .mz-forgot-pass-row a {
-    color: #666!important;
+    color: #666 !important;
 }
+
 .membership-pages-login-wrap .mz-become-member-link {
     float: left;
 }
+
 .membership-pages-login-wrap .mz-forgot-password {
     float: right;
 }
@@ -2240,12 +2315,15 @@ span.mzms-field-file-button {
 .easl-mz-login-form-wrapper.membership-pages-login-wrap {
     position: relative;
 }
+
 .membership-pages-login-wrap.mz-show-reset-form form {
     display: none;
 }
+
 .membership-pages-login-wrap.mz-show-reset-form .mz-forgot-pass-fields {
     display: block;
 }
+
 .membership-pages-login-wrap.mz-reset-pass-processing::after {
     content: "";
     display: block;
@@ -2254,12 +2332,14 @@ span.mzms-field-file-button {
     left: 0;
     top: 0;
     height: 100%;
-    background-color: rgba(255,255,255,.85);
+    background-color: rgba(255, 255, 255, .85);
     z-index: 1;
 }
+
 .membership-pages-login-wrap.mz-reset-pass-processing .easl-mz-loader {
     display: block;
 }
+
 .membership-pages-login-wrap .mz-login-row.mz-login-errors {
     position: relative;
     width: auto;
@@ -2277,17 +2357,21 @@ span.mzms-field-file-button {
     overflow: hidden;
     transition: height .25s;
 }
+
 .mz-expiring-message-wrap.easl-active {
     height: auto;
 }
+
 .mz-expiring-message-wrap .container {
     position: relative;
     padding: 10px 0;
 }
+
 .mz-expiring-message {
     color: #fff;
     font-size: 24px;
 }
+
 .mz-expiring-message-wrap .mz-expiring-message-close {
     font-size: 24px;
     color: #fff;

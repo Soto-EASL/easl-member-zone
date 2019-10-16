@@ -43,6 +43,10 @@ class EASL_MZ_Request {
 		return $this->response_headers;
 	}
 
+	public function get_response_header( $key ) {
+		return isset( $this->response_headers[ $key ] ) ? $this->response_headers[ $key ] : '';
+	}
+
 	public function get_request_header( $key ) {
 		isset( $this->response_headers[ $key ] ) ? $this->response_headers[ $key ] : '';
 	}

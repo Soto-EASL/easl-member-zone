@@ -13,7 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-define( 'EASL_MZ_VERSION', '1.0.3' );
+define( 'EASL_MZ_VERSION', '1.0.4' );
+//define( 'EASL_MZ_VERSION', time() );
 
 class EASL_MZ_Manager {
 	/**
@@ -197,6 +198,9 @@ class EASL_MZ_Manager {
 				break;
 			case 'payment_feedback':
 				$this->handle_payment_feedback();
+				break;
+			case 'member_image':
+				$this->get_member_image();
 				break;
 		}
 	}
@@ -614,6 +618,22 @@ class EASL_MZ_Manager {
 		$this->session->clear_session_cart( $session_db_id );
 		wp_redirect( $redirect_url );
 		exit();
+	}
+
+	public function get_member_image() {
+
+		if ( empty( $_REQUEST['member_id'] ) ) {
+			return false;
+		}
+
+		$this->api->maybe_get_user_auth_token();
+		$image_data = $this->api->get_member_profile_picture_raw( $_REQUEST['member_id'], false );
+		if ( ! $image_data ) {
+			return false;
+		}
+		header( 'Content-Type: ' . $image_data['type'] );
+		echo $image_data['data'];
+		die();
 	}
 
 	public function get_vc_shortcodes() {

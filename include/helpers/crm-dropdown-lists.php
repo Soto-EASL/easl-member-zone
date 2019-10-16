@@ -352,7 +352,7 @@ function easl_mz_get_list_specialities( $current = '' ) {
 		'surgery'                                      => 'Surgery',
 		'virology'                                     => 'Virology',
 		'epidemiology_statistics'                      => 'Epidemiology-statistics',
-		'other'                                        => 'Other – Please specify'
+		'other'                                        => 'Other – Please specify',
 	);
 
 	return $specialities;
