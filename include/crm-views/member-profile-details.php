@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $public_fields = explode( ',', $member['dotb_public_profile_fields'] );
 
-$job_excerpt   = array();
+$job_excerpt = array();
 if ( ( $member['dotb_job_function'] == 'other' ) && $member['dotb_job_function_other'] ) {
 	$job_excerpt[] = $member['dotb_job_function_other'];
 } elseif ( $member['dotb_job_function'] ) {
@@ -36,6 +36,17 @@ if ( in_array( 'primary_address_country', $public_fields ) && $member['primary_a
 	$address[] = easl_mz_get_country_name( $member['primary_address_country'] );
 }
 $address = implode( "<br/>\n", $address );
+
+$member_name_parts = array();
+if ( $member['salutation'] ) {
+	$member_name_parts[] = $member['salutation'];
+}
+if ( $member['first_name'] ) {
+	$member_name_parts[] = $member['first_name'];
+}
+if ( $member['last_name'] ) {
+	$member_name_parts[] = $member['last_name'];
+}
 ?>
 <div class="easl-easl-mz-mp-details">
     <div class="easl-easl-mz-mp-header">
@@ -43,7 +54,7 @@ $address = implode( "<br/>\n", $address );
             <img src="<?php echo easl_mz_get_member_image_src( $member['id'], $member['picture'] ); ?>" alt="">
         </div>
         <div class="easl-easl-mz-mp-title">
-            <h3>Prof.Tom Karlsen </h3>
+            <h3><?php echo implode( ' ', $member_name_parts ); ?></h3>
 			<?php if ( $member['title'] ): ?>
                 <h4><?php echo $member['title']; ?></h4>
 			<?php endif; ?>
@@ -101,10 +112,8 @@ $address = implode( "<br/>\n", $address );
         <div lang="easl-easl-mz-mp-address">
             <p class="easl-easl-mz-mp-contact-item">
                 <strong>ADDRESS:</strong>
-                Address Line 1 could be long<br/>
-                Address Line 2<br/>
-                Address Line 3<br/>
-                Postcode</p>
+				<?php echo $address; ?>
+            </p>
         </div>
 	<?php endif; ?>
 </div>
