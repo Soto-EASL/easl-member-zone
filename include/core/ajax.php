@@ -35,10 +35,14 @@ class EASL_MZ_Ajax_Handler {
 		return 'easl_mz_load_crm_view';
 	}
 
-	public function respond( $html = '', $status = 200 ) {
+	public function respond( $html = '', $status = 200, $extra_data = array() ) {
+		if ( ! is_array( $data ) ) {
+			$data = (array) $data;
+		}
 		wp_send_json( array(
 			'Status' => $status,
-			'Html'   => $html
+			'Html'   => $html,
+			'Data'   => $extra_data,
 		) );
 	}
 
@@ -266,6 +270,50 @@ class EASL_MZ_Ajax_Handler {
 		$this->respond_file( '/featured-member/featured-member.php', array( 'members' => $featured_members ), 200 );
 	}
 
+	public function get_members_memberships() {
+		$current_member_id = $this->session->ge_current_member_id();
+		if ( ! $current_member_id ) {
+			$current_member_id = $this->api->get_member_id();
+
+			if ( $current_member_id ) {
+				$this->session->add_data( 'member_id', $current_member_id );
+				$this->session->save_session_data();
+			} else {
+				$this->session->unset_auth_cookie( true );
+				$this->respond( 'Member not found!', 404 );
+			}
+		}
+		$this->api->get_user_auth_token();
+		$memberships = $this->api->get_members_membership( $current_member_id );
+		if ( ! $memberships ) {
+			$this->respond( 'No memberships found.', 404 );
+		}
+
+		$this->respond( count( $memberships ) . ' memberships found!', 200, $memberships );
+	}
+
+	public function get_memberships_notes() {
+		if ( ! easl_mz_is_member_logged_in() ) {
+			$this->respond( 'Not logged in.', 401 );
+		}
+		$membership = false;
+		if ( isset( $_POST['request_data']['membership'] ) ) {
+			$membership = $_POST['request_data']['membership'];
+		}
+		if ( empty( $membership ) ) {
+			$this->respond( 'Not found.', 404 );
+		}
+		if ( empty( $membership['id'] ) ) {
+			$this->respond( 'Not found.', 404 );
+		}
+		$membership_notes = $this->api->get_membership_notes( $membership['id'] );
+		if ( empty( $membership_notes ) ) {
+			$this->respond( 'No membership note found.', 404 );
+		}
+		$template_data = array( 'membership' => $membership, 'membership_notes' => $membership_notes );
+		$this->respond_file( '/members-documents/members-documents-row.php', $template_data, 200 );
+	}
+
 	public function get_membership_form() {
 		$current_member_id = $this->session->ge_current_member_id();
 		if ( ! $current_member_id ) {
@@ -318,7 +366,7 @@ class EASL_MZ_Ajax_Handler {
 		if ( ! $current_member_id ) {
 			$this->respond( 'Member not found!', 404 );
 		}
-		$member_details = $this->api->get_member_details( $current_member_id );
+		$member_details = $this->api->get_member_details( $current_member_id, false );
 		if ( ! $member_details ) {
 			$this->respond( 'Member ' . $current_member_id . ' not found!', 404 );
 		}
@@ -423,7 +471,7 @@ class EASL_MZ_Ajax_Handler {
 			$request_data['dotb_public_profile_fields'] = '';
 		}
 
-		$request_data['description'] = wp_unslash($request_data['description']);
+		$request_data['description'] = wp_unslash( $request_data['description'] );
 
 		unset( $request_data['id'] );
 		$updated = $this->api->update_member_personal_info( $member_id, $request_data );
@@ -501,7 +549,7 @@ class EASL_MZ_Ajax_Handler {
 			$this->respond_field_errors( $errors );
 		}
 
-		$request_data['description'] = wp_unslash($request_data['description']);
+		$request_data['description'] = wp_unslash( $request_data['description'] );
 
 		$request_data['portal_name']      = $request_data['email1'];
 		$request_data['portal_password']  = $password;

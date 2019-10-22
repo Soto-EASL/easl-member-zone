@@ -13,8 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-define( 'EASL_MZ_VERSION', '1.0.4' );
-//define( 'EASL_MZ_VERSION', time() );
+define( 'EASL_MZ_VERSION', '1.0.5.1' );
 
 class EASL_MZ_Manager {
 	/**
@@ -201,6 +200,9 @@ class EASL_MZ_Manager {
 				break;
 			case 'member_image':
 				$this->get_member_image();
+				break;
+			case 'membership_note':
+				$this->get_membership_note();
 				break;
 		}
 	}
@@ -623,16 +625,36 @@ class EASL_MZ_Manager {
 	public function get_member_image() {
 
 		if ( empty( $_REQUEST['member_id'] ) ) {
-			return false;
+			die();
 		}
 
-		$this->api->maybe_get_user_auth_token();
+		$this->api->get_user_auth_token();
 		$image_data = $this->api->get_member_profile_picture_raw( $_REQUEST['member_id'], false );
 		if ( ! $image_data ) {
-			return false;
+			die();
 		}
 		header( 'Content-Type: ' . $image_data['type'] );
 		echo $image_data['data'];
+		die();
+	}
+
+	public function get_membership_note() {
+		if ( empty( $_REQUEST['note_id'] ) ) {
+			die();
+		}
+
+		$this->api->get_user_auth_token();
+		$note_data = $this->api->get_membership_note_raw( $_REQUEST['note_id'] );
+		if ( ! $note_data ) {
+			die();
+		}
+		header( 'Content-Disposition: ' . $note_data['content_disposition'] );
+		header("Pragma: public");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header( 'Content-Type: ' . $note_data['content_type'] );
+		header( 'Content-Length: ' . $note_data['content_length'] );
+
+		echo $note_data['data'];
 		die();
 	}
 

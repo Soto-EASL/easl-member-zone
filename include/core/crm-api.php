@@ -446,6 +446,24 @@ class EASL_MZ_API {
 
 	}
 
+	public function get_membership_note_raw( $note_id ) {
+		$this->request->reset_headers();
+		$this->request->set_request_header( 'OAuth-Token', $this->get_access_token( false ) );
+		$this->request->set_request_header( 'Cache-Control', 'no-cache' );
+		$this->request->get( '/Notes/' . $note_id . '/file/filename', array(), array(), false );
+
+		if ( $this->request->get_response_code() != 200 ) {
+			return false;
+		}
+
+		return array(
+			'content_disposition' => $this->request->get_response_header( 'content-disposition' ),
+			'content_length'      => $this->request->get_response_header( 'content-length' ),
+			'content_type'        => $this->request->get_response_header( 'content-type' ),
+			'data'                => $this->request->get_response_body()
+		);
+	}
+
 	public function get_member_profile_picture_raw( $member_id, $is_member = true ) {
 		$this->request->reset_headers();
 		$this->request->set_request_header( 'OAuth-Token', $this->get_access_token( $is_member ) );
@@ -654,6 +672,37 @@ class EASL_MZ_API {
 		return $response->record->dotb_mb_id;
 	}
 
+	public function get_members_membership( $member_id ) {
+		$headers = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$data    = array(
+			'fields'   => 'id,category,start_date,end_date',
+			'order_by' => 'start_date:DESC,date_entered:DESC'
+		);
+		$result  = $this->get( "/Contacts/{$member_id}/link/contacts_easl1_memberships_1", false, $headers, $data );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+
+		if ( empty( $response->records ) || ( count( $response->records ) < 1 ) ) {
+			return false;
+		}
+		$memberships = array();
+		foreach ( $response->records as $record ) {
+			$memberships[] = array(
+				'id'         => $record->id,
+				'category'   => $record->category,
+				'start_date' => $record->start_date,
+				'end_date'   => $record->end_date,
+			);
+		}
+
+		return $memberships;
+	}
+
 	public function get_members_latest_membership( $member_id ) {
 		$headers = array(
 			'Content-Type' => 'application/json',
@@ -664,7 +713,7 @@ class EASL_MZ_API {
 			'fields'   => 'id,status,billing_type,billing_status,start_date,end_date',
 			'order_by' => 'start_date:DESC,date_entered:DESC'
 		);
-		$result  = $this->get( "/Contacts/{$member_id}/link/contacts_easl1_memberships_1", false, $headers );
+		$result  = $this->get( "/Contacts/{$member_id}/link/contacts_easl1_memberships_1", false, $headers, $data );
 		if ( ! $result ) {
 			return false;
 		}
@@ -709,6 +758,40 @@ class EASL_MZ_API {
 
 
 		return $return_data;
+	}
+
+	public function get_membership_notes( $membership_id ) {
+		$headers = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$data    = array(
+			'filter'   => array(
+				array( 'portal_flag' => '1' )
+			),
+			'fields'   => 'id,name,file_mime_type,filename',
+			'order_by' => 'date_entered:DESC'
+		);
+		$result  = $this->get( "/easl1_memberships/{$membership_id}/link/easl1_memberships_activities_1_notes", false, $headers, $data );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+
+		if ( empty( $response->records ) || ( count( $response->records ) < 1 ) ) {
+			return false;
+		}
+		$notes = array();
+		foreach ( $response->records as $record ) {
+			$notes[] = array(
+				'id'             => $record->id,
+				'name'           => $record->id,
+				'file_mime_type' => $record->file_mime_type,
+				'filename'       => $record->filename,
+			);
+		}
+
+		return $notes;
 	}
 
 	public function delete_member_account( $member_id ) {

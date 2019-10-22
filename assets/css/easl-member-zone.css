@@ -907,6 +907,7 @@ body .mzms-button::after {
     display: inline-block;
     padding: 5px;
 }
+
 .easl-mz-letter-filter a.mz-active {
     color: #71c5e8;
 }
@@ -1122,10 +1123,12 @@ body .mzms-button::after {
     position: relative;
     z-index: 1;
 }
+
 .easl-mz-mp-show-details.easl-mz-container-inner {
     position: relative;
 }
-.easl-mz-mp-show-details.easl-mz-container-inner::before{
+
+.easl-mz-mp-show-details.easl-mz-container-inner::before {
     content: "";
     background: #fff;
     display: block;
@@ -1136,6 +1139,7 @@ body .mzms-button::after {
     right: 0;
     z-index: 2;
 }
+
 .easl-mz-member-profile-wrap {
     position: absolute;
     left: 0;
@@ -1149,17 +1153,21 @@ body .mzms-button::after {
 .easl-mz-mp-show-details .easl-mz-member-profile-wrap {
     display: block;
 }
+
 .easl-mz-member-profile-wrap.mz-mpd-loading .easl-mz-member-profile-con {
     display: none;
 }
+
 .easl-mz-member-profile-wrap .easl-mz-loader {
     display: none;
     top: 72px;
     transform: translateX(-50%);
 }
+
 .easl-mz-member-profile-wrap.mz-mpd-loading .easl-mz-loader {
     display: block;
 }
+
 .easl-mz-back-link-wrap {
     margin: 0 0 15px;
 }
@@ -1886,6 +1894,21 @@ span.mzms-field-file-button {
 }
 
 /*Member Zone: Members Document*/
+.easl-mz-mydocs-inner {
+    min-height: 220px;
+}
+
+.mz-docs-loading .easl-mz-membership-docs-con {
+    display: none;
+}
+.easl-mz-mydocs-inner .easl-mz-loader {
+    top: 72px;
+    transform: translateX(-50%);
+}
+.mz-docs-loading .easl-mz-loader {
+    display: block;
+}
+
 .mzmd-expiry-notice {
     background-color: #f00;
     color: #fff;
@@ -1980,8 +2003,8 @@ span.mzms-field-file-button {
     border-top: 0 none;
 }
 
-.mzmd-docs-table-col-year {
-    width: 105px;
+.mzmd-docs-table-col-duration {
+    width: 205px;
 }
 
 .mzmd-docs-table-col-download {

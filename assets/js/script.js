@@ -21,7 +21,9 @@
             "submitNewMemberForm": "create_member_profile",
             "deleteMyAccount": "delete_current_member",
             "getMemberDirectory": "get_members_list",
-            "getMemberDetails": "get_member_details"
+            "getMemberDetails": "get_member_details",
+            "getMembersMembership": "get_members_memberships",
+            "getMembershipNotes": "get_memberships_notes"
         },
         loadHtml: function ($el, response) {
             if (response.Status === 200 || response.Status === 201) {
@@ -672,6 +674,45 @@
                 _this.getMemberDirectory($el);
             }
         },
+        getMemberDocuments: function () {
+            var _this = this;
+            var $el = $(".easl-mz-mydocs-inner");
+            var memberships = [];
+            if ($el.length) {
+                var $table = $(".mzmd-docs-table", $el);
+                $el.on("mz_loaded:" + this.methods.getMembershipNotes, function (event, response, method) {
+                    if (response.Status === 200) {
+                        $table.append(response.Html);
+                    } else if (response.Status === 404) {
+
+                    } else if (response.Status === 401) {
+                        // TODO-maybe reload
+                    }
+                    if (memberships.length > 0) {
+                        _this.request(_this.methods.getMembershipNotes, $el, {
+                            'membership': memberships.shift()
+                        });
+                    } else {
+                        $el.removeClass("mz-docs-loading");
+                    }
+                });
+                $el.on("mz_loaded:" + this.methods.getMembersMembership, function (event, response, method) {
+                    if (response.Status === 200) {
+                        memberships = response.Data;
+                        if (memberships.length) {
+                            _this.request(_this.methods.getMembershipNotes, $el, {
+                                'membership': memberships.shift()
+                            });
+                        }
+                    } else if (response.Status === 404) {
+                        $table.html("You don't have any documents.");
+                    } else if (response.Status === 401) {
+                        // TODO-maybe reload
+                    }
+                });
+                this.request(this.methods.getMembersMembership, $el);
+            }
+        },
         request: function (method, $el, reqData) {
             reqData = reqData || {};
             return $.ajax({
@@ -688,18 +729,10 @@
                 dataType: "json"
             });
         },
-        loadModules: function () {
-            this.modulesLoadTrigger = true;
-            this.getFeaturedMembers();
-            this.getMembershipForm();
-            this.getNewMembershipForm();
-            this.getMembershipBanner();
-            this.initMemberDirectory();
-        },
         getMemberDetailsCon: function () {
             var $con = $(".easl-mz-container-inner .easl-mz-member-profile-wrap");
             if ($con.length === 0) {
-                $con = $('<div class="easl-mz-member-profile-wrap"><div class="easl-mz-member-profile-con"><div class="easl-mz-back-link-wrap"><a class="easl-mz-back-link" href="#">Back</a></div><div class="easl-easl-mz-member-profile"></div></div>' + this.loaderHtml + '</div>');
+                $con = $('<div class="easl-mz-member-profile-wrap"><div class="easl-mz-member-profile-con"><div class="easl-mz-back-link-wrap"><a class="easl-mz-back-link mz-member-profile-back" href="#">Back</a></div><div class="easl-easl-mz-member-profile"></div></div>' + this.loaderHtml + '</div>');
                 $(".easl-mz-container-inner").append($con);
             }
             return $con;
@@ -744,7 +777,7 @@
                     'member_id': id
                 });
             });
-            $("body").on("click", ".easl-mz-back-link", function (event) {
+            $("body").on("click", ".mz-member-profile-back", function (event) {
                 var $conWrap = $(".easl-mz-container-inner");
                 event.preventDefault();
                 $conWrap.removeClass("easl-mz-mp-show-details");
@@ -756,6 +789,15 @@
                 }
                 $conWrap.data('easlscrollpos', false);
             });
+        },
+        loadModules: function () {
+            this.modulesLoadTrigger = true;
+            this.getFeaturedMembers();
+            this.getMembershipForm();
+            this.getMemberDocuments();
+            this.getNewMembershipForm();
+            this.getMembershipBanner();
+            this.initMemberDirectory();
         },
         init: function () {
             this.events();

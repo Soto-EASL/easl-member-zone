@@ -36,55 +36,25 @@ if ( ! empty( $el_id ) ) {
 if ( ! empty( $css_class ) ) {
 	$wrapper_attributes[] = 'class="' . esc_attr( $css_class ) . '"';
 }
-
+$back_link = easl_membership_page_url();
 ?>
 <div <?php echo implode( ' ', $wrapper_attributes ); ?>>
-    <div class="easl-mz-mydocs-inner">
-        <div class="mzmd-expiry-notice">
-            <div class="mzmd-expiry-time">
-                <p class="mzmd-expiry-time-label">Time remaining on your membership</p>
-                <p class="mzmd-expiry-time-value"><strong>01</strong><span>month</span>
-                    <strong>02</strong><span>days</span></p>
-            </div>
-            <div class="mzmd-expiry-message">
-                <span>Your membership is due to expire</span>
-            </div>
-            <div class="mzmd-expiry-renew">
-                <a href="#">Renew Today</a>
-            </div>
-        </div>
-		<?php if ( $back_link ): ?>
+    <div class="easl-mz-mydocs-inner mz-docs-loading">
+        <div class="easl-mz-membership-docs-con">
             <div class="easl-mz-back-link-wrap">
                 <a class="easl-mz-back-link" href="<?php echo $back_link; ?>">Back</a>
             </div>
-		<?php endif; ?>
-		<?php if ( $title ): ?>
-            <h2 class="mz-page-heading"><?php echo $title; ?></h2>
-		<?php endif; ?>
-        <div class="mzmd-docs-table">
-            <div class="mzmd-docs-table-row mzmd-docs-table-head">
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-year">Year</div>
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-type">Membership Type</div>
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-download">&nbsp;</div>
+            <h2 class="mz-page-heading">My documents</h2>
+            <div class="mzmd-docs-table">
+                <div class="mzmd-docs-table-row mzmd-docs-table-head">
+                    <div class="mzmd-docs-table-col mzmd-docs-table-col-duration">Membership duration</div>
+                    <div class="mzmd-docs-table-col mzmd-docs-table-col-type">Membership category</div>
+                    <div class="mzmd-docs-table-col mzmd-docs-table-col-download">&nbsp;</div>
+                </div>
             </div>
-            <div class="mzmd-docs-table-row">
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-year">2017-2018</div>
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-type">Full Membership</div>
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-download">
-                    <a class="mzmd-download-link" href="#">Download Invoice</a></div>
-            </div>
-            <div class="mzmd-docs-table-row">
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-year">2016-2017</div>
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-type">Full Membership</div>
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-download">
-                    <a class="mzmd-download-link" href="#">Download Invoice</a></div>
-            </div>
-            <div class="mzmd-docs-table-row">
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-year">2015-2016</div>
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-type">Full Membership</div>
-                <div class="mzmd-docs-table-col mzmd-docs-table-col-download">
-                    <a class="mzmd-download-link" href="#">Download Invoice</a></div>
-            </div>
+        </div>
+        <div class="easl-mz-loader">
+            <img src="<?php echo get_stylesheet_directory_uri() ?>/images/easl-loader.gif" alt="loading...">
         </div>
     </div>
 </div>
