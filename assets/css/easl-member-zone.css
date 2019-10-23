@@ -1569,14 +1569,54 @@ body .mzms-button::after {
 
 .mzms-field-has-privacy .mzms-fields-privacy-icon {
     position: absolute;
-    top: 9px;
-    right: 10px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding-right: 10px;
     font-size: 22px;
     cursor: pointer;
     color: #004b87;
 }
+.mzms-field-has-privacy .mzms-fields-privacy-icon .mzms-fields-privacy-tooltip {
+    border-radius: 1px;
+    background: #004b87;
+    color: #fff;
+    font-size: 14px;
+    padding: 7px 13px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+    transform: translateY(-100%);
+    transition: visibility .25s, opacity .25s;
+}
+.mzms-field-has-privacy .mzms-fields-privacy-icon .mzms-fields-privacy-tooltip::after {
+    content: "";
+    position: absolute;
+    right: 11px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid #004b87;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    top: 100%;
+}
+.mzms-field-has-privacy .mzms-fields-privacy-icon:hover .mzms-fields-privacy-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
 
-.mzms-field-has-privacy.mzms-privacy-enabled .mzms-fields-privacy-icon {
+.mzms-field-has-privacy .mzms-fields-privacy-icon .ticon {
+    position: relative;
+    z-index: 2;
+}
+
+.mzms-field-has-privacy.mzms-privacy-enabled .mzms-fields-privacy-icon .ticon {
+    position: relative;
+    z-index: 2;
     opacity: .20;
 }
 

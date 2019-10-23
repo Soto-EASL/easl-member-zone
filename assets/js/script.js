@@ -304,8 +304,10 @@
                 event.preventDefault();
                 if (!$fieldWrap.hasClass("mzms-privacy-enabled")) {
                     $fieldWrap.addClass("mzms-privacy-enabled");
+                    $(".mzms-fields-privacy-tooltip", $fieldWrap).html("Show to public");
                 } else {
                     $fieldWrap.removeClass("mzms-privacy-enabled");
+                    $(".mzms-fields-privacy-tooltip", $fieldWrap).html("Hide from public")
                     !$publicField.prop("checked") && $publicField.prop("checked", true).closest("label").addClass("easl-active");
                 }
                 $publicProfileFields.val(_this.getMemberProfilePublicFieldsValue());

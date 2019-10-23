@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-define( 'EASL_MZ_VERSION', '1.0.5' );
+define( 'EASL_MZ_VERSION', '1.0.6' );
 //define( 'EASL_MZ_VERSION', time() );
 
 class EASL_MZ_Manager {

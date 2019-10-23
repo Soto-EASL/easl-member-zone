@@ -433,12 +433,14 @@ function easl_mz_field_is_public( $field, $public_type, $public_fields ) {
 }
 
 function easl_mz_field_public_field( $field, $public_type, $public_fields ) {
-//	$is_checked = '';
-//	if ( easl_mz_field_is_public( $field, $public_type, $public_fields ) ) {
-//		$is_checked .= ' checked="checked"';
-//	}
+	$tooltip_message = '';
+	if ( easl_mz_field_is_public( $field, $public_type, $public_fields ) ) {
+		$tooltip_message .= 'Hide from public';
+	} else {
+		$tooltip_message = 'Make pbublic';
+	}
 
-	return '<span class="mzms-fields-privacy-icon ticon ticon-eye"></span>';
+	return '<span class="mzms-fields-privacy-icon"><span class="mzms-fields-privacy-tooltip">' . $tooltip_message . '</span><i class="ticon ticon-eye"></i></span>';
 }
 
 function get_formatted_birthday_crm_to_europe( $date_of_birth ) {
