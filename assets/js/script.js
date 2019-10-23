@@ -1,5 +1,72 @@
 (function ($) {
+    var mzModal = window.mzModal = {
+        $el: null,
+        $backdrop: null,
+        $content: null,
+        $closeButton: null,
+        transitionEventName: "transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd",
+        show: function (html, name) {
+            var _this = this;
+            if (_this.$el.hasClass("easl-mz-modal-transitioning")) {
+                return;
+            }
+            html && _this.$content.html(html);
+            _this.$el.addClass("easl-mz-modal-transitioning").attr("data-mzname", name);
+            _this.$el[0].style.opacity = "0";
+            _this.$el[0].style.display = "block";
+            _this.$el[0].innerWidth;
+            _this.$el.one(_this.transitionEventName, function () {
+                _this.$el.addClass("easl-mz-modal-shown").removeClass("easl-mz-modal-transitioning").removeClass("easl-mz-modal-hidden");
+                _this.$el[0].style.opacity = "";
+                _this.$el[0].style.display = "";
+            });
+            requestAnimationFrame(function () {
+                _this.$el[0].style.opacity = "1";
+            })
+        },
+        hide: function () {
+            var _this = this;
+            if (_this.$el.hasClass("easl-mz-modal-transitioning")) {
+                return;
+            }
+            _this.$el.addClass("easl-mz-modal-transitioning").removeClass("easl-mz-modal-shown");
+            _this.$el[0].innerWidth;
+            _this.$el.one(_this.transitionEventName, function () {
+                _this.$el.addClass("easl-mz-modal-hidden").removeClass("easl-mz-modal-transitioning");
+                _this.$el[0].style.opacity = "";
+                _this.$el.trigger("mz.modal.hidden");
+                name && _this.$el.trigger("mz.modal.hidden." + name);
+            });
+            requestAnimationFrame(function () {
+                _this.$el[0].style.opacity = "0";
+            })
+        },
+        events: function () {
+            var _this = this;
+            _this.$closeButton.on("click", function (event) {
+                event.preventDefault();
+                _this.hide();
+            });
+            _this.$backdrop.on("click", function (event) {
+                event.preventDefault();
+                _this.hide();
+            });
+        },
+        init: function () {
+            if (!this.$el) {
+                this.$el = $('<div id="easl-mz-modal-wrap"></div>');
+                this.$el.addClass("easl-mz-modal-hidden");
+                this.$el.append('<div class="easl-mz-modal-backdrop"></div><div class="easl-mz-modal"><div class="easl-mz-modal-content"></div><div class="easl-mz-modal-buttons"><a class="easl-mz-modal-close" href="#">OK</a></div></div>');
+                $("body").append(this.$el);
+                this.$backdrop = $(".easl-mz-modal-backdrop", this.$el);
+                this.$content = $(".easl-mz-modal-content", this.$el);
+                this.$closeButton = $(".easl-mz-modal-close", this.$el);
+                this.events();
+            }
+            return this;
+        },
 
+    };
     var easlMemberZone = window.easlMemberZone = {
         homePage: EASLMZSETTINGS.homeURL,
         url: EASLMZSETTINGS.ajaxURL,
@@ -86,20 +153,27 @@
         resetPassword: function () {
             var _this = this;
             $(".mz-reset-pass-button").on("mz_loaded:" + this.methods.resetPassword, function (event, response, method) {
+                var $resetButton = $(this);
                 if (response.Status === 200) {
-                    alert("Password has been reset! Please check your email.");
-                    $(this)
-                        .closest(".easl-mz-login-form-wrapper")
-                        .removeClass("mz-show-reset-form mz-reset-pass-processing")
-                        .find(".mz-forgot-password")
-                        .html("Forgot your password?");
+                    mzModal.init();
+                    mzModal.$el.one("mz.modal.hidden.email.reset.ok", function () {
+                        $resetButton
+                            .closest(".easl-mz-login-form-wrapper")
+                            .removeClass("mz-show-reset-form mz-reset-pass-processing")
+                            .find(".mz-forgot-password")
+                            .html("Forgot your password?");
+                    });
+                    mzModal.show('<div class="mz-modal-password-reset">Your password has been reset, <br>please check your email</div>', 'email.reset.ok');
                 } else {
-                    alert("We could not find your email.");
-                    $(this)
-                        .closest(".easl-mz-login-form-wrapper")
-                        .removeClass("mz-show-reset-form mz-reset-pass-processing")
-                        .find(".mz-forgot-password")
-                        .html("Forgot your password?");
+                    mzModal.init();
+                    mzModal.$el.one("mz.modal.hidden.email.reset.notfound", function () {
+                        $resetButton
+                            .closest(".easl-mz-login-form-wrapper")
+                            .removeClass("mz-show-reset-form mz-reset-pass-processing")
+                            .find(".mz-forgot-password")
+                            .html("Forgot your password?");
+                    });
+                    mzModal.show('<div class="mz-modal-password-reset">We could not find your email</div>', 'email.reset.notfound');
                 }
 
             });
@@ -153,11 +227,11 @@
                         !_this.modulesLoadTrigger && _this.loadModules();
                         _this.loadHtml($(this), response);
                     } else {
-                        /**
-                         * @todo replace with a modal
-                         */
-                        alert("Your session expired!");
-                        window.location.href = _this.homePage;
+                        mzModal.init();
+                        mzModal.$el.one("mz.modal.hidden.session.expired", function () {
+                            window.location.href = _this.homePage;
+                        });
+                        mzModal.show('<div class="mz-modal-password-reset">Your session expired</div>', 'session.expired');
                     }
                 });
                 this.request(this.methods.memberCard, $el);
@@ -314,9 +388,11 @@
                 $el.one("mz_loaded:" + this.methods.changePassword, function (event, response, method) {
                     $el.removeClass("easl-mz-modal-processing");
                     if (response.Status === 200) {
-                        // TODO - Replace with a modal
-                        alert("Your password has been changed successfully!");
-                        $el.removeClass("mz-show-password-change-form");
+                        mzModal.init();
+                        mzModal.$el.one("mz.modal.hidden.password.changed.ok", function () {
+                            $el.removeClass("mz-show-password-change-form");
+                        });
+                        mzModal.show('<div class="mz-modal-password-changed">Your password has been changed successfully!</div>', 'password.changed.ok');
                     }
                     if (response.Status === 400) {
                         // TODO - Replace with a modal
@@ -325,12 +401,18 @@
                         }
                     }
                     if (response.Status === 405) {
-                        // TODO - Replace with a modal
-                        alert("Failed! Refresh the page and try again.");
+                        mzModal.init();
+                        mzModal.$el.one("mz.modal.hidden.password.changed.notok", function () {
+                            // May be refresh
+                        });
+                        mzModal.show('<div class="mz-modal-password-changed">Failed! Refresh the page and try again!</div>', 'password.changed.notok');
                     }
                     if (response.Status === 401) {
-                        // TODO - Replace with a modal
-                        alert("Unauthorized! Refresh the page.");
+                        mzModal.init();
+                        mzModal.$el.one("mz.modal.hidden.password.changed.unauthorized", function () {
+                            // May be refresh
+                        });
+                        mzModal.show('<div class="mz-modal-unauthorized">Unauthorized! Refresh the page</div>', 'password.changed.unauthorized');
                     }
                 });
                 this.request(this.methods.changePassword, $el, data);
@@ -345,17 +427,25 @@
             $form.one("mz_loaded:" + this.methods.deleteMyAccount, function (event, response, method) {
                 $form.closest(".wpb_easl_mz_membership").removeClass("easl-mz-form-processing").find(".easl-mz-membership-loader").remove();
                 if (response.Status === 200) {
-                    // TODO - Replace with a modal
-                    alert("Your account deleted successfully!");
-                    window.location.href = _this.homePage;
+                    mzModal.init();
+                    mzModal.$el.one("mz.modal.hidden.account.delete.ok", function () {
+                        window.location.href = _this.homePage;
+                    });
+                    mzModal.show('<div class="mz-modal-password-changed">Your account deleted successfully!</div>', 'account.delete.ok');
                 }
                 if (response.Status === 400) {
-                    // TODO - Replace with a modal
-                    alert("Could not delete account! Refresh the page and try again.");
+                    mzModal.init();
+                    mzModal.$el.one("mz.modal.hidden.account.delete.notok", function () {
+
+                    });
+                    mzModal.show('<div class="mz-modal-password-changed">Could not delete account! Refresh the page and try again.</div>', 'account.delete.notok');
                 }
                 if (response.Status === 401) {
-                    // TODO - Replace with a modal
-                    alert("Unauthorized! Refresh the page.");
+                    mzModal.init();
+                    mzModal.$el.one("mz.modal.hidden.account.delete.unauthorized", function () {
+
+                    });
+                    mzModal.show('<div class="mz-modal-unauthorized">Unauthorized! Refresh the page.</div>', 'delete.account.unauthorized');
                 }
             });
             this.request(this.methods.deleteMyAccount, $form, {"id": $form.find('#mzf_id').val()});
@@ -370,19 +460,28 @@
             $form.one("mz_loaded:" + this.methods.submitMemberShipForm, function (event, response, method) {
                 $form.closest(".wpb_easl_mz_membership").removeClass("easl-mz-form-processing").find(".easl-mz-membership-loader").remove();
                 if (response.Status === 200) {
-                    // TODO - Replace with a modal
-                    alert("Your profile updated successfully!");
-                    _this.getMembershipForm();
+                    mzModal.init();
+                    mzModal.$el.one("mz.modal.hidden.account.update.ok", function () {
+                        _this.getMembershipForm();
+                    });
+                    mzModal.show('<div class="mz-modal-password-changed">Your profile updated successfully!</div>', 'account.update.ok');
                 }
                 if (response.Status === 400) {
-                    // TODO - Replace with a modal
+                    mzModal.init();
+                    mzModal.$el.one("mz.modal.hidden.account.update.error", function () {
+                        //
+                    });
+                    mzModal.show('<div class="mz-modal-password-changed">Please fix the errors with highlighted fields!</div>', 'account.update.error');
                     for (var fieldName in response.Errors) {
                         _this.showFieldError(fieldName, response.Errors[fieldName], $form);
                     }
                 }
                 if (response.Status === 401) {
-                    // TODO - Replace with a modal
-                    alert("Unauthorized! Refresh the page.");
+                    mzModal.init();
+                    mzModal.$el.one("mz.modal.hidden.account.update.unauthorized", function () {
+                        //may be refresh here
+                    });
+                    mzModal.show('<div class="mz-modal-password-changed">Unauthorized! Refresh the page.</div>', 'account.update.unauthorized');
                 }
             });
             _this.request(this.methods.submitMemberShipForm, $form, $form.serialize());
@@ -521,8 +620,11 @@
                     }
                 }
                 if (response.Status === 401) {
-                    // TODO - Replace with a modal
-                    alert("Unauthorized! Refresh the page.");
+                    mzModal.init();
+                    mzModal.$el.one("mz.modal.hidden.account.create.unauthorized", function () {
+                        //may be refresh here
+                    });
+                    mzModal.show('<div class="mz-modal-unauthorized">Unauthorized! Refresh the page.</div>', 'account.create.unauthorized');
                 }
             });
             _this.request(this.methods.submitNewMemberForm, $form, $form.serialize());
@@ -850,7 +952,6 @@
                 allowClear: true
             });
         }
-
 
         easlMemberZone.init();
     });

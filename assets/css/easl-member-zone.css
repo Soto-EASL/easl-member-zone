@@ -2527,3 +2527,72 @@ span.mzms-field-file-button {
 .mz-panel-button:hover .mz-panel-button-title {
     color: #fff;
 }
+
+/*MZ Modal*/
+#easl-mz-modal-wrap {
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+.easl-mz-modal-backdrop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 1;
+}
+.easl-mz-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    max-width: 640px;
+    min-width: 320px;
+    text-align: center;
+    padding: 25px 15px;
+}
+.easl-mz-modal-content {
+    color: #3f7cbf;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.4em;
+    margin-bottom: 20px;
+}
+.mz-modal-password-reset {
+}
+.easl-mz-modal-buttons {
+
+}
+.easl-mz-modal-buttons a {
+    background: #71c5e8;
+    color: #fff;
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 16px;
+    line-height: 16px;
+    margin: 0 5px;
+    text-decoration: none;
+}
+.easl-mz-modal-buttons a:hover {
+    text-decoration: none;
+}
+.easl-mz-modal-buttons  .easl-mz-modal-close {
+    width: 108px;
+    text-align: center;
+}
+.easl-mz-modal-hidden {
+    display: none;
+}
+.easl-mz-modal-shown {
+    display: block;
+}
+.easl-mz-modal-transitioning {
+    transition: opacity .35s cubic-bezier(.11,.2,.86,.18);
+}
