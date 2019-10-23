@@ -53,6 +53,17 @@ class EASL_MZ_Ajax_Handler {
 		) );
 	}
 
+	public function get_file_html( $file, $data = array() ) {
+		if ( ! is_array( $data ) ) {
+			$data = (array) $data;
+		}
+		ob_start();
+		extract( $data );
+		include $this->view_path . '/' . rtrim( $file, '/' );
+
+		return trim(ob_get_clean());
+	}
+
 	public function respond_file( $file, $data = array(), $status = 200, $extra_data = array() ) {
 		if ( ! is_array( $data ) ) {
 			$data = (array) $data;
@@ -118,7 +129,13 @@ class EASL_MZ_Ajax_Handler {
 
 		$member_details['profile_picture'] = $this->api->get_member_profile_picture( $current_member_id );
 
-		$this->respond_file( '/member-card/member-card.php', array( 'member' => $member_details ), 200 );
+		$card  = $this->get_file_html( '/member-card/member-card.php', array( 'member' => $member_details ) );
+		$panel = $this->get_file_html( '/member-card/panel.php', array( 'member' => $member_details ) );
+		wp_send_json( array(
+			'Status' => 200,
+			'Html'   => $card,
+			'Panel'  => $panel,
+		) );
 
 	}
 

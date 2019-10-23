@@ -41,7 +41,7 @@ if ( $member['last_name'] ) {
             <a class="mz-logout-link" href="<?php echo easl_member_logout_url(); ?>">Logout</a>
         </p>
         <p class="mz-member-welcome-row mz-member-welcome-button">
-            <a href="<?php echo esc_url( $member_dashboard_url ); ?>"><?php echo strip_tags( $member_zone_button_title ); ?></a>
+            <a class="mz-member-panel-button" href="<?php echo esc_url( $member_dashboard_url ); ?>"><?php echo strip_tags( $member_zone_button_title ); ?></a>
         </p>
     </div>
 </div>

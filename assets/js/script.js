@@ -113,11 +113,42 @@
 
             });
         },
+        loadMemberZonePanel: function (html) {
+            var $panel = $("#mz-panel-outer-wrapper");
+            if ($panel.length === 0) {
+                $("body").append('<div id="mz-panel-outer-wrapper"></div>');
+                $panel = $("#mz-panel-outer-wrapper");
+                $panel.html(html);
+                $("body").on("click", ".mz-member-panel-button", function (event) {
+                    event.preventDefault();
+                    console.log('OK');
+                    if ($panel.hasClass("mz-show-panel")) {
+                        $panel.removeClass("mz-show-panel");
+                    } else {
+                        $panel.addClass("mz-show-panel");
+                    }
+                });
+                $(".mz-panel-close").on("click", function (event) {
+                    event.preventDefault();
+                    $panel.removeClass("mz-show-panel");
+                });
+            }
+        },
         getMemberCard: function () {
             var _this = this;
             var $el = $(".easl-mz-membercard");
             if ($el.length) {
                 $el.on("mz_loaded:" + this.methods.memberCard, function (event, response, method) {
+                    if (response.Status === 200) {
+                        !_this.modulesLoadTrigger && _this.loadModules();
+                        $el.html(response.Html);
+                        $el.removeClass("easl-mz-loading");
+                        if (response.Panel) {
+                            _this.loadMemberZonePanel(response.Panel);
+                        }
+                    } else if (response.Status === 401) {
+                        // TODO-maybe reload
+                    }
                     if (response.Status === 200) {
                         !_this.modulesLoadTrigger && _this.loadModules();
                         _this.loadHtml($(this), response);
