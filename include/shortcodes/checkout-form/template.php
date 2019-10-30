@@ -80,20 +80,20 @@ if ( easl_mz_is_member_logged_in() ):
 
 		if ( $membership['billing_mode'] == 'c1' ) {
 			$billing_address_title         = 'Your contacts institution address';
-			$billing_address['street']     = str_replace( "\n", ' ', trim( $member['primary_address_street'] ) );
+			$billing_address['street']     = preg_replace( '/[\t\r\n]+/', ' ', trim( $member['primary_address_street'] ) );
 			$billing_address['postalcode'] = $member['primary_address_postalcode'];
 			$billing_address['city']       = $member['primary_address_city'];
 			$billing_address['state']      = $member['primary_address_state'];
 			$billing_address['country']    = $member['primary_address_country'];
 		} elseif ( $membership['billing_mode'] == 'c2' ) {
 			$billing_address_title         = 'Your contacts home address';
-			$billing_address['street']     = str_replace( "\n", ' ', trim( $member['alt_address_street'] ) );
+			$billing_address['street']     = preg_replace( '/[\t\r\n]+/', ' ', trim( $member['alt_address_street'] ) );
 			$billing_address['postalcode'] = $member['alt_address_postalcode'];
 			$billing_address['city']       = $member['alt_address_city'];
 			$billing_address['state']      = $member['alt_address_state'];
 			$billing_address['country']    = $member['alt_address_country'];
 		} else {
-			$billing_address['street']     = str_replace( "\n", ' ', trim( $membership['billing_address_street'] ) );
+			$billing_address['street']     = preg_replace( '/[\t\r\n]+/', ' ', trim( $membership['billing_address_street'] ) );
 			$billing_address['postalcode'] = $membership['billing_address_postalcode'];
 			$billing_address['city']       = $membership['billing_address_city'];
 			$billing_address['state']      = $membership['billing_address_state'];
