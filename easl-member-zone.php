@@ -614,7 +614,7 @@ class EASL_MZ_Manager {
 				'membership_status' => $redirect_type,
 				'mbs_num'           => $membership_number,
 				'fname'             => $mz_fname,
-				'name'              => $mz_lname,
+				'lname'              => $mz_lname,
 			), $redirect_url );
 		}
 
