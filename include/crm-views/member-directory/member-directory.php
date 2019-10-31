@@ -32,7 +32,7 @@ $paginations = str_replace( "<ul class='page-numbers'>", "<ul class='easl-mz-pag
     <div class="easl-mz-directory-members easl-row easl-row-col-2">
 		<?php foreach ( $members as $member ): ?>
 			<?php
-			$member_image = easl_mz_get_member_image_src($member['id'], $member['picture']);
+			$member_image      = easl_mz_get_member_image_src( $member['id'], $member['picture'] );
 			$member_name_parts = array();
 			if ( $member['salutation'] ) {
 				$member_name_parts[] = $member['salutation'];
@@ -43,6 +43,28 @@ $paginations = str_replace( "<ul class='page-numbers'>", "<ul class='easl-mz-pag
 			if ( $member['last_name'] ) {
 				$member_name_parts[] = $member['last_name'];
 			}
+			$public_fields = explode( ',', $member['dotb_public_profile_fields'] );
+
+			$job_excerpt = array();
+			if ( $member['title'] ) {
+				$job_excerpt[] = $member['title'];
+			}
+			$job_function_title = '';
+			if ( ( $member['dotb_job_function'] == 'other' ) && $member['dotb_job_function_other'] ) {
+				$job_function_title = $member['dotb_job_function_other'];
+			} elseif ( $member['dotb_job_function'] ) {
+				$job_function_title = easl_mz_get_list_item_name( 'job_functions', $member['dotb_job_function'] );
+			}
+			if ( ( $job_function_title != $member['title'] ) ) {
+				$job_excerpt[] = $job_function_title;
+			}
+			if ( $member['department'] ) {
+				$job_excerpt[] = $member['department'];
+			}
+			$job_excerpt = implode( ', ', $job_excerpt );
+			if ( strlen( $job_excerpt ) > 86 ) {
+				$job_excerpt = substr( $job_excerpt, 0, 80 ) . '...';
+			}
 			?>
             <div class="easl-col">
                 <div class="easl-col-inner easl-mz-md-item">
@@ -51,8 +73,11 @@ $paginations = str_replace( "<ul class='page-numbers'>", "<ul class='easl-mz-pag
                     </div>
                     <div class="md-item-details">
                         <h4 class="md-item-name">
-                            <a class="mz-member-details-trigger" href="#<?php echo $member['id']; ?>" data-memberid="<?php echo $member['id']; ?>"><span><?php echo implode( ' ', $member_name_parts ); ?></span></a></h4>
-                        <p class="md-item-text"><?php echo wp_unslash( $member['description'] ) ?></p>
+                            <a class="mz-member-details-trigger" href="#<?php echo $member['id']; ?>" data-memberid="<?php echo $member['id']; ?>"><span><?php echo implode( ' ', $member_name_parts ); ?></span></a>
+                        </h4>
+						<?php if ( $job_excerpt ): ?>
+                            <p class="md-item-text"><?php echo $job_excerpt; ?></p>
+						<?php endif; ?>
                         <span class="md-item-country"><?php echo easl_mz_get_country_name( $member['country'] ); ?></span>
                     </div>
                 </div>

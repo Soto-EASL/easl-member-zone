@@ -171,7 +171,7 @@ class EASL_MZ_Ajax_Handler {
 			'max_num'  => $num,
 			'offset'   => ( $page_offset - 1 ) * $num,
 			'order_by' => 'date_modified:ASC',
-			'fields'   => 'id,name,salutation,first_name,last_name,picture,dotb_public_profile,dotb_public_profile_fields,primary_address_country,description,dotb_easl_specialty'
+			'fields'   => 'id,name,salutation,first_name,last_name,picture,dotb_public_profile,dotb_public_profile_fields,primary_address_country,description,dotb_easl_specialty,title,dotb_job_function,dotb_job_function_other,department'
 		);
 		$filter      = array();
 		$filter[]    = array(

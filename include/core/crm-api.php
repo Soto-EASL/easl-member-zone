@@ -519,13 +519,19 @@ class EASL_MZ_API {
 		$members = array();
 		foreach ( $response->records as $record ) {
 			$members[] = array(
-				'id'          => $record->id,
-				'salutation'  => $record->salutation,
-				'first_name'  => $record->first_name,
-				'last_name'   => $record->last_name,
-				'description' => $record->description,
-				'picture'     => $record->picture,
-				'country'     => $record->primary_address_country,
+				'id'                         => $record->id,
+				'salutation'                 => $record->salutation,
+				'first_name'                 => $record->first_name,
+				'last_name'                  => $record->last_name,
+				'description'                => $record->description,
+				'picture'                    => $record->picture,
+				'country'                    => $record->primary_address_country,
+				'dotb_public_profile'        => $record->dotb_public_profile,
+				'dotb_public_profile_fields' => $record->dotb_public_profile_fields,
+				'title'                      => $record->title,
+				'dotb_job_function'          => $record->dotb_job_function,
+				'dotb_job_function_other'    => $record->dotb_job_function_other,
+				'department'                 => $record->department,
 			);
 		}
 
