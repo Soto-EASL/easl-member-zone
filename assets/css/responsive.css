@@ -75,9 +75,9 @@
 }
 
 @media only screen and (max-width: 767px) {
-
-	.page-template-member-zone #wrap {
-	    padding-top: 0px !important;
+	.page-template-member-zone #wrap,
+	.easl-mz-member-logged-in #wrap {
+		padding-top: 0px !important;
 	}
 
 	.easl-mz-header-member-card{
@@ -169,10 +169,6 @@
 		padding:0;
 	}
 
-	.page-template-member-zone .social_buttons_widget, .page-id-9454 .social_buttons_widget{
-		top:350px;
-	}
-
 	.mz-login-row{
 		width:calc(33.3% - 10px);
 		margin:0 5px;
@@ -184,5 +180,134 @@
 
 	.mz-forgot-password{
 		padding-left:5px;
+	}
+	.easl-mobile-top-buttons .mz-loggedout-buttons.header-aside-buttons {
+		height: auto;
+		overflow: visible;
+	}
+
+	/* header login form */
+	.easl-mobile-top-buttons .easl-mz-login-form {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 34px;
+		z-index: 1;
+		visibility: visible;
+		transform: none;
+		width: auto;
+		padding: 0;
+		height: 0;
+		transition: height .35s;
+		overflow: hidden;
+	}
+	.easl-mobile-top-buttons .easl-mz-login-form form {
+		padding: 10px 10px 0 10px;
+	}
+	.easl-mobile-top-buttons .easl-mz-login-form.easl-active {
+		transform: none;
+		height: 145px;
+	}
+	.easl-mobile-top-buttons .easl-mz-login-form.easl-active.mz-show-reset-form {
+		height: 113px;
+	}
+	.easl-mobile-top-buttons .mz-login-row {
+		float: none;
+		width: auto;
+		display: block;
+		margin: 0 0 10px;
+	}
+	.easl-mobile-top-buttons .mz-login-row input[name="mz_member_login"] {
+		width: 100%;
+	}
+	.easl-mobile-top-buttons .mz-forgot-pass-fields {
+		padding: 10px 10px 0 10px;
+		margin-bottom: 15px;
+	}
+	.easl-mobile-top-buttons  .mz-forgot-pass-row {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.easl-mobile-top-buttons .mz-forgot-password {
+		margin: 0;
+		padding: 0;
+	}
+	.easl-mobile-top-buttons .mz-forgot-pass-fields .mz-reset-pass-email{
+		float: none;
+		width: 100%;
+		margin: 0 0 10px;
+	}
+	.easl-mobile-top-buttons .mz-forgot-pass-fields .easl-generic-button {
+		float: none;
+		width: 100%;
+	}
+	/* Member card - mobile*/
+	.easl-mz-member-logged-in .easl-mobile-top-buttons {
+		background: #d0d0d0;
+	}
+	.easl-mz-member-logged-in .easl-mobile-top-buttons .easl-mz-header-member-card {
+		margin: 0;
+	}
+	.easl-mz-member-logged-in .easl-mobile-top-buttons .container {
+		max-width: 100%;
+	}
+	.easl-mobile-top-buttons .easl-mz-membercard {
+		border-bottom: 2px solid #62cff5;
+		margin: 0;
+		padding: 5px 0;
+	}
+	.easl-mobile-top-buttons .mz-member-card-inner {
+		max-width: 90%;
+		margin: 0 auto;
+	}
+	.easl-mobile-top-buttons .mz-member-avatar {
+		width: 46px;
+		height: 46px;
+		margin-right: 12px;
+	}
+	.easl-mobile-top-buttons .mz-member-welcome-block {
+		font-size: 14px;
+		line-height: 14px;
+	}
+	.easl-mobile-top-buttons .mz-member-welcome-block .mz-member-welcome-row {
+		display: inline-block;
+		margin: 0 5px 0 0;
+	}
+	.easl-mobile-top-buttons .mz-member-welcome-block .mz-member-welcome-row.mz-member-welcome-button {
+		margin: 0!important;
+	}
+	.mz-member-welcome-block .mz-member-welcome-button .mz-member-panel-button{
+		font-size: 14px;
+		line-height: 14px;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	/* Memberzone panel */
+	.mz-panel-inner {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.mz-panel-title {
+		position: relative;
+		font-size: 22px;
+		display: block;
+		margin: 0 0 15px;
+	}
+	.mz-panel-buttons-wrap {
+		justify-content: flex-start;
+		flex-wrap: wrap;
+	}
+	.mz-panel-buttons-wrap .mz-panel-button {
+		margin: 0 8px 16px;
+		padding: 5px 10px;
+		width: 45%;
+		flex: unset;
+	}
+	.mz-panel-buttons-wrap .mz-panel-button-icon {
+		margin-bottom: 8px;
+		height: 36px;
+	}
+	.mz-panel-button-icon img {
+		height: 36px;
 	}
 }

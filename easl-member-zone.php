@@ -13,7 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-define( 'EASL_MZ_VERSION', '1.0.7' );
+define( 'EASL_MZ_VERSION', '1.0.8.1' );
+
 //define( 'EASL_MZ_VERSION', time() );
 
 class EASL_MZ_Manager {
@@ -614,7 +615,7 @@ class EASL_MZ_Manager {
 				'membership_status' => $redirect_type,
 				'mbs_num'           => $membership_number,
 				'fname'             => $mz_fname,
-				'lname'              => $mz_lname,
+				'lname'             => $mz_lname,
 			), $redirect_url );
 		}
 
@@ -650,8 +651,8 @@ class EASL_MZ_Manager {
 			die();
 		}
 		header( 'Content-Disposition: ' . $note_data['content_disposition'] );
-		header("Pragma: public");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header( "Pragma: public" );
+		header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
 		header( 'Content-Type: ' . $note_data['content_type'] );
 		header( 'Content-Length: ' . $note_data['content_length'] );
 
@@ -698,8 +699,7 @@ class EASL_MZ_Manager {
 	}
 
 	public function assets() {
-		$version       = EASL_MZ_VERSION;
-		$googleapi_key = 'AIzaSyCe-SgprAvAbprjsFR96WjAdKb2EVC-kR0';
+		$version = EASL_MZ_VERSION;
 
 		wp_enqueue_style( 'easl-mz-styles', $this->asset_url( 'css/easl-member-zone.css' ), array(), $version );
 		wp_enqueue_style( 'easl-mz-styles-responsive', $this->asset_url( 'css/responsive.css' ), array(), $version );
@@ -711,6 +711,7 @@ class EASL_MZ_Manager {
 			'ajaxURL'        => admin_url( 'admin-ajax.php', $ssl_scheme ),
 			'ajaxActionName' => $this->ajax->get_action_name(),
 			'messages'       => $this->get_messages(),
+			'mapAPIkey'      => get_field( 'mz_map_api_key', 'option' ),
 			'membershipFees' => easl_mz_get_membership_category_fees_calculation(),
 			'loaderHtml'     => '<div class="easl-mz-loader"><img src="' . get_stylesheet_directory_uri() . '/images/easl-loader.gif" alt="loading..."></div>',
 		);
