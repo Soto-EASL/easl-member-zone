@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function easl_mz_customizer_panels($panels) {
 	$panels['member_zone'] = array(
 		'title' => __('Member Zone', 'total-child'),
-		'condition' => true,
+		'condition' => '__return_true',
 	);
 	return $panels;
 }
