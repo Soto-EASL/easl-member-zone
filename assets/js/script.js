@@ -827,8 +827,9 @@
                     }
                     if (memberships.length > 0) {
                         _this.request(_this.methods.getMembershipNotes, $el, {
-                            'membership': memberships.shift()
+                            'memberships': memberships.slice(0, 3)
                         });
+                        memberships = memberships.slice(3);
                     } else {
                         $el.removeClass("mz-docs-loading");
                     }
@@ -838,8 +839,9 @@
                         memberships = response.Data;
                         if (memberships.length) {
                             _this.request(_this.methods.getMembershipNotes, $el, {
-                                'membership': memberships.shift()
+                                'memberships': memberships.slice(0, 3)
                             });
+                            memberships = memberships.slice(3);
                         }
                     } else if (response.Status === 404) {
                         $table.html("You don't have any documents.");

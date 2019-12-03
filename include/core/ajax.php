@@ -61,7 +61,7 @@ class EASL_MZ_Ajax_Handler {
 		extract( $data );
 		include $this->view_path . '/' . rtrim( $file, '/' );
 
-		return trim(ob_get_clean());
+		return trim( ob_get_clean() );
 	}
 
 	public function respond_file( $file, $data = array(), $status = 200, $extra_data = array() ) {
@@ -313,21 +313,33 @@ class EASL_MZ_Ajax_Handler {
 		if ( ! easl_mz_is_member_logged_in() ) {
 			$this->respond( 'Not logged in.', 401 );
 		}
-		$membership = false;
-		if ( isset( $_POST['request_data']['membership'] ) ) {
-			$membership = $_POST['request_data']['membership'];
+		$memberships = array();
+		if ( isset( $_POST['request_data']['memberships'] ) ) {
+			$memberships = $_POST['request_data']['memberships'];
 		}
-		if ( empty( $membership ) ) {
+		if ( ! is_array( $memberships ) && count( $memberships ) < 1 ) {
 			$this->respond( 'Not found.', 404 );
 		}
-		if ( empty( $membership['id'] ) ) {
-			$this->respond( 'Not found.', 404 );
+		$rows = array();
+		foreach ( $memberships as $membership ) {
+			if ( empty( $membership['id'] ) ) {
+				continue;
+			}
+			$membership_notes = $this->api->get_membership_notes( $membership['id'] );
+			if ( empty( $membership_notes ) ) {
+				continue;
+			}
+			$rows[] = array(
+				'membership'       => $membership,
+				'membership_notes' => $membership_notes
+			);
 		}
-		$membership_notes = $this->api->get_membership_notes( $membership['id'] );
-		if ( empty( $membership_notes ) ) {
+
+
+		if ( count( $rows ) < 1 ) {
 			$this->respond( 'No membership note found.', 404 );
 		}
-		$template_data = array( 'membership' => $membership, 'membership_notes' => $membership_notes );
+		$template_data = array( 'rows' => $rows );
 		$this->respond_file( '/members-documents/members-documents-row.php', $template_data, 200 );
 	}
 
