@@ -527,3 +527,27 @@ function easl_mz_get_membership_expiring( $member_details ) {
 
 	return 'Your membership is due to expire in ' . implode( ' ', $remaining_formatted ) . '. Please <a href="' . $renew_url . '">' . $renew_title . '</a> today.';
 }
+
+function easl_mz_get_non_empty_countries_dropdown() {
+	$api = EASL_MZ_API::get_instance();
+	$api->maybe_get_user_auth_token();
+	$countries_count = $api->get_md_countries_member_count();
+	$country_data    = easl_mz_get_list_countries();
+	$country_dd_data = array();
+	if ( $countries_count ) {
+		foreach ( $country_data as $cc => $cname ) {
+			if ( isset( $countries_count[ $cname ] ) && $countries_count[ $cname ] > 0 ) {
+				$country_dd_data[ $cc ] = $cname;
+			}
+		}
+	}
+	if ( ! $country_dd_data ) {
+		$country_dd_data = $country_data;
+	}
+	$html = '';
+	foreach ( $country_dd_data as $key => $value ) {
+		$html .= '<option value="' . $key . '">' . $value . '</option>';
+	}
+
+	return $html;
+}

@@ -818,6 +818,48 @@ class EASL_MZ_API {
 		return $response->id;
 	}
 
+	public function get_countries_member_count(  ) {
+		$report_id = 'af3ab44e-167f-11ea-bf8b-005056a42212';
+		$headers = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$result  = $this->get( '/Reports/' . $report_id . '/chart', false, $headers );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->chartData->values ) ) {
+			return false;
+		}
+		$countries_count = array();
+		foreach ($response->chartData->values as $country) {
+			$countries_count[$country->label] = $country->gvalue;
+		}
+		return $countries_count;
+	}
+
+	public function get_md_countries_member_count(  ) {
+		$report_id = '29c3021c-16b6-11ea-9fc1-005056a42212';
+		$headers = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$result  = $this->get( '/Reports/' . $report_id . '/chart', false, $headers );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->chartData->values ) ) {
+			return false;
+		}
+		$countries_count = array();
+		foreach ($response->chartData->values as $country) {
+			$countries_count[$country->label] = $country->gvalue;
+		}
+		return $countries_count;
+	}
+
 	public function post( $endpoint, $is_member = true, $headers = array(), $data = array(), $data_format = 'body', $cookies = array(), $codes = array( 200 ) ) {
 		if ( $this->is_session_expired( $is_member ) ) {
 			return false;
