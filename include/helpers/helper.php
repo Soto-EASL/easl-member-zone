@@ -82,7 +82,7 @@ function easl_mz_get_member_image_src( $member_id, $member_picture ) {
 		$member_image = add_query_arg( array(
 			'mz_action' => 'member_image',
 			'member_id' => $member_id
-		), get_site_url());
+		), get_site_url() );
 	}
 
 	return $member_image;
@@ -91,9 +91,23 @@ function easl_mz_get_member_image_src( $member_id, $member_picture ) {
 function easl_mz_get_note_download_url( $note ) {
 	$ssl_scheme = is_ssl() ? 'https' : 'http';
 	$url        = add_query_arg( array(
-		'mz_action'      => 'membership_note',
-		'note_id'        => $note['id'],
+		'mz_action' => 'membership_note',
+		'note_id'   => $note['id'],
 	), get_site_url() );
 
 	return $url;
+}
+
+function easl_mz_jhep_menu_link( $atts ) {
+	if ( empty( $atts['href'] ) ) {
+		return $atts;
+	}
+	if ( $atts['href'] == '#jhep_link' ) {
+		$atts['href'] = easl_mz_get_jhep_link();
+	}
+	if ( $atts['href'] == '#jhep_test_link' ) {
+		$atts['href'] = easl_mz_get_jhep_link( true );
+	}
+
+	return $atts;
 }

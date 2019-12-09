@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <div class="easl-mz-page-menu">
                     <h1 class="easl-mz-page-menu-title">Member Zone</h1>
 					<?php
+                    add_filter('nav_menu_link_attributes', 'easl_mz_jhep_menu_link');
 					wp_nav_menu( array(
 						'container'      => 'nav',
 						'menu_class'     => '',
@@ -19,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						'fallback_cb'    => false,
 						'theme_location' => 'member-zone-pages-menu',
 					) );
+					remove_filter('nav_menu_link_attributes', 'easl_mz_jhep_menu_link');
 					?>
                 </div>
             </div>

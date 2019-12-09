@@ -112,6 +112,7 @@ class EASL_MZ_Manager {
 		require $this->path( 'CORE_DIR', 'mz-request.php' );
 		require $this->path( 'CORE_DIR', 'crm-api.php' );
 		require $this->path( 'CORE_DIR', 'ajax.php' );
+		require $this->path( 'CORE_DIR', 'class-easl-mz-tps-token.php' );
 		require $this->path( 'APP_ROOT', 'include/customizer/customizer.php' );
 	}
 

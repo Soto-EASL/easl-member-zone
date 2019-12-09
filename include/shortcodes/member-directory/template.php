@@ -64,7 +64,7 @@ easl_mz_enqueue_select_assets();
                             <div class="mzms-field-wrap">
                                 <select class="easl-mz-select2" id="mz-md-filter-country" data-placeholder="Select a country" style="width: 100%;">
                                     <option value="">All Countries</option>
-                                    <?php echo easl_mz_get_crm_dropdown_items( 'countries', '' ); ?>
+                                    <?php echo easl_mz_get_non_empty_countries_dropdown(); ?>
                                 </select>
                             </div>
                         </div>
