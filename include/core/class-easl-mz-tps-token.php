@@ -16,11 +16,11 @@ class EASL_MZ_JHEP_Tokenizer {
 	private static $_instance;
 
 	protected function __construct() {
-		$this->host_name          = 'http://www.easl.ch/';
+		$this->host_name          = 'https://easl.eu';
 		$this->society_id         = '116';
 		$this->member_level       = 'memberaccess';
 		$this->encrypt_key        = 'b67e864abdddf83fb67e864abdddf83f';
-		$this->target_journal_url = 'https://www.jhep-elsevier.com/';
+		$this->target_journal_url = 'https://www.journal-of-hepatology.eu/';
 		$this->test_url           = 'https://tps.elsevier-jbs.com/test';
 		$this->timestamp_ms       = time() . "000";
 	}
