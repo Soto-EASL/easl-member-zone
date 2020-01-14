@@ -1,7 +1,7 @@
 (function ($) {
     mzMap = window.mzMap = {
         Storage: {
-            apiKey: 'AIzaSyCvNOYGNBjw3jS56SSgYks8Re6FeRgpp-I',
+            apiKey: EASLMZMAP.apiKey,
             mapData: {},
             map: {},
             styledMap: {}

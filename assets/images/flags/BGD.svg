@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="118px" height="136px" viewBox="0 0 118 136" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>bangladesh</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="bangladesh">
+            <polygon id="Fill-1" fill="#19A82D" points="59.0004 -0.0001 0.0004 33.9569 0.0004 101.8709 59.0004 135.8269 118.0004 101.8709 118.0004 33.9569"></polygon>
+            <polygon id="Fill-2" fill="#009416" points="59.0004 -0.0001 59.0004 135.8269 118.0004 101.8709 118.0004 33.9569"></polygon>
+            <g id="Group-9" transform="translate(29.000000, 40.827000)">
+                <path d="M30.0002,0.2487 C12.9862,0.2487 0.5002,13.4797 0.5002,29.8027 C0.5002,46.1247 12.9862,59.3557 30.0002,59.3557 C47.0132,59.3557 59.5002,46.1247 59.5002,29.8027 C59.5002,13.4797 47.0132,0.2487 30.0002,0.2487" id="Fill-3" fill="#D02228"></path>
+                <path d="M0.5002,29.8025 C0.5002,46.1245 12.9862,59.3565 30.0002,59.3565 L30.0002,0.2485 C12.9862,0.2485 0.5002,13.4805 0.5002,29.8025" id="Fill-5" fill="#D73F45"></path>
+                <path d="M59.5002,29.8025 C59.5002,13.4805 47.0132,0.2485 30.0002,0.2485 L30.0002,59.3565 C47.0132,59.3565 59.5002,46.1245 59.5002,29.8025" id="Fill-7" fill="#D02228"></path>
+            </g>
+        </g>
+    </g>
+</svg>

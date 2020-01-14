@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="118px" height="136px" viewBox="0 0 118 136" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>korea</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0.4798 0.0751 48.9998 0.0751 48.9998 28 0.4798 28"></polygon>
+        <polygon id="path-3" points="-0.0002 0.0751 48.5198 0.0751 48.5198 28 -0.0002 28"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="korea" transform="translate(0.000000, -1.000000)">
+            <polygon id="Fill-1" fill="#FFFFFF" points="0 34.9577 0 102.8707 58.999 136.8277 118 102.8707 118 34.9577 58.999 1.0007"></polygon>
+            <polygon id="Fill-2" fill="#E9E9E9" points="58.9995 136.8278 117.9995 102.8708 117.9995 34.9578 58.9995 1.0008"></polygon>
+            <polygon id="Fill-3" fill="#D02228" points="58.9995 35.4131 0.0005 35.4131 0.0005 102.4141 58.9995 102.4141 117.9995 102.4141 117.9995 35.4131"></polygon>
+            <polygon id="Fill-4" fill="#004FA4" points="10.4805 28.925 58.9995 28.914 107.5195 28.925 58.9995 1.001"></polygon>
+            <polygon id="Fill-5" fill="#D73F45" points="0 102.414 58.999 102.414 58.999 35.413 0 35.413"></polygon>
+            <polygon id="Fill-6" fill="#D02228" points="58.999 102.414 117.999 102.414 117.999 35.413 58.999 35.413"></polygon>
+            <g id="Group-21" transform="translate(6.000000, 0.925000)">
+                <path d="M23.4998,45.9884 C36.0668,45.9884 46.2538,56.1764 46.2538,68.7424 C46.2538,81.3094 36.0668,91.4964 23.4998,91.4964 C10.9338,91.4964 0.7458,81.3094 0.7458,68.7424 C0.7458,56.1764 10.9338,45.9884 23.4998,45.9884" id="Fill-7" fill="#FFFFFF"></path>
+                <polygon id="Fill-9" fill="#D73F45" points="23.4998 46.7003 28.4498 61.9313 44.4638 61.9313 31.5068 71.3453 36.4568 86.5753 23.4998 77.1623 10.5428 86.5753 15.4928 71.3453 2.5358 61.9313 18.5518 61.9313"></polygon>
+                <polygon id="Fill-11" fill="#155EAC" points="52.9998 0.0753 4.4798 28.0003 52.9998 27.9893"></polygon>
+                <polygon id="Fill-13" fill="#004FA4" points="52.9998 27.9894 101.5198 28.0004 52.9998 0.0754"></polygon>
+                <g id="Group-17" transform="translate(4.000000, 108.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-16"></g>
+                    <polygon id="Fill-15" fill="#155EAC" mask="url(#mask-2)" points="48.9998 28.0001 0.4798 0.0751 48.9998 0.0861"></polygon>
+                </g>
+                <g id="Group-20" transform="translate(53.000000, 108.000000)">
+                    <mask id="mask-4" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <g id="Clip-19"></g>
+                    <polygon id="Fill-18" fill="#004FA4" mask="url(#mask-4)" points="-0.0002 0.0861 48.5198 0.0751 -0.0002 28.0001"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

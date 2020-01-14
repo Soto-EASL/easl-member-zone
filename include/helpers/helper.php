@@ -111,3 +111,11 @@ function easl_mz_jhep_menu_link( $atts ) {
 
 	return $atts;
 }
+
+function easl_mz_country_short( $c1, $c2 ) {
+	if ( $c1['member_count'] == $c2['member_count'] ) {
+		return 0;
+	}
+
+	return ( $c1['member_count'] > $c2['member_count'] ) ? - 1 : 1;
+}

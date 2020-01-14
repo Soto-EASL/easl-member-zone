@@ -343,6 +343,37 @@ class EASL_MZ_Ajax_Handler {
 		$this->respond_file( '/members-documents/members-documents-row.php', $template_data, 200 );
 	}
 
+	public function get_member_statistics() {
+		if ( ! easl_mz_is_member_logged_in() ) {
+			$this->respond( 'Member not logged in!', 401 );
+		}
+		$top_member_country_data = array();
+
+		$country_data               = easl_mz_get_country_member_count_data();
+		$membership_category_data   = $this->api->get_ms_membership_category_member_count();
+		$membership_speciality_data = $this->api->get_ms_speciality_member_count();
+
+		if ( $country_data ) {
+			$top_member_country_data = easl_mz_get_top_country_member_count_data( $country_data );
+		}
+		if ( ! $membership_category_data ) {
+			$membership_category_data = array();
+		}
+		if ( ! $membership_speciality_data ) {
+			$membership_speciality_data = array();
+		}
+		$template_data = array(
+			'countries'             => $country_data,
+			'top_countries'         => $top_member_country_data,
+			'membership_categories' => $membership_category_data,
+			'specialities' => $membership_speciality_data
+		);
+		$extra_data    = array(
+			'map_data' => $top_member_country_data
+		);
+		$this->respond_file( '/member-statistics/member-statistics.php', $template_data, 200, $extra_data );
+	}
+
 	public function get_membership_form() {
 		$current_member_id = $this->session->ge_current_member_id();
 		if ( ! $current_member_id ) {

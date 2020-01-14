@@ -1576,6 +1576,7 @@ body .mzms-button::after {
     cursor: pointer;
     color: #004b87;
 }
+
 .mzms-field-has-privacy .mzms-fields-privacy-icon .mzms-fields-privacy-tooltip {
     border-radius: 1px;
     background: #004b87;
@@ -1592,6 +1593,7 @@ body .mzms-button::after {
     transform: translateY(-100%);
     transition: visibility .25s, opacity .25s;
 }
+
 .mzms-field-has-privacy .mzms-fields-privacy-icon .mzms-fields-privacy-tooltip::after {
     content: "";
     position: absolute;
@@ -1603,6 +1605,7 @@ body .mzms-button::after {
     border-right: 10px solid transparent;
     top: 100%;
 }
+
 .mzms-field-has-privacy .mzms-fields-privacy-icon:hover .mzms-fields-privacy-tooltip {
     opacity: 1;
     visibility: visible;
@@ -2083,6 +2086,45 @@ span.mzms-field-file-button {
 }
 
 /* Member Zone: Statistics */
+
+.mz-statistics-inner {
+    position: relative;
+}
+
+.mz-stats-container {
+    position: relative;
+    z-index: 1;
+    padding: 30px 0;
+}
+
+.mz-ms-loading .mz-stats-container {
+    display: none;
+}
+
+.mz-statistics-inner .easl-mz-loader {
+    display: none;
+    position: relative;
+    margin-left: 55px;
+    left: 0;
+    transform: none;
+    top: 0;
+    z-index: 2;
+}
+
+.mz-ms-loading .easl-mz-loader {
+    display: block;
+    z-index: 2;
+}
+
+.mz-country-stat-count {
+    display: none;
+}
+
+.mz-country-stat-count.mz-ms-active {
+    display: block;
+}
+
+
 .mz-statistics-inner .mz-page-heading {
     background-image: url("../images/icon-stat-blue.png");
     padding-left: 57px;
@@ -2109,7 +2151,7 @@ span.mzms-field-file-button {
 }
 
 .mz-country-filter {
-    width: 205px;
+    width: 405px;
     margin-right: 20px;
 }
 
@@ -2166,7 +2208,7 @@ span.mzms-field-file-button {
 
 .mz-stat-block {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     min-height: 1px;
 }
 
@@ -2175,7 +2217,7 @@ span.mzms-field-file-button {
     display: flex;
     min-height: 1px;
     justify-content: center;
-    align-items: stretch;
+    align-items: center;
     text-align: center;
     font-family: "KnockoutHTF51Middleweight", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -2216,28 +2258,8 @@ span.mzms-field-file-button {
     margin-bottom: 3px;
 }
 
-.mz-stat-block.easl-color-orrange {
-    color: #f26827;
-}
-
-.mz-stat-block.easl-color-blue {
-    color: #165291;
-}
-
-.mz-stat-block.easl-color-teal {
-    color: #189790;
-}
-
-.mz-stat-block.easl-color-gray {
+.mz-stat-block{
     color: #7e6a73;
-}
-
-.mz-stat-block.easl-color-red {
-    color: #de2a57;
-}
-
-.mz-stat-block.easl-color-yellow {
-    color: #f9bc49;
 }
 
 .mz-stat-top-countries-wrap {
@@ -2455,9 +2477,11 @@ span.mzms-field-file-button {
     transform: translateY(calc(-100% - 44px));
     transition: transform .3s;
 }
+
 .admin-bar #mz-panel-outer-wrapper {
     top: 32px;
 }
+
 #mz-panel-outer-wrapper.mz-show-panel {
     transform: translateY(0);
 }
@@ -2465,13 +2489,15 @@ span.mzms-field-file-button {
 .mz-panel-wrap {
     background: #004b87;
     padding: 14px 0;
-    box-shadow: 0 3px 11px 0 rgba(0,0,0,.8);
+    box-shadow: 0 3px 11px 0 rgba(0, 0, 0, .8);
 }
+
 .mz-panel-inner {
     position: relative;
     padding-left: 160px;
     padding-right: 60px;
 }
+
 .mz-panel-title {
     position: absolute;
     left: 0;
@@ -2485,6 +2511,7 @@ span.mzms-field-file-button {
     line-height: 1em;
     width: 140px;
 }
+
 .mz-panel-inner .mz-panel-close {
     position: absolute;
     top: 2px;
@@ -2494,6 +2521,7 @@ span.mzms-field-file-button {
     width: 20px;
     height: 20px;
 }
+
 .mz-panel-inner .mz-panel-close::after, .mz-panel-inner .mz-panel-close::before {
     content: "";
     position: absolute;
@@ -2506,17 +2534,21 @@ span.mzms-field-file-button {
     margin-top: -1px;
     margin-left: -4px;
 }
+
 .mz-panel-inner .mz-panel-close::before {
     transform: rotate(45deg);
 }
+
 .mz-panel-inner .mz-panel-close::after {
     transform: rotate(-45deg);
 }
+
 .mz-panel-buttons-wrap {
     display: flex;
     align-items: stretch;
     justify-content: space-around;
 }
+
 .mz-panel-buttons-wrap .mz-panel-button {
     flex: 1 1 0;
     max-width: 175px;
@@ -2526,11 +2558,13 @@ span.mzms-field-file-button {
     text-align: center;
     border-left: 1px solid #688ba7;
     border-right: 1px solid #688ba7;
-    text-decoration: none!important;
+    text-decoration: none !important;
 }
+
 .mz-panel-buttons-wrap .mz-panel-button:hover {
     background: #71c5e8;
 }
+
 .mz-panel-buttons-wrap .mz-panel-button-icon {
     height: 42px;
     overflow: hidden;
@@ -2538,6 +2572,7 @@ span.mzms-field-file-button {
     position: relative;
     margin-bottom: 12px;
 }
+
 .mz-panel-button-icon img {
     display: block;
     position: absolute;
@@ -2547,15 +2582,19 @@ span.mzms-field-file-button {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
 .mz-panel-button-icon .mz-panel-button-icon-hover {
     display: none;
 }
+
 .mz-panel-buttons-wrap .mz-panel-button.has-hover-icon:hover .mz-panel-button-icon-normal {
     display: none;
 }
+
 .mz-panel-buttons-wrap .mz-panel-button.has-hover-icon:hover .mz-panel-button-icon-hover {
     display: block;
 }
+
 .mz-panel-button .mz-panel-button-title {
     color: #004b87;
     font-family: "KnockoutHTF51Middleweight", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -2563,6 +2602,7 @@ span.mzms-field-file-button {
     line-height: 1em;
     display: block;
 }
+
 .mz-panel-button:hover .mz-panel-button-title {
     color: #fff;
 }
@@ -2576,15 +2616,17 @@ span.mzms-field-file-button {
     bottom: 0;
     top: 0;
 }
+
 .easl-mz-modal-backdrop {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    background: rgba(0,0,0,.45);
+    background: rgba(0, 0, 0, .45);
     z-index: 1;
 }
+
 .easl-mz-modal {
     position: absolute;
     left: 50%;
@@ -2597,6 +2639,7 @@ span.mzms-field-file-button {
     text-align: center;
     padding: 25px 15px;
 }
+
 .easl-mz-modal-content {
     color: #3f7cbf;
     font-size: 16px;
@@ -2604,11 +2647,14 @@ span.mzms-field-file-button {
     line-height: 1.4em;
     margin-bottom: 20px;
 }
+
 .mz-modal-password-reset {
 }
+
 .easl-mz-modal-buttons {
 
 }
+
 .easl-mz-modal-buttons a {
     background: #71c5e8;
     color: #fff;
@@ -2619,19 +2665,24 @@ span.mzms-field-file-button {
     margin: 0 5px;
     text-decoration: none;
 }
+
 .easl-mz-modal-buttons a:hover {
     text-decoration: none;
 }
-.easl-mz-modal-buttons  .easl-mz-modal-close {
+
+.easl-mz-modal-buttons .easl-mz-modal-close {
     width: 108px;
     text-align: center;
 }
+
 .easl-mz-modal-hidden {
     display: none;
 }
+
 .easl-mz-modal-shown {
     display: block;
 }
+
 .easl-mz-modal-transitioning {
-    transition: opacity .35s cubic-bezier(.11,.2,.86,.18);
+    transition: opacity .35s cubic-bezier(.11, .2, .86, .18);
 }

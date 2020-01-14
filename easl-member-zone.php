@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-define( 'EASL_MZ_VERSION', '1.0.9.2' );
+define( 'EASL_MZ_VERSION', '1.1.1' );
 
 //define( 'EASL_MZ_VERSION', time() );
 
@@ -538,6 +538,7 @@ class EASL_MZ_Manager {
 			'mz_status',
 			'mz_fname',
 			'mz_lname',
+			'mz_cat',
 			'membership_id',
 			'membership_number',
 			'mz_sid',
@@ -548,6 +549,7 @@ class EASL_MZ_Manager {
 		$membership_number = ! empty( $_GET['membership_number'] ) ? $_GET['membership_number'] : false;
 		$mz_fname          = ! empty( $_GET['mz_fname'] ) ? $_GET['mz_fname'] : '';
 		$mz_lname          = ! empty( $_GET['mz_lname'] ) ? $_GET['mz_lname'] : '';
+		$mz_cat            = ! empty( $_GET['mz_cat'] ) ? $_GET['mz_cat'] : '';
 		$session_db_id     = ! empty( $_GET['mz_sid'] ) ? $_GET['mz_sid'] : false;
 		$response_digest   = ! empty( $_GET['SHASIGN'] ) ? strtoupper( $_GET['SHASIGN'] ) : false;
 		$status            = ! empty( $_GET['mz_status'] ) ? $_GET['mz_status'] : false;
@@ -579,7 +581,7 @@ class EASL_MZ_Manager {
 		$redirect_type = '';
 		if ( $status == 'accepted' ) {
 			$membership_api_data = array(
-				'status'                              => 'active',
+				//'status'                              => 'active',
 				'billing_status'                      => 'paid',
 				'billing_invoice_id'                  => $invoice_number,
 				'billing_invoice_date'                => $current_date,
@@ -587,7 +589,17 @@ class EASL_MZ_Manager {
 				'billing_initiated_on'                => $current_date,
 				'billing_amount'                      => $amount,
 			);
-			$redirect_type       = 'paid_online';
+			if ( ! in_array( $mz_cat, array(
+				'trainee_jhep',
+				'trainee',
+				'nurse_jhep',
+				'nurse',
+				'allied_pro_jhep',
+				'allied_pro'
+			) ) ) {
+				$membership_api_data['status'] = 'active';
+			}
+			$redirect_type = 'paid_online';
 		} elseif ( $status == 'declined' ) {
 			$membership_api_data = array(
 				'status'         => 'incomplete',
@@ -617,6 +629,7 @@ class EASL_MZ_Manager {
 				'mbs_num'           => $membership_number,
 				'fname'             => $mz_fname,
 				'lname'             => $mz_lname,
+				'mcat'              => $mz_cat,
 			), $redirect_url );
 		}
 

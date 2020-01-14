@@ -270,17 +270,6 @@ function easl_mz_get_members_allowed_categories( $member ) {
 	$member_age = (int) easl_mz_calculate_age( $member['birthdate'] );
 	$geo_reg    = easl_mz_get_geo_reg( $member['primary_address_country'] );
 
-	if ( $member_age < 35 ) {
-		unset( $categories['regular'] );
-		unset( $categories['regular_jhep'] );
-		unset( $categories['corresponding'] );
-		unset( $categories['corresponding_jhep'] );
-	}
-	if ( $member_age >= 35 ) {
-		unset( $categories['trainee'] );
-		unset( $categories['trainee_jhep'] );
-	}
-
 	if ( $member_age < 65 ) {
 		unset( $categories['emeritus'] );
 		unset( $categories['emeritus_jhep'] );
@@ -550,4 +539,29 @@ function easl_mz_get_non_empty_countries_dropdown() {
 	}
 
 	return $html;
+}
+
+function easl_mz_get_country_member_count_data() {
+	$api = EASL_MZ_API::get_instance();
+	$api->maybe_get_user_auth_token();
+	$countries_count = $api->get_ms_countries_member_count();
+	$country_data    = easl_mz_get_list_countries();
+	$country_dd_data = array();
+	if ( $countries_count ) {
+		foreach ( $country_data as $cc => $cname ) {
+			if ( isset( $countries_count[ $cname ] ) && $countries_count[ $cname ] > 0 ) {
+				$country_dd_data[ $cc ] = array(
+					'country_label' => $cname,
+					'member_count'  => $countries_count[ $cname ]
+				);
+			}
+		}
+	}
+
+	return $country_dd_data;
+}
+
+function easl_mz_get_top_country_member_count_data( $country_data ) {
+	uasort($country_data, 'easl_mz_country_short');
+	return array_slice($country_data, 0, 12, true);
 }

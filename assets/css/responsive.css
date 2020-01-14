@@ -310,4 +310,35 @@
 	.mz-panel-button-icon img {
 		height: 36px;
 	}
+	/* Statistics */
+	.mz-stat-filters {
+		display: block;
+	}
+	.mz-country-filter {
+		width: auto;
+		margin: 0 0 25px;
+	}
+	.mz-country-stats {
+		font-size: 32px;
+		line-height: 32px;
+	}
+	.mz-wordlwide-stats-categories .mz-stat-block {
+		width: 50%;
+	}
+	.mz-worldwide-stats-speciality .mz-stat-block {
+		width: 50%;
+	}
+}
+@media only screen and (max-width: 479px) {
+	.mz-worldwide-stats-speciality {
+		display: block;
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.mz-wordlwide-stats-categories .mz-stat-block,
+	.mz-worldwide-stats-speciality .mz-stat-block {
+		width: 100%;
+		padding-left: 0;
+		padding-right: 0;
+	}
 }

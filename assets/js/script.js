@@ -90,7 +90,8 @@
             "getMemberDirectory": "get_members_list",
             "getMemberDetails": "get_member_details",
             "getMembersMembership": "get_members_memberships",
-            "getMembershipNotes": "get_memberships_notes"
+            "getMembershipNotes": "get_memberships_notes",
+            "getMemberStats": "get_member_statistics"
         },
         loadHtml: function ($el, response) {
             if (response.Status === 200 || response.Status === 201) {
@@ -852,6 +853,36 @@
                 this.request(this.methods.getMembersMembership, $el);
             }
         },
+        initMemberStatsEvents: function ($el) {
+            $("#mzstat_country", $el).select2({
+                closeOnSelect: true,
+                allowClear: true
+            }).on("change.select2", function (event) {
+                $(".mz-country-stats span").removeClass("mz-ms-active");
+                var val = $(this).val();
+                if (val) {
+                    $(".mz-country-stats").find('#mzcstat-' + val).addClass("mz-ms-active");
+                }
+            });
+        },
+        initMemberStatistics: function () {
+            var _this = this;
+            var $el = $(".mz-statistics-inner");
+            if ($el.length) {
+                $el.on("mz_loaded:" + this.methods.getMemberStats, function (event, response, method) {
+                    if (response.Status === 200) {
+                        $(".mz-stats-container", $el).html(response.Html);
+                        _this.initMemberStatsEvents($el);
+                    } else if (response.Status === 404) {
+                        $(".mz-stats-container", $el).html("No data found!");
+                    } else if (response.Status === 401) {
+                        // TODO-maybe reload
+                    }
+                    $el.removeClass("mz-ms-loading");
+                });
+                this.request(this.methods.getMemberStats, $el);
+            }
+        },
         request: function (method, $el, reqData) {
             reqData = reqData || {};
             return $.ajax({
@@ -937,6 +968,7 @@
             this.getNewMembershipForm();
             this.getMembershipBanner();
             this.initMemberDirectory();
+            this.initMemberStatistics();
         },
         init: function () {
             this.events();

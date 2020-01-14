@@ -129,6 +129,7 @@ if ( easl_mz_is_member_logged_in() ):
 						'membership_number' => $member['dotb_mb_id'],
 						'mz_fname'          => $member['first_name'],
 						'mz_lname'          => $member['last_name'],
+						'mz_cat'          => $member['dotb_mb_category'],
 					), get_site_url() );
 					$decline_url   = add_query_arg( array(
 						'mz_action'         => 'payment_feedback',
@@ -138,6 +139,7 @@ if ( easl_mz_is_member_logged_in() ):
 						'membership_number' => $member['dotb_mb_id'],
 						'mz_fname'          => $member['first_name'],
 						'mz_lname'          => $member['last_name'],
+						'mz_cat'          => $member['dotb_mb_category'],
 					), get_site_url() );
 					$exception_url = add_query_arg( array(
 						'mz_action'         => 'payment_feedback',
@@ -147,6 +149,7 @@ if ( easl_mz_is_member_logged_in() ):
 						'membership_number' => $member['dotb_mb_id'],
 						'mz_fname'          => $member['first_name'],
 						'mz_lname'          => $member['last_name'],
+						'mz_cat'          => $member['dotb_mb_category'],
 					), get_site_url() );;
 					$cancel_url = add_query_arg( array(
 						'mz_action'         => 'payment_feedback',
@@ -156,6 +159,7 @@ if ( easl_mz_is_member_logged_in() ):
 						'membership_number' => $member['dotb_mb_id'],
 						'mz_fname'          => $member['first_name'],
 						'mz_lname'          => $member['last_name'],
+						'mz_cat'          => $member['dotb_mb_category'],
 					), get_site_url() );
 
 					$sha_string .= "ACCEPTURL={$accept_url}{$saw_in_pass_phrase}";

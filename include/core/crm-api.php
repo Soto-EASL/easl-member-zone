@@ -818,13 +818,13 @@ class EASL_MZ_API {
 		return $response->id;
 	}
 
-	public function get_countries_member_count(  ) {
+	public function get_countries_member_count() {
 		$report_id = 'af3ab44e-167f-11ea-bf8b-005056a42212';
-		$headers = array(
+		$headers   = array(
 			'Content-Type' => 'application/json',
 			'OAuth-Token'  => $this->get_access_token( false ),
 		);
-		$result  = $this->get( '/Reports/' . $report_id . '/chart', false, $headers );
+		$result    = $this->get( '/Reports/' . $report_id . '/chart', false, $headers );
 		if ( ! $result ) {
 			return false;
 		}
@@ -833,19 +833,20 @@ class EASL_MZ_API {
 			return false;
 		}
 		$countries_count = array();
-		foreach ($response->chartData->values as $country) {
-			$countries_count[$country->label] = $country->gvalue;
+		foreach ( $response->chartData->values as $country ) {
+			$countries_count[ $country->label ] = $country->gvalue;
 		}
+
 		return $countries_count;
 	}
 
-	public function get_md_countries_member_count(  ) {
+	public function get_md_countries_member_count() {
 		$report_id = '29c3021c-16b6-11ea-9fc1-005056a42212';
-		$headers = array(
+		$headers   = array(
 			'Content-Type' => 'application/json',
 			'OAuth-Token'  => $this->get_access_token( false ),
 		);
-		$result  = $this->get( '/Reports/' . $report_id . '/chart', false, $headers );
+		$result    = $this->get( '/Reports/' . $report_id . '/chart', false, $headers );
 		if ( ! $result ) {
 			return false;
 		}
@@ -854,10 +855,85 @@ class EASL_MZ_API {
 			return false;
 		}
 		$countries_count = array();
-		foreach ($response->chartData->values as $country) {
-			$countries_count[$country->label] = $country->gvalue;
+		foreach ( $response->chartData->values as $country ) {
+			$countries_count[ $country->label ] = $country->gvalue;
 		}
+
 		return $countries_count;
+	}
+
+	public function get_ms_countries_member_count() {
+		$report_id = 'af3ab44e-167f-11ea-bf8b-005056a42212';
+		$headers   = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$result    = $this->get( '/Reports/' . $report_id . '/chart', false, $headers );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->chartData->values ) ) {
+			return false;
+		}
+		$countries_count = array();
+		foreach ( $response->chartData->values as $country ) {
+			$countries_count[ $country->label ] = $country->gvalue;
+		}
+
+		return $countries_count;
+	}
+
+	public function get_ms_membership_category_member_count() {
+		$report_id = 'af1aa01e-167f-11ea-8f06-005056a42212';
+		$headers   = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$result    = $this->get( '/Reports/' . $report_id . '/chart', false, $headers );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->chartData->values ) ) {
+			return false;
+		}
+		$membership_category_count = array();
+		foreach ( $response->chartData->values as $mc ) {
+			$label_base = str_replace( ' with JHEP subscription', '', $mc->label );
+			if ( ! isset( $membership_category_count[ $label_base ] ) ) {
+				$membership_category_count[ $label_base ] = 0;
+			}
+			$membership_category_count[ $label_base ] += $mc->gvalue;
+		}
+
+		return $membership_category_count;
+	}
+
+	public function get_ms_speciality_member_count() {
+		$report_id = 'f25543da-053f-11ea-9412-005056a42212';
+		$headers   = array(
+			'Content-Type' => 'application/json',
+			'OAuth-Token'  => $this->get_access_token( false ),
+		);
+		$result    = $this->get( '/Reports/' . $report_id . '/chart', false, $headers );
+		if ( ! $result ) {
+			return false;
+		}
+		$response = $this->request->get_response_body();
+		if ( empty( $response->chartData->values ) ) {
+			return false;
+		}
+
+		$speciality_count = array();
+		foreach ( $response->chartData->values as $mc ) {
+			if ( empty( $mc->label ) || ( $mc->label == 'Other – Please specify' ) ) {
+				continue;
+			}
+			$speciality_count[ $mc->label ] = $mc->gvalue;
+		}
+
+		return $speciality_count;
 	}
 
 	public function post( $endpoint, $is_member = true, $headers = array(), $data = array(), $data_format = 'body', $cookies = array(), $codes = array( 200 ) ) {
