@@ -535,24 +535,24 @@ class EASL_MZ_Manager {
 		$passphrase  = 'am1709xtwrn18cmbm24tw3';
 		$ingore_keys = array(
 			'mz_action',
-			'mz_status',
-			'mz_fname',
-			'mz_lname',
-			'mz_cat',
-			'membership_id',
-			'membership_number',
-			'mz_sid',
+			'mzsts',
+			'mzsid',
+			'msid',
+			'msnum',
+			'mzfn',
+			'mzln',
+			'mzcat',
 			'SHASIGN',
 		);
 
-		$membership_id     = ! empty( $_GET['membership_id'] ) ? $_GET['membership_id'] : false;
-		$membership_number = ! empty( $_GET['membership_number'] ) ? $_GET['membership_number'] : false;
-		$mz_fname          = ! empty( $_GET['mz_fname'] ) ? $_GET['mz_fname'] : '';
-		$mz_lname          = ! empty( $_GET['mz_lname'] ) ? $_GET['mz_lname'] : '';
-		$mz_cat            = ! empty( $_GET['mz_cat'] ) ? $_GET['mz_cat'] : '';
-		$session_db_id     = ! empty( $_GET['mz_sid'] ) ? $_GET['mz_sid'] : false;
+		$status            = ! empty( $_GET['mzsts'] ) ? $_GET['mzsts'] : false;
+		$session_db_id     = ! empty( $_GET['mzsid'] ) ? $_GET['mzsid'] : false;
+		$membership_id     = ! empty( $_GET['msid'] ) ? $_GET['msid'] : false;
+		$membership_number = ! empty( $_GET['msnum'] ) ? $_GET['msnum'] : false;
+		$mz_fname          = ! empty( $_GET['mzfn'] ) ? $_GET['mzfn'] : '';
+		$mz_lname          = ! empty( $_GET['mzln'] ) ? $_GET['mzln'] : '';
+		$mz_cat            = ! empty( $_GET['mzcat'] ) ? $_GET['mzcat'] : '';
 		$response_digest   = ! empty( $_GET['SHASIGN'] ) ? strtoupper( $_GET['SHASIGN'] ) : false;
-		$status            = ! empty( $_GET['mz_status'] ) ? $_GET['mz_status'] : false;
 		$invoice_number    = ! empty( $_GET['PAYID'] ) ? $_GET['PAYID'] : '';
 		$name              = ! empty( $_GET['CN'] ) ? $_GET['CN'] : '';
 		$amount            = ! empty( $_GET['amount'] ) ? $_GET['amount'] : '';
