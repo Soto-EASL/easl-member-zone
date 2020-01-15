@@ -180,9 +180,11 @@ body .mzms-button.mz-input-submit-wrap input[type="submit"] {
 }
 
 body .mzms-button:hover,
-body .mzms-button:active {
+body .mzms-button:active,
+body .mzms-button:focus {
     background-color: #004b87;
     text-decoration: none;
+    outline: none;
 }
 
 body .mzms-button.mz-input-submit-wrap:hover input[type="submit"],
@@ -2305,6 +2307,31 @@ span.mzms-field-file-button {
 /* New Membership Form */
 .easl-mz-new-membership-form {
     min-height: 420px;
+}
+.easl-mz-new-membership-form-inner {
+    position: relative;
+    min-height: 200px;
+}
+.easl-mz-new-membership-form-inner form {
+    position: relative;
+    z-index: 1;
+}
+.easl-mz-new-membership-form-inner .easl-mznm-loader {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: none;
+    z-index: 2;
+    transform: none;
+    background-color: rgba(255, 255, 255, .75);
+    align-items: center;
+    justify-content: center;
+
+}
+.easl-mz-new-membership-form-inner.easl-mz-nm-form-submitted .easl-mznm-loader {
+    display: flex;
 }
 
 #mz-membership-other-address-wrap,

@@ -701,6 +701,8 @@
 
                 if (hasError) {
                     event.preventDefault();
+                }else{
+                    $el.find(".easl-mz-new-membership-form-inner").addClass("easl-mz-nm-form-submitted");
                 }
             });
         },
